@@ -1,0 +1,15 @@
+version: '3'
+services:
+
+  postgres:
+    image: postgres:13-alpine
+
+  redis:
+    image: redis:6-alpine
+
+  bot:
+    build:
+      context: .
+    depends_on:
+      - postgres
+      - redis

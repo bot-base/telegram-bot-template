@@ -1,0 +1,26 @@
+version: '3'
+services:
+
+  postgres:
+    ports:
+      - "5432:5432"
+    volumes:
+      - "postgres-data-dev:/data/postgres"
+    env_file:
+      - docker/postgres.dev.env
+
+  redis:
+    ports:
+      - "6379:6379"
+
+  bot:
+    ports:
+      - "3000:80"
+    volumes:
+      - ".:/usr/src"
+    env_file:
+      - docker/bot.dev.env
+    command: npm run dev
+
+volumes:
+  postgres-data-dev:

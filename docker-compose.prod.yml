@@ -1,0 +1,16 @@
+version: '3'
+services:
+
+  postgres:
+    volumes:
+      - "postgres-data:/data/postgres"
+    env_file:
+      - docker/postgres.prod.env
+
+  bot:
+    env_file:
+      - docker/bot.prod.env
+    command: npm run start
+
+volumes:
+  postgres-data:

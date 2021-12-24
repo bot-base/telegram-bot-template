@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "lib": [
+      "esnext"
+    ],
+    "esModuleInterop": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "useUnknownInCatchVariables": true,
+    "strict": true,
+    "incremental": true,
+    "module": "commonjs",
+    "target": "es2018",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "outDir": "dist",
+    "baseUrl": "src",
+    "paths": {
+      "@bot/*": [
+        "*"
+      ]
+    }
+  },
+  "include": [
+    "src/**/*"
+  ]
+}
