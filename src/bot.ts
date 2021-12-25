@@ -11,6 +11,7 @@ import {
   setupLogger,
   registerUser,
   setupI18n,
+  collectMetrics,
 } from "@bot/middlewares";
 import {
   botAdminFeature,
@@ -29,6 +30,7 @@ if (config.isDev) {
   bot.use(updatesLogger());
 }
 
+bot.use(collectMetrics());
 bot.use(rateLimit());
 bot.use(setupSession());
 bot.use(setupContext());
