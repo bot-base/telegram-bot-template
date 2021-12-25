@@ -14,12 +14,15 @@ server.setErrorHandler(async (error, request, response) => {
   if (error instanceof BotError) {
     const ctx = error.ctx;
 
-    logger.error(error);
-  } else {
-    request.log.error(error);
-  }
+    const err = error.error;
+    logger.error(err);
 
-  response.code(200).send({});
+    response.code(200).send({});
+  } else {
+    logger.error(error);
+
+    response.status(500).send({ error: "Something went wrong" });
+  }
 });
 
 server.post(`/${config.BOT_TOKEN}`, webhookCallback(bot, "fastify"));
