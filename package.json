@@ -18,7 +18,7 @@
     "@grammyjs/menu": "1.0.4",
     "@grammyjs/ratelimiter": "1.1.4",
     "@grammyjs/transformer-throttler": "1.0.1",
-    "@moebius/fluent": "0.2.0",
+    "@moebius/fluent": "0.3.0",
     "@moebius/grammy-fluent": "0.3.0",
     "@prisma/client": "3.7.0",
     "@satont/grammy-redis-storage": "1.1.1",
