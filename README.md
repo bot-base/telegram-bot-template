@@ -11,7 +11,9 @@ Uses PostgreSQL for data storage (MySQL, MongoDB, SQL Server, SQLite [are also s
 - Logger
 - Sessions
 - Language picker and internationalization
-- Fastify server for webhooks
+- Metrics collection (in [prometheus](https://prometheus.io/) format)
+- Fast and low overhead [fastify](https://www.fastify.io/) server
+- Fast and disk space efficient [pnpm](https://pnpm.io/) package manager
 - Ready-to-use docker setup
 
 ## How to use
@@ -49,7 +51,7 @@ Uses PostgreSQL for data storage (MySQL, MongoDB, SQL Server, SQLite [are also s
 
     ```bash
     # install dependencies
-    npm i
+    pnpm i
 
     # run migrations
     docker-compose run bot npx prisma migrate deploy

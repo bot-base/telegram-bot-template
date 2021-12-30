@@ -12,21 +12,19 @@ export const getPrivateChatCommands = (options: {
   localeCode: string;
   includeLanguageCommand: boolean;
 }) => {
-  const translator = fluent.getTranslator({
-    locales: options.localeCode,
-  });
+  const t = fluent.withLocale(options.localeCode);
 
   const commands = [
     {
       command: "start",
-      description: translator.translate("start_command_description"),
+      description: t("start_command_description"),
     },
   ];
 
   if (options.includeLanguageCommand) {
     commands.push({
       command: "language",
-      description: translator.translate("language_command_description"),
+      description: t("language_command_description"),
     });
   }
 
@@ -34,9 +32,7 @@ export const getPrivateChatCommands = (options: {
 };
 
 export const getGroupChatCommands = (options: { localeCode: string }) => {
-  const translator = fluent.getTranslator({
-    locales: options.localeCode,
-  });
+  const t = fluent.withLocale(options.localeCode);
 
   return [];
 };
