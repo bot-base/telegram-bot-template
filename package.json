@@ -21,7 +21,7 @@
     "@moebius/fluent": "0.2.0",
     "@moebius/grammy-fluent": "0.3.0",
     "@prisma/client": "3.7.0",
-    "@satont/grammy-redis-storage": "1.1.0",
+    "@satont/grammy-redis-storage": "1.1.1",
     "envalid": "7.2.2",
     "fastify": "3.25.2",
     "grammy": "1.5.4",
