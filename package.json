@@ -24,7 +24,7 @@
     "@satont/grammy-redis-storage": "1.1.1",
     "envalid": "7.2.2",
     "fastify": "3.25.3",
-    "grammy": "1.5.4",
+    "grammy": "1.5.5",
     "ioredis": "4.28.2",
     "iso-639-1": "2.1.11",
     "lodash": "4.17.21",
