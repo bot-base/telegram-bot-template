@@ -29,9 +29,11 @@ Uses PostgreSQL for data storage (MySQL, MongoDB, SQL Server, SQLite [are also s
     ```bash
     # development
     cp ./docker/bot.env.example ./docker/bot.dev.env
+    cp ./docker/postgres.env.example ./docker/postgres.dev.env
 
     # production
     cp ./docker/bot.env.example ./docker/bot.prod.env
+    cp ./docker/postgres.env.example ./docker/postgres.prod.env
     ```
 
 3. Edit environment variables in `docker/bot.dev.env` and `docker/bot.prod.env`
