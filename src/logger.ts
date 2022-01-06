@@ -8,6 +8,7 @@ const options: LoggerOptions = {
   level: config.LOG_LEVEL,
 };
 
+// eslint-disable-next-line import/no-mutable-exports
 export let rawLogger = pino(options);
 
 if (config.isDev) {
@@ -23,6 +24,7 @@ if (config.isDev) {
 
 export const logger: Logger = new Proxy(rawLogger, {
   get(target, property, receiver) {
+    // eslint-disable-next-line no-param-reassign
     target = context.getStore()?.get("logger") || target;
     return Reflect.get(target, property, receiver);
   },

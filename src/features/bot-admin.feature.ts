@@ -47,8 +47,8 @@ composer.command("setcommands", async (ctx) => {
   );
 
   if (isMultipleLocales) {
-    for (const code of locales) {
-      await ctx.api.setMyCommands(
+    const requests = locales.map((code) =>
+      ctx.api.setMyCommands(
         getPrivateChatCommands({
           localeCode: code,
           includeLanguageCommand: isMultipleLocales,
@@ -59,8 +59,10 @@ composer.command("setcommands", async (ctx) => {
             type: "all_private_chats",
           },
         }
-      );
-    }
+      )
+    );
+
+    await Promise.all(requests);
   }
 
   // set private chat admin commands

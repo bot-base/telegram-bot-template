@@ -32,6 +32,7 @@ export const getPrivateChatCommands = (options: {
 };
 
 export const getGroupChatCommands = (options: { localeCode: string }) => {
+  // eslint-disable-next-line no-unused-vars
   const t = fluent.withLocale(options.localeCode);
 
   return [];

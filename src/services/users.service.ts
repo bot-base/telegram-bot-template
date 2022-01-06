@@ -1,5 +1,5 @@
 import { logger } from "@bot/logger";
-import { prisma } from "@bot/services";
+import { prisma } from "@bot/prisma";
 
 export const createByTelegramId = async (
   telegramId: number,
@@ -15,7 +15,7 @@ export const createByTelegramId = async (
 
   const { languageCode } = data;
 
-  return await prisma.user.upsert({
+  return prisma.user.upsert({
     where: {
       telegramId,
     },
@@ -41,7 +41,7 @@ export const updateByTelegramId = async (
 
   const { languageCode } = data;
 
-  return await prisma.user.update({
+  return prisma.user.update({
     where: {
       telegramId,
     },
@@ -57,5 +57,5 @@ export const getTotalCount = async () => {
     caller: __filename,
   });
 
-  return await prisma.user.count();
+  return prisma.user.count();
 };

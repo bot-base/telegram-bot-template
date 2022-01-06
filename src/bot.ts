@@ -48,8 +48,10 @@ if (isMultipleLocales) {
 }
 
 if (config.isDev) {
+  /* eslint-disable no-console */
+
   bot.catch((err) => {
-    const ctx = err.ctx;
+    const { ctx } = err;
     console.error(`Error while handling update ${ctx.update.update_id}:`);
     const e = err.error;
     if (e instanceof GrammyError) {

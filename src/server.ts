@@ -12,7 +12,8 @@ export const server = fastify({
 
 server.setErrorHandler(async (error, request, response) => {
   if (error instanceof BotError) {
-    const ctx = error.ctx;
+    // eslint-disable-next-line no-unused-vars
+    const { ctx } = error;
 
     const err = error.error;
     logger.error(err);

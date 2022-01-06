@@ -10,15 +10,17 @@ export const locales = fs.readdirSync(appLocalesPath);
 export const isMultipleLocales = locales.length > 1;
 
 export const loadLocales = async () => {
-  for (const localeCode of locales) {
-    const localeFiles = fs.readdirSync(join(appLocalesPath, localeCode));
-    const filePath = localeFiles.map((filePath) =>
-      join(appLocalesPath, localeCode, filePath)
+  const results = locales.map((code) => {
+    const localeFiles = fs.readdirSync(join(appLocalesPath, code));
+    const filePath = localeFiles.map((path) =>
+      join(appLocalesPath, code, path)
     );
 
-    await fluent.addTranslation({
-      locales: localeCode,
+    return fluent.addTranslation({
+      locales: code,
       filePath,
     });
-  }
+  });
+
+  await Promise.all(results);
 };

@@ -14,7 +14,7 @@ export const composer = baseComposer.filter(isPrivateChat);
 
 const menu = new Menu<Context>("language");
 
-for (let index = 1; index <= locales.length; index++) {
+for (let index = 1; index <= locales.length; index += 1) {
   const code = locales[index - 1];
 
   menu.text(
@@ -28,15 +28,15 @@ for (let index = 1; index <= locales.length; index++) {
       payload: code,
     },
     async (ctx) => {
-      const code = ctx.match;
+      const newLanguageCode = ctx.match;
 
       await ctx.answerCallbackQuery();
 
-      if (locales.includes(code)) {
+      if (locales.includes(newLanguageCode)) {
         await usersService.updateByTelegramId(ctx.from.id, {
-          languageCode: code,
+          languageCode: newLanguageCode,
         });
-        ctx.session.user.languageCode = code;
+        ctx.session.user.languageCode = newLanguageCode;
 
         await ctx.fluent.renegotiateLocale();
 
@@ -47,7 +47,7 @@ for (let index = 1; index <= locales.length; index++) {
     }
   );
 
-  if (index % 2 == 0) {
+  if (index % 2 === 0) {
     menu.row();
   }
 }

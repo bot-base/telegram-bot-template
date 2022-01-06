@@ -1,7 +1,7 @@
 import { Context as DefaultContext, SessionFlavor } from "grammy";
 import { FluentContextFlavor } from "@moebius/grammy-fluent";
 
-import { SessionData } from "@bot/types";
+import { SessionData } from "./session";
 
 type BaseContext = DefaultContext &
   FluentContextFlavor &
