@@ -43,7 +43,7 @@
     "@typescript-eslint/eslint-plugin": "5.9.0",
     "@typescript-eslint/parser": "5.9.0",
     "concurrently": "7.0.0",
-    "eslint": "7.32.0",
+    "eslint": "8.6.0",
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-config-prettier": "8.3.0",
     "eslint-import-resolver-typescript": "2.5.0",
