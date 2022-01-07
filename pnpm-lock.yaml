@@ -24,10 +24,10 @@ specifiers:
   eslint-plugin-prettier: 4.0.0
   fastify: 3.25.3
   grammy: 1.6.1
-  husky: ^7.0.4
+  husky: 7.0.4
   ioredis: 4.28.2
   iso-639-1: 2.1.11
-  lint-staged: ^12.1.5
+  lint-staged: 12.1.5
   lodash: 4.17.21
   module-alias: 2.2.2
   node-fetch: 3.1.0
