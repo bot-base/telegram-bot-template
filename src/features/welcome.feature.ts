@@ -4,11 +4,11 @@ import { Context } from "@bot/types";
 import { isPrivateChat } from "@bot/helpers/filters";
 import { logger } from "@bot/logger";
 
-const baseComposer = new Composer<Context>();
+export const composer = new Composer<Context>();
 
-export const composer = baseComposer.filter(isPrivateChat);
+const filteredComposer = composer.filter(isPrivateChat);
 
-composer.command("start", async (ctx) => {
+filteredComposer.command("start", async (ctx) => {
   logger.info({ msg: "handle start", from: ctx.from, chat: ctx.chat });
 
   await ctx.replyWithChatAction("typing");

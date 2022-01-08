@@ -8,9 +8,9 @@ import { logger } from "@bot/logger";
 import { locales } from "@bot/helpers/i18n";
 import { usersService } from "@bot/services";
 
-const baseComposer = new Composer<Context>();
+export const composer = new Composer<Context>();
 
-export const composer = baseComposer.filter(isPrivateChat);
+const filteredComposer = composer.filter(isPrivateChat);
 
 const menu = new Menu<Context>("language");
 
@@ -52,9 +52,9 @@ for (let index = 1; index <= locales.length; index += 1) {
   }
 }
 
-composer.use(menu);
+filteredComposer.use(menu);
 
-composer.command("language", async (ctx) => {
+filteredComposer.command("language", async (ctx) => {
   logger.info({ msg: "handle language", from: ctx.from, chat: ctx.chat });
 
   await ctx.replyWithChatAction("typing");

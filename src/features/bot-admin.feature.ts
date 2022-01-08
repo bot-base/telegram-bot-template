@@ -12,11 +12,11 @@ import {
 import { isMultipleLocales, locales } from "@bot/helpers/i18n";
 import { config } from "@bot/config";
 
-const baseComposer = new Composer<Context>();
+export const composer = new Composer<Context>();
 
-export const composer = baseComposer.filter(isPrivateChat).filter(isBotAdmin);
+const filteredComposer = composer.filter(isPrivateChat).filter(isBotAdmin);
 
-composer.command("stats", async (ctx) => {
+filteredComposer.command("stats", async (ctx) => {
   logger.info({ msg: "handle stats", from: ctx.from, chat: ctx.chat });
 
   await ctx.replyWithChatAction("typing");
@@ -28,7 +28,7 @@ composer.command("stats", async (ctx) => {
   return ctx.reply(stats);
 });
 
-composer.command("setcommands", async (ctx) => {
+filteredComposer.command("setcommands", async (ctx) => {
   logger.info({ msg: "handle setcommands", from: ctx.from, chat: ctx.chat });
 
   await ctx.replyWithChatAction("typing");
