@@ -32,6 +32,7 @@
     "lodash": "4.17.21",
     "module-alias": "2.2.2",
     "node-fetch": "3.1.0",
+    "parse-mode": "0.1.2",
     "pino": "7.6.2",
     "pino-pretty": "7.3.0",
     "prom-client": "14.0.1"

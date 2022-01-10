@@ -1,6 +1,7 @@
 import { Bot, GrammyError, HttpError } from "grammy";
 import { limit as rateLimit } from "@grammyjs/ratelimiter";
 import { apiThrottler } from "@grammyjs/transformer-throttler";
+import { hydrateReply, parseMode } from "parse-mode";
 
 import { Context } from "@bot/types";
 import { config } from "@bot/config";
@@ -25,6 +26,7 @@ export const bot = new Bot<Context>(config.BOT_TOKEN);
 // Middlewares
 
 bot.api.config.use(apiThrottler());
+bot.api.config.use(parseMode("HTML"));
 
 if (config.isDev) {
   bot.use(updatesLogger());
@@ -32,6 +34,7 @@ if (config.isDev) {
 
 bot.use(collectMetrics());
 bot.use(rateLimit());
+bot.use(hydrateReply);
 bot.use(setupSession());
 bot.use(setupContext());
 bot.use(setupLogger());

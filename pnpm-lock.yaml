@@ -32,6 +32,7 @@ specifiers:
   module-alias: 2.2.2
   node-fetch: 3.1.0
   nodemon: 2.0.15
+  parse-mode: 0.1.2
   pino: 7.6.2
   pino-pretty: 7.3.0
   prettier: 2.5.1
@@ -57,6 +58,7 @@ dependencies:
   lodash: 4.17.21
   module-alias: 2.2.2
   node-fetch: 3.1.0
+  parse-mode: 0.1.2
   pino: 7.6.2
   pino-pretty: 7.3.0
   prom-client: 14.0.1
@@ -2326,6 +2328,11 @@ packages:
     dependencies:
       callsites: 3.1.0
     dev: true
+
+  /parse-mode/0.1.2:
+    resolution: {integrity: sha512-MMCwVNiAhGiqrebsmnsre4ofFBsOHmMiBfohMK0CWY8dWzcQwIGFkmIVpulUIQTeLYTbKxa0OW7FM+X41kFqWw==}
+    engines: {node: ^12.20.0 || >=14.13.1}
+    dev: false
 
   /path-exists/3.0.0:
     resolution: {integrity: sha1-zg6+ql94yxiSXqfYENe1mwEP1RU=}
