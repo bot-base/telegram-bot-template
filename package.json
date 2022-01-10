@@ -51,7 +51,7 @@
     "eslint-plugin-import": "2.25.4",
     "eslint-plugin-prettier": "4.0.0",
     "husky": "7.0.4",
-    "lint-staged": "12.1.5",
+    "lint-staged": "12.1.7",
     "nodemon": "2.0.15",
     "prettier": "2.5.1",
     "prisma": "3.7.0",
