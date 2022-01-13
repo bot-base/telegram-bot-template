@@ -4,9 +4,7 @@ import { ParseModeContext } from "parse-mode";
 
 import { SessionData } from "./session";
 
-type BaseContext = DefaultContext &
+export type Context = DefaultContext &
   FluentContextFlavor &
   ParseModeContext &
   SessionFlavor<SessionData>;
-
-export interface Context extends BaseContext {}

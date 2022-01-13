@@ -1,8 +1,8 @@
 import { Composer } from "grammy";
+import { isPrivate, isUserId } from "grammy-guard";
 
 import { Context } from "@bot/types";
 import { usersService } from "@bot/services";
-import { isBotAdmin, isPrivateChat } from "@bot/helpers/filters";
 import { logger } from "@bot/logger";
 import {
   DEFAULT_LANGUAGE_CODE,
@@ -14,7 +14,9 @@ import { config } from "@bot/config";
 
 export const composer = new Composer<Context>();
 
-const filteredComposer = composer.filter(isPrivateChat).filter(isBotAdmin);
+const filteredComposer = composer
+  .filter(isPrivate)
+  .filter(isUserId(config.BOT_ADMIN_USER_ID));
 
 filteredComposer.command("stats", async (ctx) => {
   logger.info({ msg: "handle stats", from: ctx.from, chat: ctx.chat });

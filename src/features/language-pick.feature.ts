@@ -1,16 +1,16 @@
 import ISO6391 from "iso-639-1";
 import { Composer } from "grammy";
 import { Menu } from "@grammyjs/menu";
+import { isPrivate } from "grammy-guard";
 
 import { Context } from "@bot/types";
-import { isPrivateChat } from "@bot/helpers/filters";
 import { logger } from "@bot/logger";
 import { locales } from "@bot/helpers/i18n";
 import { usersService } from "@bot/services";
 
 export const composer = new Composer<Context>();
 
-const filteredComposer = composer.filter(isPrivateChat);
+const filteredComposer = composer.filter(isPrivate);
 
 const menu = new Menu<Context>("language");
 

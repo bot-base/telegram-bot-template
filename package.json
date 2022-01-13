@@ -27,6 +27,7 @@
     "envalid": "7.2.2",
     "fastify": "3.25.3",
     "grammy": "1.6.1",
+    "grammy-guard": "0.1.0",
     "ioredis": "4.28.3",
     "iso-639-1": "2.1.11",
     "lodash": "4.17.21",

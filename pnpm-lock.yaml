@@ -24,6 +24,7 @@ specifiers:
   eslint-plugin-prettier: 4.0.0
   fastify: 3.25.3
   grammy: 1.6.1
+  grammy-guard: 0.1.0
   husky: 7.0.4
   ioredis: 4.28.3
   iso-639-1: 2.1.11
@@ -53,6 +54,7 @@ dependencies:
   envalid: 7.2.2
   fastify: 3.25.3
   grammy: 1.6.1
+  grammy-guard: 0.1.0_grammy@1.6.1
   ioredis: 4.28.3
   iso-639-1: 2.1.11
   lodash: 4.17.21
@@ -1597,6 +1599,14 @@ packages:
   /graceful-fs/4.2.8:
     resolution: {integrity: sha512-qkIilPUYcNhJpd33n0GBXTB1MMPp14TxEsEs0pTrsSVucApsYzW5V+Q8Qxhik6KU3evy+qkAAowTByymK0avdg==}
     dev: true
+
+  /grammy-guard/0.1.0_grammy@1.6.1:
+    resolution: {integrity: sha512-Dmf1RiPUuuJIO+RhRKPe+lJbgp13mTWQLHwcIjAmtBk6RIg8aWW34ohxxbyY2P81mDNsVpHaYdDs8et3WKeT/A==}
+    peerDependencies:
+      grammy: ^1.0.0
+    dependencies:
+      grammy: 1.6.1
+    dev: false
 
   /grammy/1.6.1:
     resolution: {integrity: sha512-ahg+oZCUO6KAYcMXpAEiseR7+JIFyedFLzkdh6Pf7sVjTtLLVG7vQ27ohPTrnTM1tW/J/unlcMdIR8aUgPs/FA==}
