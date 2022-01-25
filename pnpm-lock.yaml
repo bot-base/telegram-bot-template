@@ -4,7 +4,7 @@ specifiers:
   '@grammyjs/menu': 1.0.4
   '@grammyjs/ratelimiter': 1.1.4
   '@grammyjs/transformer-throttler': 1.1.1
-  '@moebius/fluent': 0.3.1
+  '@moebius/fluent': 1.0.0
   '@moebius/grammy-fluent': 0.4.1
   '@prisma/client': 3.8.1
   '@satont/grammy-redis-storage': 1.2.0
@@ -47,8 +47,8 @@ dependencies:
   '@grammyjs/menu': 1.0.4_grammy@1.6.2
   '@grammyjs/ratelimiter': 1.1.4
   '@grammyjs/transformer-throttler': 1.1.1_grammy@1.6.2
-  '@moebius/fluent': 0.3.1
-  '@moebius/grammy-fluent': 0.4.1_6bbdbb4e27bf1c02903164492527659f
+  '@moebius/fluent': 1.0.0
+  '@moebius/grammy-fluent': 0.4.1_303a96499993c75de5fbe5e42d51ec52
   '@prisma/client': 3.8.1_prisma@3.8.1
   '@satont/grammy-redis-storage': 1.2.0
   envalid: 7.2.2
@@ -177,22 +177,22 @@ packages:
     resolution: {integrity: sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==}
     dev: true
 
-  /@moebius/fluent/0.3.1:
-    resolution: {integrity: sha512-jBxbPDY5A5rz8Ceu7YfPkqzY8qzkd1Qv1FyJuc3PkL6vJJ8YLdSS4CUGzeV0s6mISFz40yuzaHXdWdRxYPUZGw==}
+  /@moebius/fluent/1.0.0:
+    resolution: {integrity: sha512-uofmtkejGWdrezehBmwftP7/oKcr4mPOzTOhXC/restu2p3m4wNIthuIAY834saohSmZV0BikJ3tbsxbmon4RQ==}
     engines: {node: '>=12'}
     dependencies:
       '@fluent/bundle': 0.17.1
       '@fluent/langneg': 0.6.1
     dev: false
 
-  /@moebius/grammy-fluent/0.4.1_6bbdbb4e27bf1c02903164492527659f:
+  /@moebius/grammy-fluent/0.4.1_303a96499993c75de5fbe5e42d51ec52:
     resolution: {integrity: sha512-Dg/dYoim1JxJLqypNCWSNy+0SpUFOInOWBM9nNAipjiviCcxBsTrN9qciuv5i6o6iXXHNU98YWnBriRdO+NPew==}
     engines: {node: '>=12'}
     peerDependencies:
       '@moebius/fluent': 0.3.1
       grammy: ^1.5.0
     dependencies:
-      '@moebius/fluent': 0.3.1
+      '@moebius/fluent': 1.0.0
       grammy: 1.6.2
     dev: false
 
