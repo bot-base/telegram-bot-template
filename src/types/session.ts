@@ -1,6 +1,6 @@
 export interface SessionData {
-  user: {
-    isRegistered: boolean;
+  user?: {
+    isRegistered?: boolean;
     languageCode?: string;
   };
 }

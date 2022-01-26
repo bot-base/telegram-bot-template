@@ -1,3 +1,4 @@
+import _ from "lodash";
 import ISO6391 from "iso-639-1";
 import { Composer } from "grammy";
 import { Menu } from "@grammyjs/menu";
@@ -21,7 +22,7 @@ for (let index = 1; index <= locales.length; index += 1) {
     {
       text: (ctx) => {
         const isActivated =
-          (ctx.session.user.languageCode || ctx.from?.language_code) === code;
+          (ctx.session.user?.languageCode || ctx.from?.language_code) === code;
 
         return `${isActivated ? "✅ " : ""}${ISO6391.getNativeName(code)}`;
       },
@@ -36,7 +37,7 @@ for (let index = 1; index <= locales.length; index += 1) {
         await usersService.updateByTelegramId(ctx.from.id, {
           languageCode: newLanguageCode,
         });
-        ctx.session.user.languageCode = newLanguageCode;
+        _.set(ctx.session, "user.languageCode", newLanguageCode);
 
         await ctx.fluent.renegotiateLocale();
 
