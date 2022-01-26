@@ -1,4 +1,4 @@
-import { Bot, GrammyError, HttpError } from "grammy";
+import { Bot } from "grammy";
 import { limit as rateLimit } from "@grammyjs/ratelimiter";
 import { apiThrottler } from "@grammyjs/transformer-throttler";
 import { hydrateReply, parseMode } from "parse-mode";
@@ -20,6 +20,7 @@ import {
   welcomeFeature,
 } from "@bot/features";
 import { isMultipleLocales } from "@bot/helpers/i18n";
+import { logger } from "@bot/logger";
 
 export const bot = new Bot<Context>(config.BOT_TOKEN);
 
@@ -51,18 +52,13 @@ if (isMultipleLocales) {
 }
 
 if (config.isDev) {
-  /* eslint-disable no-console */
+  bot.catch((error) => {
+    const { ctx } = error;
+    const err = error.error;
 
-  bot.catch((err) => {
-    const { ctx } = err;
-    console.error(`Error while handling update ${ctx.update.update_id}:`);
-    const e = err.error;
-    if (e instanceof GrammyError) {
-      console.error("Error in request:", e.description);
-    } else if (e instanceof HttpError) {
-      console.error("Could not contact Telegram:", e);
-    } else {
-      console.error("Unknown error:", e);
-    }
+    logger.error({
+      updateId: ctx.update.update_id,
+      err,
+    });
   });
 }
