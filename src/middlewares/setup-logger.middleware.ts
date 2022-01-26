@@ -1,4 +1,3 @@
-import { randomUUID } from "crypto";
 import { NextFunction } from "grammy";
 
 import { Context } from "@bot/types";
@@ -9,7 +8,7 @@ export const middleware = () => (ctx: Context, next: NextFunction) => {
   context.getStore()?.set(
     "logger",
     rawLogger.child({
-      requestId: randomUUID(),
+      updateId: ctx.update.update_id,
     })
   );
 
