@@ -16,7 +16,7 @@ import {
 } from "@bot/middlewares";
 import {
   botAdminFeature,
-  languagePickFeature,
+  languageSelectFeature,
   welcomeFeature,
 } from "@bot/features";
 import { isMultipleLocales } from "@bot/helpers/i18n";
@@ -47,7 +47,7 @@ bot.use(botAdminFeature);
 bot.use(welcomeFeature);
 
 if (isMultipleLocales) {
-  bot.use(languagePickFeature);
+  bot.use(languageSelectFeature);
 }
 
 if (config.isDev) {

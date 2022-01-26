@@ -1,24 +1,17 @@
 import _ from "lodash";
 import ISO6391 from "iso-639-1";
-import { Composer } from "grammy";
 import { Menu } from "@grammyjs/menu";
-import { isPrivate } from "grammy-guard";
 
 import { Context } from "@bot/types";
-import { logger } from "@bot/logger";
 import { locales } from "@bot/helpers/i18n";
 import { usersService } from "@bot/services";
 
-export const composer = new Composer<Context>();
-
-const filteredComposer = composer.filter(isPrivate);
-
-const menu = new Menu<Context>("language");
+export const keyboard = new Menu<Context>("language");
 
 for (let index = 1; index <= locales.length; index += 1) {
   const code = locales[index - 1];
 
-  menu.text(
+  keyboard.text(
     {
       text: (ctx) => {
         const isActivated =
@@ -31,8 +24,6 @@ for (let index = 1; index <= locales.length; index += 1) {
     async (ctx) => {
       const newLanguageCode = ctx.match;
 
-      await ctx.answerCallbackQuery();
-
       if (locales.includes(newLanguageCode)) {
         await usersService.updateByTelegramId(ctx.from.id, {
           languageCode: newLanguageCode,
@@ -42,22 +33,13 @@ for (let index = 1; index <= locales.length; index += 1) {
         await ctx.fluent.renegotiateLocale();
 
         await ctx.editMessageText(ctx.t("language_changed"), {
-          reply_markup: menu,
+          reply_markup: keyboard,
         });
       }
     }
   );
 
   if (index % 2 === 0) {
-    menu.row();
+    keyboard.row();
   }
 }
-
-filteredComposer.use(menu);
-
-filteredComposer.command("language", async (ctx) => {
-  logger.info({ msg: "handle language", from: ctx.from, chat: ctx.chat });
-
-  await ctx.replyWithChatAction("typing");
-  await ctx.reply(ctx.t("language_pick"), { reply_markup: menu });
-});
