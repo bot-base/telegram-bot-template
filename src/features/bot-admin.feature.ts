@@ -4,13 +4,14 @@ import { isPrivate, isUserId } from "grammy-guard";
 import { Context } from "@bot/types";
 import { usersService } from "@bot/services";
 import { logger } from "@bot/logger";
+import { config } from "@bot/config";
 import {
   DEFAULT_LANGUAGE_CODE,
   getGroupChatCommands,
   getPrivateChatCommands,
 } from "@bot/helpers/bot-commands";
 import { isMultipleLocales, locales } from "@bot/helpers/i18n";
-import { config } from "@bot/config";
+import { getMetadata } from "@bot/helpers/logging";
 
 export const composer = new Composer<Context>();
 
@@ -19,7 +20,7 @@ const filteredComposer = composer
   .filter(isUserId(config.BOT_ADMIN_USER_ID));
 
 filteredComposer.command("stats", async (ctx) => {
-  logger.info({ msg: "handle stats", from: ctx.from, chat: ctx.chat });
+  logger.info({ msg: "handle stats", ...getMetadata(ctx) });
 
   await ctx.replyWithChatAction("typing");
 
@@ -31,7 +32,7 @@ filteredComposer.command("stats", async (ctx) => {
 });
 
 filteredComposer.command("setcommands", async (ctx) => {
-  logger.info({ msg: "handle setcommands", from: ctx.from, chat: ctx.chat });
+  logger.info({ msg: "handle setcommands", ...getMetadata(ctx) });
 
   await ctx.replyWithChatAction("typing");
 
