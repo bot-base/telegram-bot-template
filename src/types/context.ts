@@ -1,5 +1,5 @@
 import { Context as DefaultContext, SessionFlavor } from "grammy";
-import { FluentContextFlavor } from "@moebius/grammy-fluent";
+import { FluentContextFlavor } from "@grammyjs/fluent";
 import { ParseModeContext } from "parse-mode";
 
 import { SessionData } from "./session";

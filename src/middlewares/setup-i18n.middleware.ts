@@ -1,17 +1,13 @@
-import {
-  GrammyFluentOptions,
-  LocaleNegotiator,
-  useFluent,
-} from "@moebius/grammy-fluent";
+import { LocaleNegotiator, useFluent } from "@grammyjs/fluent";
 
 import { fluent } from "@bot/helpers/i18n";
 import { Context } from "@bot/types";
 
+const localeNegotiator = (ctx: Context) =>
+  ctx.session.user?.languageCode || ctx?.from?.language_code;
+
 export const middleware = () =>
   useFluent({
     fluent,
-    localeNegotiator: (ctx: Context) =>
-      ctx.session.user.languageCode || ctx?.from?.language_code,
-  } as GrammyFluentOptions & {
-    localeNegotiator: LocaleNegotiator<Context>;
+    localeNegotiator: localeNegotiator as LocaleNegotiator,
   });
