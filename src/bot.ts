@@ -20,7 +20,7 @@ import {
   welcomeFeature,
 } from "@bot/features";
 import { isMultipleLocales } from "@bot/helpers/i18n";
-import { logger } from "@bot/logger";
+import { handleError } from "@bot/helpers/error-handler";
 
 export const bot = new Bot<Context>(config.BOT_TOKEN);
 
@@ -52,13 +52,5 @@ if (isMultipleLocales) {
 }
 
 if (config.isDev) {
-  bot.catch((error) => {
-    const { ctx } = error;
-    const err = error.error;
-
-    logger.error({
-      updateId: ctx.update.update_id,
-      err,
-    });
-  });
+  bot.catch(handleError);
 }

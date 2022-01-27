@@ -5,6 +5,7 @@ import { register } from "prom-client";
 import { bot } from "@bot/bot";
 import { config } from "@bot/config";
 import { logger } from "@bot/logger";
+import { handleError } from "@bot/helpers/error-handler";
 
 export const server = fastify({
   logger,
@@ -12,11 +13,7 @@ export const server = fastify({
 
 server.setErrorHandler(async (error, request, response) => {
   if (error instanceof BotError) {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { ctx } = error;
-
-    const err = error.error;
-    logger.error(err);
+    await handleError(error);
 
     response.code(200).send({});
   } else {
