@@ -10,7 +10,7 @@ export const composer = new Composer<Context>();
 const filteredComposer = composer.filter(isPrivate);
 
 filteredComposer.command("start", async (ctx) => {
-  logger.info({ msg: "handle start", ...getMetadata(ctx) });
+  logger.info({ msg: "handle start command", ...getMetadata(ctx) });
 
   await ctx.replyWithChatAction("typing");
   await ctx.reply(ctx.t("welcome"));

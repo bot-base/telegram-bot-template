@@ -20,7 +20,7 @@ const filteredComposer = composer
   .filter(isUserId(config.BOT_ADMIN_USER_ID));
 
 filteredComposer.command("stats", async (ctx) => {
-  logger.info({ msg: "handle stats", ...getMetadata(ctx) });
+  logger.info({ msg: "handle stats command", ...getMetadata(ctx) });
 
   await ctx.replyWithChatAction("typing");
 
@@ -32,7 +32,7 @@ filteredComposer.command("stats", async (ctx) => {
 });
 
 filteredComposer.command("setcommands", async (ctx) => {
-  logger.info({ msg: "handle setcommands", ...getMetadata(ctx) });
+  logger.info({ msg: "handle setcommands command", ...getMetadata(ctx) });
 
   await ctx.replyWithChatAction("typing");
 

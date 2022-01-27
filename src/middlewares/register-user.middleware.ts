@@ -8,12 +8,12 @@ export const middleware = () => async (ctx: Context, next: NextFunction) => {
   if (ctx.from?.is_bot === false) {
     logger.info({
       msg: "trying to register a user",
-      telegramId: ctx.from.id,
+      user: ctx.from,
     });
 
     const { id: telegramId, language_code: languageCode } = ctx.from;
 
-    ctx.user = await usersService.createByTelegramId(telegramId, {
+    ctx.user = await usersService.findOrCreateByTelegramId(telegramId, {
       languageCode,
     });
   }

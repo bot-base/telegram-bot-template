@@ -13,7 +13,7 @@ const filteredComposer = composer.filter(isPrivate);
 filteredComposer.use(selectLanguageKeyboard);
 
 filteredComposer.command("language", async (ctx) => {
-  logger.info({ msg: "handle language", ...getMetadata(ctx) });
+  logger.info({ msg: "handle language command", ...getMetadata(ctx) });
 
   await ctx.replyWithChatAction("typing");
   await ctx.reply(ctx.t("language_pick"), {

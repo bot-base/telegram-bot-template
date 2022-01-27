@@ -1,16 +1,21 @@
 import { logger } from "@bot/logger";
 import { prisma } from "@bot/prisma";
 
-export const createByTelegramId = async (
+const logMeta = {
+  caller: "users.service",
+};
+
+export const findOrCreateByTelegramId = async (
   telegramId: number,
   data: {
     languageCode?: string | null;
   }
 ) => {
   logger.debug({
-    msg: "create user by telegram id",
+    msg: "find or create user by telegram id",
+    telegramId,
     data,
-    caller: __filename,
+    ...logMeta,
   });
 
   const { languageCode } = data;
@@ -35,8 +40,9 @@ export const updateByTelegramId = async (
 ) => {
   logger.debug({
     msg: "update user by telegram id",
+    telegramId,
     data,
-    caller: __filename,
+    ...logMeta,
   });
 
   const { languageCode } = data;
