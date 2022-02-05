@@ -4,7 +4,7 @@ import { fluent } from "@bot/helpers/i18n";
 import { Context } from "@bot/types";
 
 const localeNegotiator = (ctx: Context) =>
-  ctx.session.languageCode || ctx.from?.language_code;
+  (ctx.chat && ctx.session.languageCode) || ctx.from?.language_code;
 
 export const middleware = () =>
   useFluent({
