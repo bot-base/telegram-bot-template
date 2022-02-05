@@ -18,9 +18,13 @@ const run = async () => {
         .catch((err) => logger.error(err));
     });
   } else {
-    logger.info("bot running...");
     bot.start({
       allowed_updates: config.BOT_ALLOWED_UPDATES,
+      onStart: ({ username }) =>
+        logger.info({
+          msg: "bot running...",
+          username,
+        }),
     });
   }
 };
