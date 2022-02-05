@@ -60,7 +60,7 @@ export const updateByTelegramId = async (
 export const getTotalCount = async () => {
   logger.debug({
     msg: "get total users count",
-    caller: __filename,
+    ...logMeta,
   });
 
   return prisma.user.count();
