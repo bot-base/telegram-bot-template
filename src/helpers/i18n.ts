@@ -19,6 +19,9 @@ export const loadLocales = async () => {
     return fluent.addTranslation({
       locales: code,
       filePath,
+      bundleOptions: {
+        useIsolating: false,
+      },
     });
   });
 
