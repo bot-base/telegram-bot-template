@@ -5,6 +5,13 @@ import { server } from "@bot/server";
 import { config } from "@bot/config";
 import { logger } from "@bot/logger";
 import { loadLocales } from "@bot/helpers/i18n";
+import { handleGracefulShutdown } from "@bot/helpers/graceful-shutdown-handler";
+
+if (config.isDev) {
+  // Graceful shutdown handlers
+  process.once("SIGTERM", handleGracefulShutdown);
+  process.once("SIGINT", handleGracefulShutdown);
+}
 
 const run = async () => {
   await loadLocales();

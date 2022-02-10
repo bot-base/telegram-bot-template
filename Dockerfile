@@ -3,39 +3,39 @@ FROM node:lts-slim AS build
 # Create app directory
 WORKDIR /usr/src
 
-# Install pnpm
-RUN apt-get update \
-    && apt-get install -y curl \
-    && curl -f https://get.pnpm.io/v6.16.js | node - add --global pnpm
+# Files required by npm install
+COPY package.json package-lock.json ./
+# Files required by prisma
+COPY prisma ./prisma
 
 # Install app dependencies
-# Files required by pnpm install
-COPY package.json pnpm-lock.yaml ./
-RUN apt-get install -y openssl \
-    && pnpm install --frozen-lockfile
+RUN apt-get update \
+    && apt-get install --no-install-recommends -y openssl \
+    && npm ci
 
 # Bundle app source
-COPY . ./
+COPY . .
 
-RUN npm run build
+RUN npm run build \
+    && npm prune --production
 
 FROM node:lts-slim
 
 # Create app directory
 WORKDIR /usr/src
 
-# Install pnpm
-RUN apt-get update \
-    && apt-get install -y curl \
-    && curl -f https://get.pnpm.io/v6.16.js | node - add --global pnpm
-
-# Install production dependencies
-COPY package.json pnpm-lock.yaml ./
-RUN apt-get install -y openssl \
-    && pnpm install --frozen-lockfile --prod
-
-# Copy build
+# Copy from build image
+COPY --from=build /usr/src/node_modules ./node_modules
 COPY --from=build /usr/src/dist ./dist
 
+# Files required by npm install
+COPY package.json package-lock.json ./
+COPY locales ./locales
+COPY prisma ./prisma
+
+RUN apt-get update \
+    && apt-get install --no-install-recommends -y procps openssl \
+    && npx prisma generate
+
 # Start the app
-CMD npm start
+CMD ["node", "dist/run.js"]

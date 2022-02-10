@@ -10,7 +10,6 @@ services:
   bot:
     env_file:
       - docker/bot.prod.env
-    command: npm run start
 
 volumes:
   postgres-data:
