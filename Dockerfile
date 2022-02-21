@@ -4,7 +4,7 @@ FROM node:lts-slim AS build
 WORKDIR /usr/src
 
 # Files required by npm install
-COPY package.json package-lock.json ./
+COPY package*.json ./
 # Files required by prisma
 COPY prisma ./prisma
 
@@ -27,15 +27,14 @@ WORKDIR /usr/src
 # Copy from build image
 COPY --from=build /usr/src/node_modules ./node_modules
 COPY --from=build /usr/src/dist ./dist
+COPY --from=build /usr/src/package*.json ./
 
-# Files required by npm install
-COPY package.json package-lock.json ./
 COPY locales ./locales
 COPY prisma ./prisma
 
 RUN apt-get update \
-    && apt-get install --no-install-recommends -y procps openssl \
-    && npx prisma generate
+    && apt-get install --no-install-recommends -y procps openssl
 
 # Start the app
+EXPOSE 80
 CMD ["node", "dist/run.js"]
