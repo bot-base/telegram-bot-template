@@ -16,7 +16,7 @@ filteredComposer.command("language", async (ctx) => {
   logger.info({ msg: "handle language command", ...getMetadata(ctx) });
 
   await ctx.replyWithChatAction("typing");
-  await ctx.reply(ctx.t("language_pick"), {
+  await ctx.reply(ctx.t("language.select"), {
     reply_markup: selectLanguageKeyboard,
   });
 });

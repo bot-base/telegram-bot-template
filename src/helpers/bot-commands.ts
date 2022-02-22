@@ -17,14 +17,14 @@ export const getPrivateChatCommands = (options: {
   const commands = [
     {
       command: "start",
-      description: t("start_command_description"),
+      description: t("start_command.description"),
     },
   ];
 
   if (options.includeLanguageCommand) {
     commands.push({
       command: "language",
-      description: t("language_command_description"),
+      description: t("language_command.description"),
     });
   }
 

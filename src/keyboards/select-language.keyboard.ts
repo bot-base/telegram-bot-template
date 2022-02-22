@@ -39,7 +39,7 @@ for (let index = 1; index <= locales.length; index += 1) {
 
         await ctx.fluent.renegotiateLocale();
 
-        await ctx.editMessageText(ctx.t("language_changed"), {
+        await ctx.editMessageText(ctx.t("language.changed"), {
           reply_markup: keyboard,
         });
       }

@@ -2,23 +2,22 @@ import fs from "fs";
 import { join, resolve } from "path";
 import { Fluent } from "@moebius/fluent";
 
-const appDir = join(resolve(__dirname), "..", "..");
-const appLocalesPath = join(appDir, "locales");
+const appRoot = join(resolve(__dirname), "..", "..");
+const appLocales = join(appRoot, "locales");
 
 export const fluent = new Fluent();
-export const locales = fs.readdirSync(appLocalesPath);
+export const locales = fs
+  .readdirSync(appLocales)
+  .map((localeFilename) =>
+    localeFilename.substring(0, localeFilename.indexOf(".ftl"))
+  );
 export const isMultipleLocales = locales.length > 1;
 
 export const loadLocales = async () => {
-  const results = locales.map((code) => {
-    const localeFiles = fs.readdirSync(join(appLocalesPath, code));
-    const filePath = localeFiles.map((path) =>
-      join(appLocalesPath, code, path)
-    );
-
+  const results = locales.map((localeCode) => {
     return fluent.addTranslation({
-      locales: code,
-      filePath,
+      locales: localeCode,
+      filePath: join(appLocales, `${localeCode}.ftl`),
       bundleOptions: {
         useIsolating: false,
       },
