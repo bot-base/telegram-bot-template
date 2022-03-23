@@ -7,7 +7,7 @@ services:
     volumes:
       - "postgres-data-dev:/data/postgres"
     env_file:
-      - docker/postgres.dev.env
+      - docker-compose.dev.postgres.env
 
   redis:
     ports:
@@ -19,7 +19,7 @@ services:
     volumes:
       - ".:/usr/src"
     env_file:
-      - docker/bot.dev.env
+      - docker-compose.dev.bot.env
     command: npm run dev
 
 volumes:

@@ -28,15 +28,15 @@ Uses PostgreSQL for data storage (MySQL, MongoDB, SQL Server, SQLite [are also s
 
     ```bash
     # development
-    cp ./docker/bot.env.example ./docker/bot.dev.env
-    cp ./docker/postgres.env.example ./docker/postgres.dev.env
+    cp docker-compose.example.bot.env docker-compose.dev.bot.env
+    cp docker-compose.example.postgres.env docker-compose.dev.postgres.env
 
     # production
-    cp ./docker/bot.env.example ./docker/bot.prod.env
-    cp ./docker/postgres.env.example ./docker/postgres.prod.env
+    cp docker-compose.example.bot.env docker-compose.prod.bot.env
+    cp docker-compose.example.postgres.env docker-compose.prod.postgres.env
     ```
 
-3. Edit environment variables in `docker/bot.dev.env` and `docker/bot.prod.env`
+3. Edit environment variables in `docker-compose.dev.bot.env` and `docker-compose.prod.bot.env`
 
     **`BOT_TOKEN`** — bot token, **required to change**. Get it from [@BotFather](https://t.me/BotFather).  
     **`BOT_WEBHOOK`** — bot webhook url, **required to change in production**. Used for setup a webhook in production mode.  

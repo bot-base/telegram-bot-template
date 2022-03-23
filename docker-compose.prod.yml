@@ -5,11 +5,11 @@ services:
     volumes:
       - "postgres-data:/data/postgres"
     env_file:
-      - docker/postgres.prod.env
+      - docker-compose.prod.postgres.env
 
   bot:
     env_file:
-      - docker/bot.prod.env
+      - docker-compose.prod.bot.env
 
 volumes:
   postgres-data:

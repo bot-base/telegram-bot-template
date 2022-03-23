@@ -129,4 +129,4 @@ dist
 # Data
 data/
 
-docker/*.env
+*.env
