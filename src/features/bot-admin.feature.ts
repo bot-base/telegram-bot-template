@@ -3,7 +3,6 @@ import { isPrivate, isUserId } from "grammy-guard";
 
 import { Context } from "@bot/types";
 import { usersService } from "@bot/services";
-import { logger } from "@bot/logger";
 import { config } from "@bot/config";
 import {
   DEFAULT_LANGUAGE_CODE,
@@ -11,7 +10,7 @@ import {
   getPrivateChatCommands,
 } from "@bot/helpers/bot-commands";
 import { isMultipleLocales, locales } from "@bot/helpers/i18n";
-import { getMetadata } from "@bot/helpers/logging";
+import { logCommandHandle } from "@bot/helpers/logging";
 
 export const composer = new Composer<Context>();
 
@@ -19,9 +18,7 @@ const filteredComposer = composer
   .filter(isPrivate)
   .filter(isUserId(config.BOT_ADMIN_USER_ID));
 
-filteredComposer.command("stats", async (ctx) => {
-  logger.info({ msg: "handle stats command", ...getMetadata(ctx) });
-
+filteredComposer.command("stats", logCommandHandle, async (ctx) => {
   await ctx.replyWithChatAction("typing");
 
   const totalUsersCount = await usersService.getTotalCount();
@@ -31,9 +28,7 @@ filteredComposer.command("stats", async (ctx) => {
   return ctx.reply(stats);
 });
 
-filteredComposer.command("setcommands", async (ctx) => {
-  logger.info({ msg: "handle setcommands command", ...getMetadata(ctx) });
-
+filteredComposer.command("setcommands", logCommandHandle, async (ctx) => {
   await ctx.replyWithChatAction("typing");
 
   // set private chat commands

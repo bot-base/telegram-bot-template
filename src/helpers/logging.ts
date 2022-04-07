@@ -1,5 +1,7 @@
+import { NextFunction } from "grammy";
 import { Chat, User } from "@grammyjs/types";
 import { Context } from "@bot/types";
+import { logger } from "@bot/logger";
 
 interface LogMetadata {
   message_id: number | undefined;
@@ -15,3 +17,25 @@ export const getMetadata = (ctx: Context): LogMetadata => ({
   chat: ctx.chat,
   peer: getPeer(ctx),
 });
+
+export const logCommandHandle = (ctx: Context, next: NextFunction) => {
+  const botCommands = ctx.msg?.entities?.filter(
+    (entity) => entity.type === "bot_command"
+  );
+
+  if (botCommands?.length === 1) {
+    const [commandInfo] = botCommands;
+    const commandName = ctx.msg?.text?.substring(
+      commandInfo.offset,
+      commandInfo.offset + commandInfo.length
+    );
+
+    logger.info({
+      msg: `handle ${commandName}`,
+      match: ctx.match,
+      ...getMetadata(ctx),
+    });
+  }
+
+  return next();
+};
