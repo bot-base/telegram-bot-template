@@ -1,7 +1,7 @@
 import { Prisma } from "@prisma/client";
 import { prisma } from "@bot/prisma";
 
-export const findOrCreateByTelegramId = async (
+export const upsertByTelegramId = async (
   telegramId: number,
   data: Omit<Prisma.UserCreateInput, "telegramId">
 ) => {
@@ -15,7 +15,7 @@ export const findOrCreateByTelegramId = async (
       },
       ...data,
     },
-    update: {},
+    update: data,
   });
 };
 
