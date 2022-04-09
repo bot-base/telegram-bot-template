@@ -1,67 +1,36 @@
-import { logger } from "@bot/logger";
+import { Prisma } from "@prisma/client";
 import { prisma } from "@bot/prisma";
-
-const logMeta = {
-  caller: "users.service",
-};
 
 export const findOrCreateByTelegramId = async (
   telegramId: number,
-  data: {
-    languageCode?: string | null;
-  }
+  data: Omit<Prisma.UserCreateInput, "telegramId">
 ) => {
-  logger.debug({
-    msg: "find or create user by telegram id",
-    telegramId,
-    data,
-    ...logMeta,
-  });
-
-  const { languageCode } = data;
-
   return prisma.user.upsert({
     where: {
       telegramId,
     },
-    update: {},
     create: {
-      telegramId,
-      languageCode,
+      ...{
+        telegramId,
+      },
+      ...data,
     },
+    update: {},
   });
 };
 
 export const updateByTelegramId = async (
   telegramId: number,
-  data: {
-    languageCode?: string | null;
-  }
+  data: Prisma.UserUpdateInput
 ) => {
-  logger.debug({
-    msg: "update user by telegram id",
-    telegramId,
-    data,
-    ...logMeta,
-  });
-
-  const { languageCode } = data;
-
   return prisma.user.update({
     where: {
       telegramId,
     },
-    data: {
-      languageCode,
-    },
+    data,
   });
 };
 
 export const getTotalCount = async () => {
-  logger.debug({
-    msg: "get total users count",
-    ...logMeta,
-  });
-
   return prisma.user.count();
 };
