@@ -14,11 +14,11 @@ import { logCommandHandle } from "@bot/helpers/logging";
 
 export const composer = new Composer<Context>();
 
-const filteredComposer = composer
+const feature = composer
   .filter(isPrivate)
   .filter(isUserId(config.BOT_ADMIN_USER_ID));
 
-filteredComposer.command("stats", logCommandHandle, async (ctx) => {
+feature.command("stats", logCommandHandle, async (ctx) => {
   await ctx.replyWithChatAction("typing");
 
   const totalUsersCount = await usersService.getTotalCount();
@@ -28,7 +28,7 @@ filteredComposer.command("stats", logCommandHandle, async (ctx) => {
   return ctx.reply(stats);
 });
 
-filteredComposer.command("setcommands", logCommandHandle, async (ctx) => {
+feature.command("setcommands", logCommandHandle, async (ctx) => {
   await ctx.replyWithChatAction("typing");
 
   // set private chat commands

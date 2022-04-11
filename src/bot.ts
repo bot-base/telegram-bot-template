@@ -10,7 +10,7 @@ import {
   setupSession,
   setupContext,
   setupLogger,
-  registerUser,
+  setUser,
   setupI18n,
   collectMetrics,
 } from "@bot/middlewares";
@@ -40,7 +40,7 @@ bot.use(setupSession());
 bot.use(setupContext());
 bot.use(setupLogger());
 bot.use(setupI18n());
-bot.use(registerUser());
+bot.use(setUser());
 
 // Handlers
 

@@ -7,7 +7,7 @@ import { logger } from "@bot/logger";
 export const middleware = () => async (ctx: Context, next: NextFunction) => {
   if (ctx.from?.is_bot === false) {
     logger.info({
-      msg: "find or create a user",
+      msg: "find a user",
       user: ctx.from,
     });
 

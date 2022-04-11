@@ -6,9 +6,9 @@ import { logCommandHandle } from "@bot/helpers/logging";
 
 export const composer = new Composer<Context>();
 
-const filteredComposer = composer.filter(isPrivate);
+const feature = composer.filter(isPrivate);
 
-filteredComposer.command("start", logCommandHandle, async (ctx) => {
+feature.command("start", logCommandHandle, async (ctx) => {
   await ctx.replyWithChatAction("typing");
   await ctx.reply(ctx.t("welcome"));
 });

@@ -7,11 +7,11 @@ import { logCommandHandle } from "@bot/helpers/logging";
 
 export const composer = new Composer<Context>();
 
-const filteredComposer = composer.filter(isPrivate);
+const feature = composer.filter(isPrivate);
 
-filteredComposer.use(selectLanguageKeyboard);
+feature.use(selectLanguageKeyboard);
 
-filteredComposer.command("language", logCommandHandle, async (ctx) => {
+feature.command("language", logCommandHandle, async (ctx) => {
   await ctx.replyWithChatAction("typing");
   await ctx.reply(ctx.t("language.select"), {
     reply_markup: selectLanguageKeyboard,
