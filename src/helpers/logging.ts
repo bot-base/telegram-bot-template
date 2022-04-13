@@ -25,10 +25,15 @@ export const logCommandHandle = (ctx: Context, next: NextFunction) => {
 
   if (botCommands?.length === 1) {
     const [commandInfo] = botCommands;
-    const commandName = ctx.msg?.text?.substring(
+    let commandName = ctx.msg?.text?.substring(
       commandInfo.offset,
       commandInfo.offset + commandInfo.length
-    );
+    ) as string;
+
+    const atSignPosition = commandName.indexOf("@");
+    if (atSignPosition > -1) {
+      commandName = commandName.substring(0, atSignPosition);
+    }
 
     logger.info({
       msg: `handle ${commandName}`,

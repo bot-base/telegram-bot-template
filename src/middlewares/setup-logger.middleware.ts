@@ -8,7 +8,7 @@ export const middleware = () => (ctx: Context, next: NextFunction) => {
   context.getStore()?.set(
     "logger",
     rawLogger.child({
-      updateId: ctx.update.update_id,
+      update_id: ctx.update.update_id,
     })
   );
 
