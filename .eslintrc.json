@@ -19,6 +19,7 @@
         "import"
     ],
     "rules": {
+        "consistent-return": "off",
         "import/prefer-default-export": "off",
         "import/extensions": "off"
     },
