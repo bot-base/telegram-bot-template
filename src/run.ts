@@ -2,16 +2,14 @@ import "module-alias/register";
 
 import { bot } from "@bot/bot";
 import { server } from "@bot/server";
+import { prisma } from "@bot/prisma";
 import { config } from "@bot/config";
 import { logger } from "@bot/logger";
 import { loadLocales } from "@bot/helpers/i18n";
 import { handleGracefulShutdown } from "@bot/helpers/graceful-shutdown-handler";
 
-if (config.isDev) {
-  // Graceful shutdown handlers
-  process.once("SIGTERM", handleGracefulShutdown);
-  process.once("SIGINT", handleGracefulShutdown);
-}
+// Graceful shutdown
+prisma.$on("beforeExit", handleGracefulShutdown);
 
 const run = async () => {
   await loadLocales();
