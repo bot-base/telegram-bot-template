@@ -1,4 +1,4 @@
-# Telegram Bot Template
+<h1 align="center">🤖 Telegram Bot Template</h1>
 
 Bot starter template based on [grammY](https://grammy.dev/) bot framework and [prisma](https://www.prisma.io/) ORM.  
 Uses PostgreSQL for data storage (MySQL, MongoDB, SQL Server, SQLite [are also supported by prisma](https://www.prisma.io/docs/reference/database-reference/supported-databases)) and Redis for session storage.
@@ -28,24 +28,23 @@ Uses PostgreSQL for data storage (MySQL, MongoDB, SQL Server, SQLite [are also s
 
     ```bash
     # development
-    cp docker-compose.example.bot.env docker-compose.dev.bot.env
-    cp docker-compose.example.postgres.env docker-compose.dev.postgres.env
+    cp .example.bot.env docker-compose.dev.bot.env
+    cp .example.postgres.env docker-compose.dev.postgres.env
 
     # production
-    cp docker-compose.example.bot.env docker-compose.prod.bot.env
-    cp docker-compose.example.postgres.env docker-compose.prod.postgres.env
+    cp .example.bot.env docker-compose.prod.bot.env
+    cp .example.postgres.env docker-compose.prod.postgres.env
     ```
 
 3. Edit environment variables in `docker-compose.dev.bot.env` and `docker-compose.prod.bot.env`
 
-    **`BOT_TOKEN`** — bot token, **required to change**. Get it from [@BotFather](https://t.me/BotFather).  
-    **`BOT_WEBHOOK`** — bot webhook url, **required to change in production**. Used for setup a webhook in production mode.  
-    `BOT_ADMIN_USER_ID` — administrator user ID. Administrator commands, such as `/stats` or `/setcommands`, will only be available to the user with this ID.  
-
-    `NODE_ENV` — environment (default is `development`, set `production` to use webhook)  
-    `LOG_LEVEL` — log level  
-    `DATABASE_URL` — database url  
-    `REDIS_URL` — redis url  
+    - **`BOT_TOKEN`** — bot token, **required to change**. Get it from [@BotFather](https://t.me/BotFather).  
+    - **`BOT_WEBHOOK`** — bot webhook url, **required to change in production**. Used for setup a webhook in production mode.  
+    - `BOT_ADMIN_USER_ID` — administrator user ID. Administrator commands, such as `/stats` or `/setcommands`, will only be available to the user with this ID.  
+    - `NODE_ENV` — environment (default is `development`, set `production` to use webhook)  
+    - `LOG_LEVEL` — log level  
+    - `DATABASE_URL` — database url  
+    - `REDIS_URL` — redis url  
 
 4. Launch bot
 
