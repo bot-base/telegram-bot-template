@@ -7,9 +7,14 @@ services:
     env_file:
       - docker-compose.prod.postgres.env
 
+  prometheus:
+    volumes:
+      - prometheus-data:/prometheus
+
   bot:
     env_file:
       - docker-compose.prod.bot.env
 
 volumes:
   postgres-data:
+  prometheus-data:

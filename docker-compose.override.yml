@@ -12,6 +12,12 @@ services:
   redis:
     ports:
       - "6379:6379"
+    
+  prometheus:
+    volumes:
+      - prometheus-data-dev:/prometheus
+    ports:
+      - "9090:9090"
 
   bot:
     ports:
@@ -24,3 +30,4 @@ services:
 
 volumes:
   postgres-data-dev:
+  prometheus-data-dev:

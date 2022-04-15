@@ -7,6 +7,11 @@ services:
   redis:
     image: redis:6-alpine
 
+  prometheus:
+    image: prom/prometheus:main
+    volumes:
+      - ./prometheus:/etc/prometheus
+
   bot:
     build:
       context: .

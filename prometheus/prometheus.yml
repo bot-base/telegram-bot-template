@@ -1,0 +1,11 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+# rule_files:
+#   - alert.yml
+
+scrape_configs:
+  - job_name: bot
+    static_configs:
+      - targets: ["bot"]
