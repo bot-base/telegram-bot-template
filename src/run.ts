@@ -25,6 +25,7 @@ const run = async () => {
   } else {
     bot.start({
       allowed_updates: config.BOT_ALLOWED_UPDATES,
+      drop_pending_updates: true,
       onStart: ({ username }) =>
         logger.info({
           msg: "bot running...",
