@@ -5,6 +5,7 @@ import { hydrateReply, parseMode } from "parse-mode";
 
 import { Context } from "@bot/types";
 import { config } from "@bot/config";
+import { logger } from "@bot/logger";
 import {
   updatesLogger,
   setupSession,
@@ -30,6 +31,14 @@ bot.api.config.use(apiThrottler());
 bot.api.config.use(parseMode("HTML"));
 
 if (config.isDev) {
+  bot.api.config.use((prev, method, payload, signal) => {
+    logger.debug({
+      msg: "bot api call",
+      method,
+      payload,
+    });
+    return prev(method, payload, signal);
+  });
   bot.use(updatesLogger());
 }
 
