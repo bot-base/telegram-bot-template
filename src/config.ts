@@ -1,3 +1,4 @@
+import "dotenv/config";
 import { cleanEnv, str, num, json } from "envalid";
 
 export const config = cleanEnv(process.env, {
