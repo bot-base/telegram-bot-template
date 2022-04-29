@@ -25,7 +25,7 @@ if (config.isDev) {
 export const logger: Logger = new Proxy(rawLogger, {
   get(target, property, receiver) {
     // eslint-disable-next-line no-param-reassign
-    target = context.getStore()?.get("logger") || target;
+    target = context.getStore()?.logger || target;
     return Reflect.get(target, property, receiver);
   },
 });

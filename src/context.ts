@@ -1,4 +1,10 @@
 import { AsyncLocalStorage } from "async_hooks";
+import { User } from "@prisma/client";
+import { Logger } from "pino";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const context = new AsyncLocalStorage<Map<string, any>>();
+export interface LocalContext {
+  user?: User;
+  logger?: Logger;
+}
+
+export const context = new AsyncLocalStorage<LocalContext>();

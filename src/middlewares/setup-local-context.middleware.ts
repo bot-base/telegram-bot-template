@@ -1,12 +1,11 @@
 import { NextFunction } from "grammy";
 
+import { context, LocalContext } from "@bot/context";
 import { Context } from "@bot/types";
-import { rawLogger } from "@bot/logger";
 
 export const middleware = () => (ctx: Context, next: NextFunction) => {
-  ctx.local.logger = rawLogger.child({
-    update_id: ctx.update.update_id,
+  return context.run({}, () => {
+    ctx.local = context.getStore() as LocalContext;
+    next();
   });
-
-  return next();
 };

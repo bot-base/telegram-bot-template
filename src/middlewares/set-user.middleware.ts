@@ -13,7 +13,7 @@ export const middleware = () => async (ctx: Context, next: NextFunction) => {
 
     const { id: telegramId, language_code: languageCode } = ctx.from;
 
-    ctx.user = await usersService.upsertByTelegramId(telegramId, {
+    ctx.local.user = await usersService.upsertByTelegramId(telegramId, {
       languageCode,
     });
   }

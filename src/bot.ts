@@ -8,7 +8,7 @@ import { config } from "@bot/config";
 import {
   updatesLogger,
   setupSession,
-  setupContext,
+  setupLocalContext,
   setupLogger,
   setUser,
   setupI18n,
@@ -37,7 +37,7 @@ bot.use(collectMetrics());
 bot.use(rateLimit());
 bot.use(hydrateReply);
 bot.use(setupSession());
-bot.use(setupContext());
+bot.use(setupLocalContext());
 bot.use(setupLogger());
 bot.use(setupI18n());
 bot.use(setUser());
