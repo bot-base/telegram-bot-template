@@ -35,6 +35,8 @@ COPY prisma ./prisma
 RUN apt-get update \
     && apt-get install --no-install-recommends -y procps openssl
 
+USER node
+
 # Start the app
 EXPOSE 80
 CMD ["node", "dist/run.js"]
