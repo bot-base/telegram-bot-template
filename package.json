@@ -52,7 +52,7 @@
     "eslint-import-resolver-typescript": "2.7.1",
     "eslint-plugin-import": "2.26.0",
     "eslint-plugin-prettier": "4.0.0",
-    "husky": "7.0.4",
+    "husky": "8.0.1",
     "lint-staged": "12.4.1",
     "prettier": "2.6.2",
     "prisma": "3.14.0",
