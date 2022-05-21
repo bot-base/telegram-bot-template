@@ -5,7 +5,6 @@ import { hydrateReply, parseMode } from "@grammyjs/parse-mode";
 
 import { Context } from "@bot/types";
 import { config } from "@bot/config";
-import { logger } from "@bot/logger";
 import {
   updatesLogger,
   setupSession,
@@ -15,6 +14,7 @@ import {
   setupI18n,
   collectMetrics,
 } from "@bot/middlewares";
+import { apiCallsLogger } from "@bot/transformers";
 import {
   botAdminFeature,
   languageSelectFeature,
@@ -31,14 +31,7 @@ bot.api.config.use(apiThrottler());
 bot.api.config.use(parseMode("HTML"));
 
 if (config.isDev) {
-  bot.api.config.use((prev, method, payload, signal) => {
-    logger.debug({
-      msg: "bot api call",
-      method,
-      payload,
-    });
-    return prev(method, payload, signal);
-  });
+  bot.api.config.use(apiCallsLogger);
   bot.use(updatesLogger());
 }
 
