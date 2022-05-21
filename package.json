@@ -18,6 +18,7 @@
   "dependencies": {
     "@grammyjs/fluent": "1.0.3",
     "@grammyjs/menu": "1.1.1",
+    "@grammyjs/parse-mode": "1.1.2",
     "@grammyjs/ratelimiter": "1.1.5",
     "@grammyjs/transformer-throttler": "1.1.2",
     "@grammyjs/types": "2.7.1",
@@ -34,7 +35,6 @@
     "lodash": "4.17.21",
     "module-alias": "2.2.2",
     "node-fetch": "3.2.4",
-    "parse-mode": "0.1.4",
     "pino": "7.11.0",
     "pino-pretty": "7.6.1",
     "prom-client": "14.0.1"

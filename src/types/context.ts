@@ -1,6 +1,6 @@
 import { Context as DefaultContext, SessionFlavor } from "grammy";
 import { FluentContextFlavor } from "@grammyjs/fluent";
-import { ParseModeContext } from "parse-mode";
+import { ParseModeContext } from "@grammyjs/parse-mode";
 
 import { LocalContext } from "@bot/context";
 import { SessionData } from "./session";

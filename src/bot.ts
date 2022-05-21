@@ -1,7 +1,7 @@
 import { Bot } from "grammy";
 import { limit as rateLimit } from "@grammyjs/ratelimiter";
 import { apiThrottler } from "@grammyjs/transformer-throttler";
-import { hydrateReply, parseMode } from "parse-mode";
+import { hydrateReply, parseMode } from "@grammyjs/parse-mode";
 
 import { Context } from "@bot/types";
 import { config } from "@bot/config";

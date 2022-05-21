@@ -1,7 +1,7 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 import { logger } from "@bot/logger";
 
-const parseParameters = (parameters: string): any[] => {
+const parseParameters = (parameters: string): unknown[] => {
   try {
     return JSON.parse(parameters);
   } catch {
