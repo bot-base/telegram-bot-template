@@ -1,7 +1,7 @@
 import { Prisma } from "@prisma/client";
 import { prisma } from "@bot/prisma";
 
-export const upsertByTelegramId = async (
+export const upsertByTelegramId = (
   telegramId: number,
   data: Omit<Prisma.UserCreateInput, "telegramId">
 ) => {
@@ -19,7 +19,7 @@ export const upsertByTelegramId = async (
   });
 };
 
-export const updateByTelegramId = async (
+export const updateByTelegramId = (
   telegramId: number,
   data: Prisma.UserUpdateInput
 ) => {
@@ -31,6 +31,6 @@ export const updateByTelegramId = async (
   });
 };
 
-export const getTotalCount = async () => {
+export const getTotalCount = () => {
   return prisma.user.count();
 };
