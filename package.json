@@ -36,7 +36,7 @@
     "module-alias": "2.2.2",
     "node-fetch": "3.2.4",
     "pino": "8.0.0",
-    "pino-pretty": "7.6.1",
+    "pino-pretty": "8.0.0",
     "prom-client": "14.0.1"
   },
   "devDependencies": {
