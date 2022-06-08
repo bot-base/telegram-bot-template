@@ -1,4 +1,4 @@
-import ISO6391 from "iso-639-1";
+import ISO6391, { LanguageCode } from "iso-639-1";
 import { Menu } from "@grammyjs/menu";
 
 import { Context } from "@bot/types";
@@ -10,7 +10,7 @@ import { getMetadata } from "@bot/helpers/logging";
 export const keyboard = new Menu<Context>("language");
 
 for (let index = 1; index <= locales.length; index += 1) {
-  const code = locales[index - 1];
+  const code = locales[index - 1] as LanguageCode;
 
   keyboard.text(
     {

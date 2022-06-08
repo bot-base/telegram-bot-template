@@ -1,5 +1,5 @@
 import { session } from "grammy";
-import { RedisAdapter } from "@satont/grammy-redis-storage";
+import { RedisAdapter } from "@grammyjs/storage-redis";
 import Redis from "ioredis";
 
 import { config } from "@bot/config";
