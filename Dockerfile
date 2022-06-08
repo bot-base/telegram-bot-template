@@ -1,7 +1,13 @@
-FROM node:lts-slim AS build
+FROM node:lts-slim AS base
+
+# Install dependencies
+RUN apt-get update \
+    && apt-get install --no-install-recommends -y openssl
 
 # Create app directory
 WORKDIR /usr/src
+
+FROM base AS builder
 
 # Files required by npm install
 COPY package*.json ./
@@ -9,25 +15,21 @@ COPY package*.json ./
 COPY prisma ./prisma
 
 # Install app dependencies
-RUN apt-get update \
-    && apt-get install --no-install-recommends -y openssl \
-    && npm ci
+RUN npm ci
 
 # Bundle app source
 COPY . .
 
+# Build app
 RUN npm run build \
-    && npm prune --production
+    && npm prune --omit=dev
 
-FROM node:lts-slim
-
-# Create app directory
-WORKDIR /usr/src
+FROM base AS runner
 
 # Copy from build image
-COPY --from=build /usr/src/node_modules ./node_modules
-COPY --from=build /usr/src/dist ./dist
-COPY --from=build /usr/src/package*.json ./
+COPY --from=builder /usr/src/node_modules ./node_modules
+COPY --from=builder /usr/src/dist ./dist
+COPY --from=builder /usr/src/package*.json ./
 
 COPY locales ./locales
 COPY prisma ./prisma
