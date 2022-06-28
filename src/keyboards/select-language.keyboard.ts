@@ -33,7 +33,9 @@ for (let index = 1; index <= locales.length; index += 1) {
 
       if (locales.includes(newLanguageCode)) {
         await usersService.updateByTelegramId(ctx.from.id, {
-          languageCode: newLanguageCode,
+          data: {
+            languageCode: newLanguageCode,
+          },
         });
         ctx.session.languageCode = newLanguageCode;
 

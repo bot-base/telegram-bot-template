@@ -21,9 +21,9 @@ const feature = composer
 feature.command("stats", logCommandHandle, async (ctx) => {
   await ctx.replyWithChatAction("typing");
 
-  const totalUsersCount = await usersService.getTotalCount();
+  const usersCount = await usersService.count();
 
-  const stats = `Users count: ${totalUsersCount}`;
+  const stats = `Users count: ${usersCount}`;
 
   return ctx.reply(stats);
 });

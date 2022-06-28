@@ -1,1 +1,4 @@
-export * as usersService from "./users.service";
+import { prisma } from "@bot/prisma";
+import { createService as createUsersService } from "./users.service";
+
+export const usersService = createUsersService(prisma);

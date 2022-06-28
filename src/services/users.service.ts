@@ -1,36 +1,37 @@
-import { Prisma } from "@prisma/client";
-import { prisma } from "@bot/prisma";
+import _ from "lodash";
+import { Prisma, PrismaClient } from "@prisma/client";
+import { DeepPartial } from "@bot/types";
 
-export const upsertByTelegramId = (
-  telegramId: number,
-  data: Omit<Prisma.UserCreateInput, "telegramId">
-) => {
-  return prisma.user.upsert({
-    where: {
-      telegramId,
+export const createService = (prisma: PrismaClient) =>
+  Object.assign(prisma.user, {
+    upsertByTelegramId: <T extends DeepPartial<Prisma.UserUpsertArgs>>(
+      telegramId: number,
+      args: Prisma.SelectSubset<T, Prisma.UserUpsertArgs>
+    ) => {
+      const query: Prisma.UserUpsertArgs = {
+        where: {
+          telegramId,
+        },
+        create: {
+          telegramId,
+        },
+        update: {},
+      };
+
+      return prisma.user.upsert(_.merge(query, args));
     },
-    create: {
-      ...{
-        telegramId,
-      },
-      ...data,
+
+    updateByTelegramId: <T extends DeepPartial<Prisma.UserUpdateArgs>>(
+      telegramId: number,
+      args: Prisma.SelectSubset<T, Prisma.UserUpdateArgs>
+    ) => {
+      const query: Prisma.UserUpdateArgs = {
+        where: {
+          telegramId,
+        },
+        data: {},
+      };
+
+      return prisma.user.update(_.merge(query, args));
     },
-    update: data,
   });
-};
-
-export const updateByTelegramId = (
-  telegramId: number,
-  data: Prisma.UserUpdateInput
-) => {
-  return prisma.user.update({
-    where: {
-      telegramId,
-    },
-    data,
-  });
-};
-
-export const getTotalCount = () => {
-  return prisma.user.count();
-};
