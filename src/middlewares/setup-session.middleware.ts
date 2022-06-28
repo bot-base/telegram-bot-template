@@ -1,11 +1,10 @@
 import { session } from "grammy";
 import { RedisAdapter } from "@grammyjs/storage-redis";
-import Redis from "ioredis";
 
-import { config } from "@bot/config";
+import { connection } from "@bot/redis";
 
 const storage = new RedisAdapter({
-  instance: new Redis(config.REDIS_URL),
+  instance: connection,
 });
 
 export const middleware = () =>
