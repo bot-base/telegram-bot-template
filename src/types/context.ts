@@ -5,7 +5,7 @@ import { ParseModeContext } from "@grammyjs/parse-mode";
 import { LocalContext } from "@bot/context";
 import { SessionData } from "./session";
 
-interface LocalContextFlavor {
+export interface LocalContextFlavor {
   local: LocalContext;
 }
 
