@@ -1,5 +1,5 @@
 import { Composer } from "grammy";
-import { isPrivate, isUserId } from "grammy-guard";
+import { isUserId } from "grammy-guard";
 
 import { Context } from "@bot/types";
 import { usersService } from "@bot/services";
@@ -15,7 +15,7 @@ import { logCommandHandle } from "@bot/helpers/logging";
 export const composer = new Composer<Context>();
 
 const feature = composer
-  .filter(isPrivate)
+  .chatType("private")
   .filter(isUserId(config.BOT_ADMIN_USER_ID));
 
 feature.command("stats", logCommandHandle, async (ctx) => {

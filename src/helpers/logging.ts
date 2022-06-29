@@ -1,4 +1,4 @@
-import { NextFunction } from "grammy";
+import { Middleware } from "grammy";
 import { Chat, User } from "@grammyjs/types";
 import { Context } from "@bot/types";
 import { logger } from "@bot/logger";
@@ -18,7 +18,7 @@ export const getMetadata = (ctx: Context): LogMetadata => ({
   peer: getPeer(ctx),
 });
 
-export const logCommandHandle = (ctx: Context, next: NextFunction) => {
+export const logCommandHandle: Middleware<Context> = (ctx, next) => {
   const botCommands = ctx.msg?.entities?.filter(
     (entity) => entity.type === "bot_command"
   );

@@ -1,9 +1,9 @@
-import { NextFunction } from "grammy";
+import { Middleware } from "grammy";
 
 import { Context } from "@bot/types";
 import { metrics } from "@bot/metrics";
 
-export const middleware = () => async (ctx: Context, next: NextFunction) => {
+export const middleware = (): Middleware<Context> => async (ctx, next) => {
   try {
     metrics.updatesCounter.inc({
       from_id: ctx.from?.id,

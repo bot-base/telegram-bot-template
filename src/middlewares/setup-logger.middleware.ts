@@ -1,9 +1,9 @@
-import { NextFunction } from "grammy";
+import { Middleware } from "grammy";
 
 import { Context } from "@bot/types";
 import { rawLogger } from "@bot/logger";
 
-export const middleware = () => (ctx: Context, next: NextFunction) => {
+export const middleware = (): Middleware<Context> => (ctx, next) => {
   ctx.local.logger = rawLogger.child({
     update_id: ctx.update.update_id,
   });
