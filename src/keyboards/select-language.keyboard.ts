@@ -3,9 +3,8 @@ import { Menu } from "@grammyjs/menu";
 
 import { Context } from "@bot/types";
 import { usersService } from "@bot/services";
-import { logger } from "@bot/logger";
 import { locales } from "@bot/helpers/i18n";
-import { getMetadata } from "@bot/helpers/logging";
+import { logHandle } from "@bot/helpers/logging";
 
 export const keyboard = new Menu<Context>("language");
 
@@ -22,14 +21,9 @@ for (let index = 1; index <= locales.length; index += 1) {
       },
       payload: code,
     },
+    logHandle("handle language selection"),
     async (ctx) => {
       const newLanguageCode = ctx.match;
-
-      logger.info({
-        msg: "handle language selection",
-        code: newLanguageCode,
-        ...getMetadata(ctx),
-      });
 
       if (locales.includes(newLanguageCode)) {
         await usersService.updateByTelegramId(ctx.from.id, {

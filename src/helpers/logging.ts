@@ -18,29 +18,13 @@ export const getMetadata = (ctx: Context): LogMetadata => ({
   peer: getPeer(ctx),
 });
 
-export const logCommandHandle: Middleware<Context> = (ctx, next) => {
-  const botCommands = ctx.msg?.entities?.filter(
-    (entity) => entity.type === "bot_command"
-  );
-
-  if (botCommands?.length === 1) {
-    const [commandInfo] = botCommands;
-    let commandName = ctx.msg?.text?.substring(
-      commandInfo.offset,
-      commandInfo.offset + commandInfo.length
-    ) as string;
-
-    const atSignPosition = commandName.indexOf("@");
-    if (atSignPosition > -1) {
-      commandName = commandName.substring(0, atSignPosition);
-    }
-
+export const logHandle =
+  (name: string): Middleware<Context> =>
+  (ctx, next) => {
     logger.info({
-      msg: `handle ${commandName}`,
-      match: ctx.match,
+      msg: name,
       ...getMetadata(ctx),
     });
-  }
 
-  return next();
-};
+    return next();
+  };
