@@ -18,7 +18,9 @@ export const createService = (prisma: PrismaClient) =>
         update: {},
       };
 
-      return prisma.user.upsert(_.merge(query, args));
+      return prisma.user.upsert(_.merge(query, args)) as unknown as Promise<
+        Prisma.UserGetPayload<typeof args>
+      >;
     },
 
     updateByTelegramId: <T extends DeepPartial<Prisma.UserUpdateArgs>>(
@@ -32,6 +34,8 @@ export const createService = (prisma: PrismaClient) =>
         data: {},
       };
 
-      return prisma.user.update(_.merge(query, args));
+      return prisma.user.update(_.merge(query, args)) as unknown as Promise<
+        Prisma.UserGetPayload<typeof args>
+      >;
     },
   });
