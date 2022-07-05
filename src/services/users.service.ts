@@ -4,6 +4,21 @@ import { DeepPartial } from "@bot/types";
 
 export const createService = (prisma: PrismaClient) =>
   Object.assign(prisma.user, {
+    findByTelegramId: <T extends DeepPartial<Prisma.UserFindUniqueArgs>>(
+      telegramId: number,
+      args?: Prisma.SelectSubset<T, Prisma.UserFindUniqueArgs>
+    ) => {
+      const query: Prisma.UserFindUniqueArgs = {
+        where: {
+          telegramId,
+        },
+      };
+
+      return prisma.user.findUnique(_.merge(query, args)) as unknown as Promise<
+        Prisma.UserGetPayload<typeof args>
+      >;
+    },
+
     upsertByTelegramId: <T extends DeepPartial<Prisma.UserUpsertArgs>>(
       telegramId: number,
       args: Prisma.SelectSubset<T, Prisma.UserUpsertArgs>
