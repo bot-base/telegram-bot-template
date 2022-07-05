@@ -20,12 +20,16 @@ const run = async () => {
         host: config.BOT_SERVER_HOST,
         port: config.BOT_SERVER_PORT,
       },
-      () => {
-        bot.api
-          .setWebhook(config.BOT_WEBHOOK, {
-            allowed_updates: config.BOT_ALLOWED_UPDATES,
-          })
-          .catch((err) => logger.error(err));
+      (serverError) => {
+        if (serverError) {
+          logger.error(serverError);
+        } else {
+          bot.api
+            .setWebhook(config.BOT_WEBHOOK, {
+              allowed_updates: config.BOT_ALLOWED_UPDATES,
+            })
+            .catch((err) => logger.error(err));
+        }
       }
     );
   } else {
