@@ -1,10 +1,10 @@
 import _ from "lodash";
-import { Prisma, PrismaClient } from "@prisma/client";
-import { DeepPartial } from "@bot/types";
+import type { Prisma, PrismaClient } from "@prisma/client";
+import type { PartialDeep } from "type-fest";
 
 export const createService = (prisma: PrismaClient) =>
   Object.assign(prisma.user, {
-    findByTelegramId: <T extends DeepPartial<Prisma.UserFindUniqueArgs>>(
+    findByTelegramId: <T extends PartialDeep<Prisma.UserFindUniqueArgs>>(
       telegramId: number,
       args?: Prisma.SelectSubset<T, Prisma.UserFindUniqueArgs>
     ) => {
@@ -14,12 +14,10 @@ export const createService = (prisma: PrismaClient) =>
         },
       };
 
-      return prisma.user.findUnique(_.merge(query, args)) as unknown as Promise<
-        Prisma.UserGetPayload<typeof args>
-      >;
+      return prisma.user.findUnique(_.merge(query, args));
     },
 
-    upsertByTelegramId: <T extends DeepPartial<Prisma.UserUpsertArgs>>(
+    upsertByTelegramId: <T extends PartialDeep<Prisma.UserUpsertArgs>>(
       telegramId: number,
       args: Prisma.SelectSubset<T, Prisma.UserUpsertArgs>
     ) => {
@@ -33,12 +31,10 @@ export const createService = (prisma: PrismaClient) =>
         update: {},
       };
 
-      return prisma.user.upsert(_.merge(query, args)) as unknown as Promise<
-        Prisma.UserGetPayload<typeof args>
-      >;
+      return prisma.user.upsert(_.merge(query, args));
     },
 
-    updateByTelegramId: <T extends DeepPartial<Prisma.UserUpdateArgs>>(
+    updateByTelegramId: <T extends PartialDeep<Prisma.UserUpdateArgs>>(
       telegramId: number,
       args: Prisma.SelectSubset<T, Prisma.UserUpdateArgs>
     ) => {
@@ -49,8 +45,6 @@ export const createService = (prisma: PrismaClient) =>
         data: {},
       };
 
-      return prisma.user.update(_.merge(query, args)) as unknown as Promise<
-        Prisma.UserGetPayload<typeof args>
-      >;
+      return prisma.user.update(_.merge(query, args));
     },
   });
