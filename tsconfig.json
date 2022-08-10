@@ -12,7 +12,7 @@
     "incremental": true,
     "module": "commonjs",
     "target": "es2018",
-    "moduleResolution": "node",
+    "moduleResolution": "node16",
     "sourceMap": true,
     "outDir": "dist",
     "baseUrl": "src",
