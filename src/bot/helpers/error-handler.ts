@@ -1,6 +1,6 @@
 import { BotError } from "grammy";
-import { Context } from "@bot/types";
-import { logger } from "@bot/logger";
+import { Context } from "~/bot/types";
+import { logger } from "~/logger";
 
 export const handleError = async (error: BotError<Context>) => {
   const { ctx } = error;

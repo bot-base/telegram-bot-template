@@ -1,4 +1,4 @@
-import { fluent, locales } from "@bot/helpers/i18n";
+import { fluent, locales } from "~/bot/helpers/i18n";
 
 export const DEFAULT_LANGUAGE_CODE = "en";
 

@@ -17,7 +17,7 @@
     "outDir": "dist",
     "baseUrl": "src",
     "paths": {
-      "@bot/*": [
+      "~/*": [
         "*"
       ]
     }

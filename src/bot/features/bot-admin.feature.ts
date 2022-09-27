@@ -3,24 +3,25 @@ import { Composer } from "grammy";
 import { or } from "grammy-guard";
 import { Role } from "@prisma/client";
 
-import { Context } from "@bot/types";
-import { usersService } from "@bot/services";
-import { config } from "@bot/config";
+import { Context } from "~/bot/types";
+import { usersService } from "~/services";
+import { config } from "~/config";
 import {
   DEFAULT_LANGUAGE_CODE,
   getGroupChatCommands,
   getPrivateChatAdminCommands,
   getPrivateChatCommands,
-} from "@bot/helpers/bot-commands";
-import { isMultipleLocales, locales } from "@bot/helpers/i18n";
-import { isOwnerUser, isAdminUser } from "@bot/filters";
-import { logHandle } from "@bot/helpers/logging";
+} from "~/bot/helpers/bot-commands";
+import { isMultipleLocales, locales } from "~/bot/helpers/i18n";
+import { isOwnerUser, isAdminUser } from "~/bot/filters";
+import { logHandle } from "~/bot/helpers/logging";
 
 export const composer = new Composer<Context>();
 
 const feature = composer
   .chatType("private")
   .filter(or(isOwnerUser, isAdminUser));
+
 const featureForOwner = composer.chatType("private").filter(isOwnerUser);
 
 featureForOwner.command("admin", logHandle("handle /admin"), async (ctx) => {

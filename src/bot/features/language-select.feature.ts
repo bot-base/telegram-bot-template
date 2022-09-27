@@ -1,8 +1,8 @@
 import { Composer } from "grammy";
 
-import { Context } from "@bot/types";
-import { selectLanguageKeyboard } from "@bot/keyboards";
-import { logHandle } from "@bot/helpers/logging";
+import { Context } from "~/bot/types";
+import { selectLanguageKeyboard } from "~/bot/keyboards";
+import { logHandle } from "~/bot/helpers/logging";
 
 export const composer = new Composer<Context>();
 

@@ -1,7 +1,7 @@
 import { Composer } from "grammy";
 
-import { Context } from "@bot/types";
-import { logHandle } from "@bot/helpers/logging";
+import { Context } from "~/bot/types";
+import { logHandle } from "~/bot/helpers/logging";
 
 export const composer = new Composer<Context>();
 

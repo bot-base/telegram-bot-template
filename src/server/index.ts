@@ -2,10 +2,10 @@ import fastify from "fastify";
 import { BotError, webhookCallback } from "grammy";
 import { register } from "prom-client";
 
-import { bot } from "@bot/bot";
-import { config } from "@bot/config";
-import { logger } from "@bot/logger";
-import { handleError } from "@bot/helpers/error-handler";
+import { bot } from "~/bot";
+import { config } from "~/config";
+import { logger } from "~/logger";
+import { handleError } from "~/bot/helpers/error-handler";
 
 export const server = fastify({
   logger,
@@ -25,7 +25,7 @@ server.setErrorHandler(async (error, request, response) => {
 
 server.post(`/${config.BOT_TOKEN}`, webhookCallback(bot, "fastify"));
 
-server.get("/metrics", async (req, res) => {
+server.get(`/${config.BOT_TOKEN}/metrics`, async (req, res) => {
   try {
     res.header("Content-Type", register.contentType);
     res.send(await register.metrics());

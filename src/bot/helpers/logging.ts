@@ -1,7 +1,7 @@
 import { Middleware } from "grammy";
 import { User, Chat } from "grammy/types";
-import { Context } from "@bot/types";
-import { logger } from "@bot/logger";
+import { Context } from "~/bot/types";
+import { logger } from "~/logger";
 
 interface LogMetadata {
   message_id: number | undefined;

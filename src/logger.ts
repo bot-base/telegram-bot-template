@@ -1,8 +1,8 @@
 import pino, { Logger, LoggerOptions } from "pino";
 import pretty from "pino-pretty";
 
-import { config } from "@bot/config";
-import { context } from "@bot/context";
+import { config } from "~/config";
+import { context } from "~/bot/context";
 
 const options: LoggerOptions = {
   level: config.LOG_LEVEL,

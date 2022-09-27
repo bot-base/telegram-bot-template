@@ -1,6 +1,6 @@
 import { Transformer } from "grammy";
 
-import { logger } from "@bot/logger";
+import { logger } from "~/logger";
 
 export const transformer: Transformer = (prev, method, payload, signal) => {
   logger.debug({
@@ -8,5 +8,6 @@ export const transformer: Transformer = (prev, method, payload, signal) => {
     method,
     payload,
   });
+
   return prev(method, payload, signal);
 };

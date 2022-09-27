@@ -65,6 +65,6 @@
     "*.ts": "npm run lint"
   },
   "_moduleAliases": {
-    "@bot": "dist"
+    "~": "dist"
   }
 }

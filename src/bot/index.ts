@@ -3,8 +3,9 @@ import { limit as rateLimit } from "@grammyjs/ratelimiter";
 import { apiThrottler } from "@grammyjs/transformer-throttler";
 import { hydrateReply, parseMode } from "@grammyjs/parse-mode";
 
-import { Context } from "@bot/types";
-import { config } from "@bot/config";
+import { Context } from "~/bot/types";
+import { config } from "~/config";
+
 import {
   updatesLogger,
   setupSession,
@@ -13,15 +14,15 @@ import {
   setUser,
   setupI18n,
   collectMetrics,
-} from "@bot/middlewares";
-import { apiCallsLogger } from "@bot/transformers";
+} from "~/bot/middlewares";
+import { apiCallsLogger } from "~/bot/transformers";
 import {
   botAdminFeature,
   languageSelectFeature,
   welcomeFeature,
-} from "@bot/features";
-import { isMultipleLocales } from "@bot/helpers/i18n";
-import { handleError } from "@bot/helpers/error-handler";
+} from "~/bot/features";
+import { isMultipleLocales } from "~/bot/helpers/i18n";
+import { handleError } from "~/bot/helpers/error-handler";
 
 export const bot = new Bot<Context>(config.BOT_TOKEN);
 

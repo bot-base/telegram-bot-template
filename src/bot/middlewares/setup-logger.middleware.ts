@@ -1,7 +1,7 @@
 import { Middleware } from "grammy";
 
-import { Context } from "@bot/types";
-import { rawLogger } from "@bot/logger";
+import { Context } from "~/bot/types";
+import { rawLogger } from "~/logger";
 
 export const middleware = (): Middleware<Context> => (ctx, next) => {
   ctx.local.logger = rawLogger.child({

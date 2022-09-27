@@ -1,7 +1,7 @@
 import { Middleware } from "grammy";
 
-import { Context } from "@bot/types";
-import { metrics } from "@bot/metrics";
+import { Context } from "~/bot/types";
+import { metrics } from "~/metrics";
 
 export const middleware = (): Middleware<Context> => async (ctx, next) => {
   try {

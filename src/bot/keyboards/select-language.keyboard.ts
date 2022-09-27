@@ -1,10 +1,10 @@
 import ISO6391, { LanguageCode } from "iso-639-1";
 import { Menu } from "@grammyjs/menu";
 
-import { Context } from "@bot/types";
-import { usersService } from "@bot/services";
-import { locales } from "@bot/helpers/i18n";
-import { logHandle } from "@bot/helpers/logging";
+import { Context } from "~/bot/types";
+import { usersService } from "~/services";
+import { locales } from "~/bot/helpers/i18n";
+import { logHandle } from "~/bot/helpers/logging";
 
 export const keyboard = new Menu<Context>("language");
 

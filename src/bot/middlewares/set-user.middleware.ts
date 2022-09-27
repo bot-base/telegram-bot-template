@@ -1,9 +1,9 @@
 import { Middleware } from "grammy";
 import { Role } from "@prisma/client";
 
-import { Context } from "@bot/types";
-import { usersService } from "@bot/services";
-import { config } from "@bot/config";
+import { Context } from "~/bot/types";
+import { usersService } from "~/services";
+import { config } from "~/config";
 
 export const middleware = (): Middleware<Context> => async (ctx, next) => {
   if (ctx.from?.is_bot === false) {

@@ -4,7 +4,7 @@ import { Fluent } from "@moebius/fluent";
 import { Context } from "grammy";
 import { FluentContextFlavor } from "@grammyjs/fluent";
 
-const appRoot = join(resolve(__dirname), "..", "..");
+const appRoot = join(resolve(__dirname), "..", "..", "..");
 const appLocales = join(appRoot, "locales");
 
 export const fluent = new Fluent();

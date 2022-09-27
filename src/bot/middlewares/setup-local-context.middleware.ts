@@ -1,7 +1,7 @@
 import { Middleware } from "grammy";
 
-import { context, LocalContext } from "@bot/context";
-import { Context } from "@bot/types";
+import { context, LocalContext } from "~/bot/context";
+import { Context } from "~/bot/types";
 
 export const middleware = (): Middleware<Context> => (ctx, next) => {
   return context.run({}, () => {
