@@ -2,6 +2,7 @@ import { Bot } from "grammy";
 import { limit as rateLimit } from "@grammyjs/ratelimiter";
 import { apiThrottler } from "@grammyjs/transformer-throttler";
 import { hydrateReply, parseMode } from "@grammyjs/parse-mode";
+import { hydrate } from "@grammyjs/hydrate";
 
 import { Context } from "~/bot/types";
 import { config } from "~/config";
@@ -39,6 +40,7 @@ if (config.isDev) {
 bot.use(collectMetrics());
 bot.use(rateLimit());
 bot.use(hydrateReply);
+bot.use(hydrate());
 bot.use(setupSession());
 bot.use(setupLocalContext());
 bot.use(setupLogger());
