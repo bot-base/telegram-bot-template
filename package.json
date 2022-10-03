@@ -17,7 +17,7 @@
   "private": true,
   "dependencies": {
     "@grammyjs/fluent": "1.0.3",
-    "@grammyjs/hydrate": "^1.2.0",
+    "@grammyjs/hydrate": "1.2.0",
     "@grammyjs/menu": "1.1.2",
     "@grammyjs/parse-mode": "1.4.0",
     "@grammyjs/ratelimiter": "1.1.6",
