@@ -28,7 +28,7 @@
     "dotenv": "16.0.3",
     "envalid": "7.3.1",
     "fastify": "4.7.0",
-    "grammy": "1.11.1",
+    "grammy": "1.11.2",
     "grammy-guard": "0.3.1",
     "ioredis": "5.2.3",
     "iso-639-1": "2.1.15",
@@ -36,7 +36,7 @@
     "module-alias": "2.2.2",
     "node-fetch": "3.2.10",
     "pino": "8.6.1",
-    "pino-pretty": "9.1.0",
+    "pino-pretty": "9.1.1",
     "prom-client": "14.1.0"
   },
   "devDependencies": {
@@ -44,8 +44,8 @@
     "@types/ioredis": "4.28.10",
     "@types/lodash": "4.14.186",
     "@types/node": "18.0.0",
-    "@typescript-eslint/eslint-plugin": "5.38.1",
-    "@typescript-eslint/parser": "5.38.1",
+    "@typescript-eslint/eslint-plugin": "5.39.0",
+    "@typescript-eslint/parser": "5.39.0",
     "eslint": "8.24.0",
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-config-prettier": "8.5.0",
