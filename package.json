@@ -8,7 +8,7 @@
     "lint": "eslint \"src/**/*.ts\"",
     "clean": "rimraf dist tsconfig.tsbuildinfo",
     "build": "npm run clean && tsc",
-    "dev": "tsc-watch --onSuccess \"npm run start\"",
+    "dev": "tsc-watch --onSuccess \"node dist/run.js\"",
     "start": "node dist/run.js",
     "prepare": "husky install"
   },
