@@ -5,7 +5,6 @@ import { server } from "~/server";
 import { prisma } from "~/prisma";
 import { config } from "~/config";
 import { logger } from "~/logger";
-import { loadLocales } from "~/bot/helpers/i18n";
 
 // Graceful shutdown
 prisma.$on("beforeExit", async () => {
@@ -16,8 +15,6 @@ prisma.$on("beforeExit", async () => {
 });
 
 const run = async () => {
-  await loadLocales();
-
   if (config.isProd) {
     server.listen(
       {

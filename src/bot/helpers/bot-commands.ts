@@ -1,8 +1,8 @@
-import { fluent, locales } from "~/bot/helpers/i18n";
+import { i18n } from "~/bot/helpers/i18n";
 
 export const DEFAULT_LANGUAGE_CODE = "en";
 
-if (!locales.includes(DEFAULT_LANGUAGE_CODE)) {
+if (!i18n.locales.includes(DEFAULT_LANGUAGE_CODE)) {
   throw new Error(
     `Localization for default language code (${DEFAULT_LANGUAGE_CODE}) is missing`
   );
@@ -12,19 +12,17 @@ export const getPrivateChatCommands = (options: {
   localeCode: string;
   includeLanguageCommand: boolean;
 }) => {
-  const t = fluent.withLocale(options.localeCode);
-
   const commands = [
     {
       command: "start",
-      description: t("start_command.description"),
+      description: i18n.t(options.localeCode, "start_command.description"),
     },
   ];
 
   if (options.includeLanguageCommand) {
     commands.push({
       command: "language",
-      description: t("language_command.description"),
+      description: i18n.t(options.localeCode, "language_command.description"),
     });
   }
 
@@ -35,8 +33,6 @@ export const getPrivateChatAdminCommands = (options: {
   localeCode: string;
   includeLanguageCommand: boolean;
 }) => {
-  const t = fluent.withLocale(options.localeCode);
-
   const commands = [
     {
       command: "stats",
@@ -52,8 +48,5 @@ export const getPrivateChatAdminCommands = (options: {
 };
 
 export const getGroupChatCommands = (options: { localeCode: string }) => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const t = fluent.withLocale(options.localeCode);
-
   return [];
 };

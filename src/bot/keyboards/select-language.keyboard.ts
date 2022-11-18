@@ -3,19 +3,18 @@ import { Menu } from "@grammyjs/menu";
 
 import { Context } from "~/bot/types";
 import { usersService } from "~/services";
-import { locales } from "~/bot/helpers/i18n";
+import { i18n } from "~/bot/helpers/i18n";
 import { logHandle } from "~/bot/helpers/logging";
 
 export const keyboard = new Menu<Context>("language");
 
-for (let index = 1; index <= locales.length; index += 1) {
-  const code = locales[index - 1] as LanguageCode;
+for (let index = 1; index <= i18n.locales.length; index += 1) {
+  const code = i18n.locales[index - 1] as LanguageCode;
 
   keyboard.text(
     {
-      text: (ctx) => {
-        const isActivated =
-          (ctx.session?.languageCode || ctx.from?.language_code) === code;
+      text: async (ctx) => {
+        const isActivated = (await ctx.i18n.getLocale()) === code;
 
         return `${isActivated ? "✅ " : ""}${ISO6391.getNativeName(code)}`;
       },
@@ -25,15 +24,13 @@ for (let index = 1; index <= locales.length; index += 1) {
     async (ctx) => {
       const newLanguageCode = ctx.match;
 
-      if (locales.includes(newLanguageCode)) {
+      if (i18n.locales.includes(newLanguageCode)) {
         await usersService.updateByTelegramId(ctx.from.id, {
           data: {
             languageCode: newLanguageCode,
           },
         });
-        ctx.session.languageCode = newLanguageCode;
-
-        await ctx.fluent.renegotiateLocale();
+        await ctx.i18n.setLocale(newLanguageCode);
 
         await ctx.editMessageText(ctx.t("language.changed"), {
           reply_markup: keyboard,

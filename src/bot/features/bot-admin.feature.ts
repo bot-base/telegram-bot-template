@@ -12,7 +12,7 @@ import {
   getPrivateChatAdminCommands,
   getPrivateChatCommands,
 } from "~/bot/helpers/bot-commands";
-import { isMultipleLocales, locales } from "~/bot/helpers/i18n";
+import { isMultipleLocales, i18n } from "~/bot/helpers/i18n";
 import { isOwnerUser, isAdminUser } from "~/bot/filters";
 import { logHandle } from "~/bot/helpers/logging";
 
@@ -122,7 +122,7 @@ feature.command(
     );
 
     if (isMultipleLocales) {
-      const requests = locales.map((code) =>
+      const requests = i18n.locales.map((code) =>
         ctx.api.setMyCommands(
           getPrivateChatCommands({
             localeCode: code,

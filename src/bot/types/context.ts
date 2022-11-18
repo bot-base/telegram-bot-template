@@ -1,5 +1,5 @@
 import { Context as DefaultContext, SessionFlavor } from "grammy";
-import { FluentContextFlavor } from "@grammyjs/fluent";
+import { I18nFlavor } from "@grammyjs/i18n";
 import { ParseModeFlavor } from "@grammyjs/parse-mode";
 import { HydrateFlavor } from "@grammyjs/hydrate";
 
@@ -13,7 +13,7 @@ export interface LocalContextFlavor {
 export type Context = ParseModeFlavor<
   HydrateFlavor<
     DefaultContext &
-      FluentContextFlavor &
+      I18nFlavor &
       SessionFlavor<SessionData> &
       LocalContextFlavor
   >

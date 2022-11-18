@@ -1,33 +1,16 @@
-import fs from "fs";
-import { join, resolve } from "path";
-import { Fluent } from "@moebius/fluent";
-import { Context } from "grammy";
-import { FluentContextFlavor } from "@grammyjs/fluent";
+import { I18n, I18nFlavor } from "@grammyjs/i18n";
+import { Context } from "~/bot/types";
 
-const appRoot = join(resolve(__dirname), "..", "..", "..");
-const appLocales = join(appRoot, "locales");
-
-export const fluent = new Fluent();
-export const locales = fs
-  .readdirSync(appLocales)
-  .map((localeFilename) =>
-    localeFilename.substring(0, localeFilename.indexOf(".ftl"))
-  );
-export const isMultipleLocales = locales.length > 1;
-
-export const match = (key: string) => (ctx: Context & FluentContextFlavor) =>
+export const match = (key: string) => (ctx: Context & I18nFlavor) =>
   ctx.message?.text === ctx.t(key);
 
-export const loadLocales = async () => {
-  const results = locales.map((localeCode) => {
-    return fluent.addTranslation({
-      locales: localeCode,
-      filePath: join(appLocales, `${localeCode}.ftl`),
-      bundleOptions: {
-        useIsolating: false,
-      },
-    });
-  });
+export const i18n = new I18n<Context>({
+  defaultLocale: "en",
+  directory: "locales",
+  useSession: true,
+  fluentBundleOptions: {
+    useIsolating: false,
+  },
+});
 
-  await Promise.all(results);
-};
+export const isMultipleLocales = i18n.locales.length > 1;
