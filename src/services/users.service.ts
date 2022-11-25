@@ -4,24 +4,25 @@ import type { PartialDeep } from "type-fest";
 
 export const createService = (prisma: PrismaClient) =>
   Object.assign(prisma.user, {
-    findByTelegramId: <T extends PartialDeep<Prisma.UserFindUniqueArgs>>(
+    findByTelegramId: <T extends Prisma.UserArgs>(
       telegramId: number,
-      args?: Prisma.SelectSubset<T, Prisma.UserFindUniqueArgs>
+      select?: Prisma.SelectSubset<T, Prisma.UserArgs>
     ) => {
-      const query: Prisma.UserFindUniqueArgs = {
+      const query = {
         where: {
           telegramId,
         },
-      };
+      } satisfies Prisma.UserFindUniqueArgsBase;
 
-      return prisma.user.findUnique(_.merge(query, args));
+      return prisma.user.findUnique<T & typeof query>(_.merge(query, select));
     },
 
-    upsertByTelegramId: <T extends PartialDeep<Prisma.UserUpsertArgs>>(
+    upsertByTelegramId: <T extends Prisma.UserArgs>(
       telegramId: number,
-      args: Prisma.SelectSubset<T, Prisma.UserUpsertArgs>
+      args: PartialDeep<Pick<Prisma.UserUpsertArgs, "create" | "update">>,
+      select?: Prisma.SelectSubset<T, Prisma.UserArgs>
     ) => {
-      const query: Prisma.UserUpsertArgs = {
+      const query = {
         where: {
           telegramId,
         },
@@ -29,22 +30,23 @@ export const createService = (prisma: PrismaClient) =>
           telegramId,
         },
         update: {},
-      };
+      } satisfies Prisma.UserUpsertArgs;
 
-      return prisma.user.upsert(_.merge(query, args));
+      return prisma.user.upsert<T & typeof query>(_.merge(query, args, select));
     },
 
-    updateByTelegramId: <T extends PartialDeep<Prisma.UserUpdateArgs>>(
+    updateByTelegramId: <T extends Prisma.UserArgs>(
       telegramId: number,
-      args: Prisma.SelectSubset<T, Prisma.UserUpdateArgs>
+      args: PartialDeep<Pick<Prisma.UserUpdateArgs, "data">>,
+      select?: Prisma.SelectSubset<T, Prisma.UserArgs>
     ) => {
-      const query: Prisma.UserUpdateArgs = {
+      const query = {
         where: {
           telegramId,
         },
         data: {},
-      };
+      } satisfies Prisma.UserUpdateArgs;
 
-      return prisma.user.update(_.merge(query, args));
+      return prisma.user.update<T & typeof query>(_.merge(query, args, select));
     },
   });
