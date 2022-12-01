@@ -15,7 +15,8 @@ COPY package*.json ./
 COPY prisma ./prisma
 
 # Install app dependencies
-RUN npm ci
+RUN npm ci \
+    && npx prisma generate
 
 # Bundle app source
 COPY . .
