@@ -10,8 +10,8 @@ export interface LocalContextFlavor {
   local: LocalContext;
 }
 
-export type Context = ParseModeFlavor<
-  HydrateFlavor<
+export type Context = HydrateFlavor<
+  ParseModeFlavor<
     DefaultContext &
       I18nFlavor &
       SessionFlavor<SessionData> &
