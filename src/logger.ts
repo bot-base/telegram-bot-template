@@ -1,5 +1,4 @@
 import pino, { Logger, LoggerOptions } from "pino";
-import pretty from "pino-pretty";
 
 import { config } from "~/config";
 import { context } from "~/bot/context";
@@ -8,19 +7,23 @@ const options: LoggerOptions = {
   level: config.LOG_LEVEL,
 };
 
-// eslint-disable-next-line import/no-mutable-exports
-export let rawLogger = pino(options);
+const transport = pino.transport({
+  targets: [
+    {
+      target: "pino-pretty",
+      level: config.LOG_LEVEL,
+      options: {
+        ...(config.isDev && {
+          ignore: "pid,hostname",
+          colorize: true,
+          translateTime: true,
+        }),
+      },
+    },
+  ],
+});
 
-if (config.isDev) {
-  rawLogger = pino(
-    options,
-    pretty({
-      ignore: "pid,hostname",
-      colorize: true,
-      translateTime: true,
-    })
-  );
-}
+export const rawLogger = pino(options, transport);
 
 export const logger: Logger = new Proxy(rawLogger, {
   get(target, property, receiver) {
