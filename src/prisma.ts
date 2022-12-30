@@ -3,7 +3,7 @@ import { logger } from "~/logger";
 
 const parseParameters = (parameters: string): unknown[] => {
   try {
-    return JSON.parse(parameters);
+    return JSON.parse(parameters) as unknown[];
   } catch {
     return [];
   }

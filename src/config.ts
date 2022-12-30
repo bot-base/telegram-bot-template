@@ -1,4 +1,5 @@
 import "dotenv/config";
+import { PollingOptions } from "grammy";
 import { cleanEnv, str, num, json } from "envalid";
 
 export const config = cleanEnv(process.env, {
@@ -14,7 +15,7 @@ export const config = cleanEnv(process.env, {
   BOT_SERVER_PORT: num({
     default: 80,
   }),
-  BOT_ALLOWED_UPDATES: json({
+  BOT_ALLOWED_UPDATES: json<PollingOptions["allowed_updates"]>({
     default: [],
   }),
   BOT_TOKEN: str(),

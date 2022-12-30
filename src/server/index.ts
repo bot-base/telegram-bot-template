@@ -11,15 +11,15 @@ export const server = fastify({
   logger,
 });
 
-server.setErrorHandler(async (error, request, response) => {
+server.setErrorHandler(async (error, req, res) => {
   if (error instanceof BotError) {
-    await handleError(error);
+    handleError(error);
 
-    response.code(200).send({});
+    await res.code(200).send({});
   } else {
     logger.error(error);
 
-    response.status(500).send({ error: "Something went wrong" });
+    await res.status(500).send({ error: "Something went wrong" });
   }
 });
 
@@ -27,9 +27,10 @@ server.post(`/${config.BOT_TOKEN}`, webhookCallback(bot, "fastify"));
 
 server.get(`/${config.BOT_TOKEN}/metrics`, async (req, res) => {
   try {
-    res.header("Content-Type", register.contentType);
-    res.send(await register.metrics());
+    await res
+      .header("Content-Type", register.contentType)
+      .send(await register.metrics());
   } catch (err) {
-    res.status(500).send(err);
+    await res.status(500).send(err);
   }
 });

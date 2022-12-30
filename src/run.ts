@@ -14,34 +14,30 @@ prisma.$on("beforeExit", async () => {
   await server.close();
 });
 
-const run = async () => {
-  if (config.isProd) {
-    server.listen(
-      {
-        host: config.BOT_SERVER_HOST,
-        port: config.BOT_SERVER_PORT,
-      },
-      (serverError) => {
-        if (serverError) {
-          logger.error(serverError);
-        } else {
-          bot.api
-            .setWebhook(config.BOT_WEBHOOK, {
-              allowed_updates: config.BOT_ALLOWED_UPDATES,
-            })
-            .catch((err) => logger.error(err));
-        }
-      }
-    );
-  } else {
-    bot.start({
-      allowed_updates: config.BOT_ALLOWED_UPDATES,
-      onStart: ({ username }) =>
-        logger.info({
-          msg: "bot running...",
-          username,
-        }),
-    });
+server.listen(
+  {
+    host: config.BOT_SERVER_HOST,
+    port: config.BOT_SERVER_PORT,
+  },
+  (serverError) => {
+    if (serverError) {
+      logger.error(serverError);
+    } else if (config.isProd) {
+      bot.api
+        .setWebhook(config.BOT_WEBHOOK, {
+          allowed_updates: config.BOT_ALLOWED_UPDATES,
+        })
+        .catch((err) => logger.error(err));
+    } else if (config.isDev) {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      bot.start({
+        allowed_updates: config.BOT_ALLOWED_UPDATES,
+        onStart: ({ username }) =>
+          logger.info({
+            msg: "bot running...",
+            username,
+          }),
+      });
+    }
   }
-};
-run();
+);
