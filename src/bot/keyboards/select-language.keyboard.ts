@@ -20,7 +20,7 @@ for (let index = 1; index <= i18n.locales.length; index += 1) {
       },
       payload: code,
     },
-    logHandle("handle language selection"),
+    logHandle("keyboard-language-select"),
     async (ctx) => {
       const newLanguageCode = ctx.match;
 

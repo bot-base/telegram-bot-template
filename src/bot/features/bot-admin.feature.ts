@@ -24,7 +24,7 @@ const feature = composer
 
 const featureForOwner = composer.chatType("private").filter(isOwnerUser);
 
-featureForOwner.command("admin", logHandle("handle /admin"), async (ctx) => {
+featureForOwner.command("admin", logHandle("command-admin"), async (ctx) => {
   if (ctx.match === "") {
     return ctx.reply(
       `Please, pass the Telegram user ID after the command (e.g. <code>/admin ${config.BOT_ADMIN_USER_ID}</code>)`
@@ -92,7 +92,7 @@ featureForOwner.command("admin", logHandle("handle /admin"), async (ctx) => {
   ]);
 });
 
-feature.command("stats", logHandle("handle /stats"), async (ctx) => {
+feature.command("stats", logHandle("command-stats"), async (ctx) => {
   await ctx.replyWithChatAction("typing");
 
   const usersCount = await usersService.count();
@@ -104,7 +104,7 @@ feature.command("stats", logHandle("handle /stats"), async (ctx) => {
 
 feature.command(
   "setcommands",
-  logHandle("handle /setcommands"),
+  logHandle("command-setcommands"),
   async (ctx) => {
     await ctx.replyWithChatAction("typing");
 

@@ -13,4 +13,9 @@ export const metrics = {
     help: "Count of failed updates",
     labelNames: ["from_id", "chat_id"],
   }),
+  updateHandledCounter: new prometheus.Counter({
+    name: "bot_updates_handled_count",
+    help: "Count of handled updates",
+    labelNames: ["from_id", "chat_id", "handler_id"],
+  }),
 };
