@@ -5,13 +5,13 @@ import { metrics } from "~/metrics";
 
 export const middleware = (): Middleware<Context> => async (ctx, next) => {
   try {
-    metrics.updatesCounter.inc({
+    metrics.updateCounter.inc({
       from_id: ctx.from?.id,
       chat_id: ctx.chat?.id,
     });
     return await next();
   } catch (e) {
-    metrics.updatesFailedCounter.inc({
+    metrics.updateFailedCounter.inc({
       from_id: ctx.from?.id,
       chat_id: ctx.chat?.id,
     });

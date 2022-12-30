@@ -6,6 +6,7 @@ import { bot } from "~/bot";
 import { config } from "~/config";
 import { logger } from "~/logger";
 import { handleError } from "~/bot/helpers/error-handler";
+import { prisma } from "~/prisma";
 
 export const server = fastify({
   logger,
@@ -27,9 +28,11 @@ server.post(`/${config.BOT_TOKEN}`, webhookCallback(bot, "fastify"));
 
 server.get(`/${config.BOT_TOKEN}/metrics`, async (req, res) => {
   try {
-    await res
-      .header("Content-Type", register.contentType)
-      .send(await register.metrics());
+    const appMetrics = await register.metrics();
+    const prismaMetrics = await prisma.$metrics.prometheus();
+    const metrics = appMetrics + prismaMetrics;
+
+    await res.header("Content-Type", register.contentType).send(metrics);
   } catch (err) {
     await res.status(500).send(err);
   }
