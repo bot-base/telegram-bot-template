@@ -22,7 +22,7 @@ import {
   languageSelectFeature,
   welcomeFeature,
 } from "~/bot/features";
-import { isMultipleLocales } from "~/bot/helpers/i18n";
+import { isMultipleLocales } from "~/bot/i18n";
 import { handleError } from "~/bot/helpers/error-handler";
 
 export const bot = new Bot<Context>(config.BOT_TOKEN);
@@ -44,8 +44,8 @@ bot.use(hydrate());
 bot.use(setupSession());
 bot.use(setupLocalContext());
 bot.use(setupLogger());
-bot.use(setupI18n());
 bot.use(setUser());
+bot.use(setupI18n());
 
 // Handlers
 

@@ -1,4 +1,4 @@
-import { i18n } from "~/bot/helpers/i18n";
+import { i18n } from "~/bot/i18n";
 
 export const DEFAULT_LANGUAGE_CODE = "en";
 

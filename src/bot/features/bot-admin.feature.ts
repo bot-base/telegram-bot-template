@@ -12,7 +12,7 @@ import {
   getPrivateChatAdminCommands,
   getPrivateChatCommands,
 } from "~/bot/helpers/bot-commands";
-import { isMultipleLocales, i18n } from "~/bot/helpers/i18n";
+import { isMultipleLocales, i18n } from "~/bot/i18n";
 import { isOwnerUser, isAdminUser } from "~/bot/filters";
 import { logHandle } from "~/bot/helpers/logging";
 

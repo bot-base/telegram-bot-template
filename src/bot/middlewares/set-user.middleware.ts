@@ -17,7 +17,6 @@ export const middleware = (): Middleware<Context> => async (ctx, next) => {
         role,
       },
       update: {
-        languageCode,
         role,
       },
     });

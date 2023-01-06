@@ -3,7 +3,7 @@ import { Menu } from "@grammyjs/menu";
 
 import { Context } from "~/bot/types";
 import { usersService } from "~/services";
-import { i18n } from "~/bot/helpers/i18n";
+import { i18n } from "~/bot/i18n";
 import { logHandle } from "~/bot/helpers/logging";
 
 export const keyboard = new Menu<Context>("language");
@@ -25,12 +25,12 @@ for (let index = 1; index <= i18n.locales.length; index += 1) {
       const newLanguageCode = ctx.match;
 
       if (i18n.locales.includes(newLanguageCode)) {
-        await usersService.updateByTelegramId(ctx.from.id, {
+        ctx.local.user = await usersService.updateByTelegramId(ctx.from.id, {
           data: {
             languageCode: newLanguageCode,
           },
         });
-        await ctx.i18n.setLocale(newLanguageCode);
+        await ctx.i18n.renegotiateLocale();
 
         await ctx.editMessageText(ctx.t("language.changed"), {
           reply_markup: keyboard,
