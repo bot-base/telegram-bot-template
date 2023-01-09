@@ -42,4 +42,4 @@ USER node
 
 # Start the app
 EXPOSE 80
-CMD ["node", "dist/run.js"]
+CMD ["node", "dist/main.js"]

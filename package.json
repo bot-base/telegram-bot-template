@@ -2,15 +2,15 @@
   "name": "telegram-bot-template",
   "version": "0.1.0",
   "description": "Telegram bot starter template",
-  "main": "dist/run.js",
+  "main": "dist/main.js",
   "scripts": {
     "format": "prettier --write \"src/**/*.ts\"",
     "lint": "eslint \"src/**/*.ts\"",
     "clean": "rimraf dist tsconfig.tsbuildinfo",
     "build": "npm run clean && tsc",
-    "dev": "tsc-watch --onSuccess \"node dist/run.js\"",
-    "start": "node dist/run.js",
-    "prepare": "husky install"
+    "dev": "tsc-watch --onSuccess \"node dist/main.js\"",
+    "start": "node dist/main.js",
+    "prepare": "npx husky install"
   },
   "author": "deptyped <deptyped@gmail.com>",
   "license": "MIT",

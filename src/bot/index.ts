@@ -1,4 +1,4 @@
-import { Bot } from "grammy";
+import { Bot as TelegramBot } from "grammy";
 import { limit as rateLimit } from "@grammyjs/ratelimiter";
 import { apiThrottler } from "@grammyjs/transformer-throttler";
 import { hydrateReply, parseMode } from "@grammyjs/parse-mode";
@@ -25,37 +25,43 @@ import {
 import { isMultipleLocales } from "~/bot/i18n";
 import { handleError } from "~/bot/helpers/error-handler";
 
-export const bot = new Bot<Context>(config.BOT_TOKEN);
+export const createBot = (token: string) => {
+  const bot = new TelegramBot<Context>(token);
 
-// Middlewares
+  // Middlewares
 
-bot.api.config.use(apiThrottler());
-bot.api.config.use(parseMode("HTML"));
+  bot.api.config.use(apiThrottler());
+  bot.api.config.use(parseMode("HTML"));
 
-if (config.isDev) {
-  bot.api.config.use(apiCallsLogger);
-  bot.use(updatesLogger());
-}
+  if (config.isDev) {
+    bot.api.config.use(apiCallsLogger);
+    bot.use(updatesLogger());
+  }
 
-bot.use(collectMetrics());
-bot.use(rateLimit());
-bot.use(hydrateReply);
-bot.use(hydrate());
-bot.use(setupSession());
-bot.use(setupLocalContext());
-bot.use(setupLogger());
-bot.use(setUser());
-bot.use(setupI18n());
+  bot.use(collectMetrics());
+  bot.use(rateLimit());
+  bot.use(hydrateReply);
+  bot.use(hydrate());
+  bot.use(setupSession());
+  bot.use(setupLocalContext());
+  bot.use(setupLogger());
+  bot.use(setUser());
+  bot.use(setupI18n());
 
-// Handlers
+  // Handlers
 
-bot.use(botAdminFeature);
-bot.use(welcomeFeature);
+  bot.use(botAdminFeature);
+  bot.use(welcomeFeature);
 
-if (isMultipleLocales) {
-  bot.use(languageSelectFeature);
-}
+  if (isMultipleLocales) {
+    bot.use(languageSelectFeature);
+  }
 
-if (config.isDev) {
-  bot.catch(handleError);
-}
+  if (config.isDev) {
+    bot.catch(handleError);
+  }
+
+  return bot;
+};
+
+export type Bot = ReturnType<typeof createBot>;
