@@ -23,6 +23,9 @@
         "import"
     ],
     "rules": {
+        "prettier/prettier": "error",
+        "arrow-body-style": "off",
+        "prefer-arrow-callback": "off",
         "@typescript-eslint/no-misused-promises": [
             "error",
             {

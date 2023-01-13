@@ -4,7 +4,7 @@
   "description": "Telegram bot starter template",
   "main": "dist/main.js",
   "scripts": {
-    "format": "prettier --write \"src/**/*.ts\"",
+    "format": "eslint \"src/**/*.ts\" --fix",
     "lint": "eslint \"src/**/*.ts\"",
     "clean": "rimraf dist tsconfig.tsbuildinfo",
     "build": "npm run clean && tsc",
