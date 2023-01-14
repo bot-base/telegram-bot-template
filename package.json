@@ -55,7 +55,7 @@
     "lint-staged": "13.1.0",
     "prettier": "2.8.1",
     "prisma": "4.8.1",
-    "rimraf": "3.0.2",
+    "rimraf": "4.0.5",
     "ts-node": "10.9.1",
     "tsc-watch": "6.0.0",
     "type-fest": "3.5.1",
