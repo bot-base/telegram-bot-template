@@ -10,6 +10,11 @@ export interface LocalContextFlavor {
   local: LocalContext;
 }
 
+export type LocalContextWith<P extends keyof LocalContext> = Record<
+  "local",
+  Record<P, NonNullable<LocalContext[P]>>
+>;
+
 export type Context = ParseModeFlavor<
   HydrateFlavor<
     DefaultContext &
