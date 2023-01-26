@@ -7,7 +7,7 @@ export const handleError = (error: BotError<Context>) => {
   const err = error.error;
 
   logger.error({
-    update_id: ctx.update.update_id,
     err,
+    ...ctx.update,
   });
 };

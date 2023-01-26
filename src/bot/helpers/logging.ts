@@ -2,7 +2,7 @@ import { Middleware } from "grammy";
 import { User, Chat } from "grammy/types";
 import { Context } from "~/bot/types";
 import { logger } from "~/logger";
-import { metrics } from "~/metrics";
+import { updateHandledCounter } from "~/metrics";
 
 interface LogMetadata {
   message_id: number | undefined;
@@ -22,7 +22,7 @@ export const getMetadata = (ctx: Context): LogMetadata => ({
 export const logHandle =
   (id: string): Middleware<Context> =>
   (ctx, next) => {
-    metrics.updateHandledCounter.inc({
+    updateHandledCounter.inc({
       from_id: ctx.from?.id,
       chat_id: ctx.chat?.id,
       handler_id: id,

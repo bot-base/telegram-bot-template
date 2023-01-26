@@ -4,7 +4,7 @@ import { Context } from "~/bot/types";
 import { selectLanguageKeyboard } from "~/bot/keyboards";
 import { logHandle } from "~/bot/helpers/logging";
 
-export const composer = new Composer<Context>();
+const composer = new Composer<Context>();
 
 const feature = composer.chatType("private");
 
@@ -16,3 +16,5 @@ feature.command("language", logHandle("command-language"), async (ctx) => {
     reply_markup: selectLanguageKeyboard,
   });
 });
+
+export { composer as languageSelectFeature };

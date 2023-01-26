@@ -5,7 +5,9 @@ import { Context } from "~/bot/types";
 import { usersService } from "~/services";
 import { config } from "~/config";
 
-export const middleware = (): Middleware<Context> => async (ctx, next) => {
+export const setLocals = (): Middleware<Context> => async (ctx, next) => {
+  ctx.local = {};
+
   if (ctx.from?.is_bot === false) {
     const { id: telegramId, language_code: languageCode } = ctx.from;
     const role =

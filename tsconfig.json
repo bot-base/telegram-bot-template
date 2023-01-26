@@ -1,17 +1,12 @@
 {
   "compilerOptions": {
-    "lib": [
-      "esnext"
-    ],
+    "strict": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "useUnknownInCatchVariables": true,
-    "strict": true,
+    "preserveWatchOutput": true,
     "incremental": true,
     "module": "commonjs",
-    "target": "es2018",
+    "target": "ES2021",
     "moduleResolution": "node16",
     "sourceMap": true,
     "outDir": "dist",

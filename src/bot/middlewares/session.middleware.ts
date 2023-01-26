@@ -1,4 +1,4 @@
-import { Middleware, session } from "grammy";
+import { Middleware, session as createSession } from "grammy";
 import { RedisAdapter } from "@grammyjs/storage-redis";
 
 import { connection } from "~/redis";
@@ -8,8 +8,8 @@ const storage = new RedisAdapter({
   instance: connection,
 });
 
-export const middleware = (): Middleware<Context> =>
-  session({
+export const session = (): Middleware<Context> =>
+  createSession({
     initial: () => ({}),
     storage,
   });

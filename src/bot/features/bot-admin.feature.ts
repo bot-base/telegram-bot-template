@@ -16,7 +16,7 @@ import { isMultipleLocales, i18n } from "~/bot/i18n";
 import { isOwnerUser, isAdminUser } from "~/bot/filters";
 import { logHandle } from "~/bot/helpers/logging";
 
-export const composer = new Composer<Context>();
+const composer = new Composer<Context>();
 
 const feature = composer
   .chatType("private")
@@ -210,3 +210,5 @@ feature.command(
     return ctx.reply("Commands updated");
   }
 );
+
+export { composer as botAdminFeature };

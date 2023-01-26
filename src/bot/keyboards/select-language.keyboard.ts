@@ -6,7 +6,7 @@ import { usersService } from "~/services";
 import { i18n } from "~/bot/i18n";
 import { logHandle } from "~/bot/helpers/logging";
 
-export const keyboard = new Menu<Context>("language");
+const keyboard = new Menu<Context>("language");
 
 for (let index = 1; index <= i18n.locales.length; index += 1) {
   const code = i18n.locales[index - 1] as LanguageCode;
@@ -43,3 +43,5 @@ for (let index = 1; index <= i18n.locales.length; index += 1) {
     keyboard.row();
   }
 }
+
+export { keyboard as selectLanguageKeyboard };

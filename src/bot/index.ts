@@ -1,6 +1,4 @@
 import { Bot as TelegramBot } from "grammy";
-import { limit as rateLimit } from "@grammyjs/ratelimiter";
-import { apiThrottler } from "@grammyjs/transformer-throttler";
 import { hydrateReply, parseMode } from "@grammyjs/parse-mode";
 import { hydrate } from "@grammyjs/hydrate";
 
@@ -8,13 +6,11 @@ import { Context } from "~/bot/types";
 import { config } from "~/config";
 
 import {
-  updatesLogger,
-  setupSession,
-  setupLocalContext,
-  setupLogger,
-  setUser,
-  setupI18n,
-  collectMetrics,
+  updateLogger,
+  session,
+  setLocals,
+  i18n,
+  metrics,
 } from "~/bot/middlewares";
 import { apiCallsLogger } from "~/bot/transformers";
 import {
@@ -30,23 +26,19 @@ export const createBot = (token: string) => {
 
   // Middlewares
 
-  bot.api.config.use(apiThrottler());
   bot.api.config.use(parseMode("HTML"));
 
   if (config.isDev) {
     bot.api.config.use(apiCallsLogger);
-    bot.use(updatesLogger());
+    bot.use(updateLogger());
   }
 
-  bot.use(collectMetrics());
-  bot.use(rateLimit());
+  bot.use(metrics());
   bot.use(hydrateReply);
   bot.use(hydrate());
-  bot.use(setupSession());
-  bot.use(setupLocalContext());
-  bot.use(setupLogger());
-  bot.use(setUser());
-  bot.use(setupI18n());
+  bot.use(session());
+  bot.use(setLocals());
+  bot.use(i18n());
 
   // Handlers
 

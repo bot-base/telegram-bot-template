@@ -1,1 +1,1 @@
-export { keyboard as selectLanguageKeyboard } from "./select-language.keyboard";
+export * from "./select-language.keyboard";
