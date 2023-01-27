@@ -1,6 +1,5 @@
-#!/usr/bin/env node
+#!/usr/bin/env tsx
 
-import "module-alias/register";
 import { createBot } from "~/bot";
 import { createServer } from "~/server";
 import { prisma } from "~/prisma";

@@ -5,6 +5,7 @@
     "esModuleInterop": true,
     "preserveWatchOutput": true,
     "incremental": true,
+    "noEmit": true,
     "module": "commonjs",
     "target": "ES2021",
     "moduleResolution": "node16",
