@@ -22,24 +22,22 @@ RUN npm ci \
 COPY . .
 
 # Build app
-RUN npm run build \
+RUN npm run typecheck \
     && npm prune --omit=dev
 
 FROM base AS runner
 
 # Copy from build image
 COPY --from=builder /usr/src/node_modules ./node_modules
-COPY --from=builder /usr/src/dist ./dist
+COPY --from=builder /usr/src/src ./src
 COPY --from=builder /usr/src/package*.json ./
+COPY --from=builder /usr/src/tsconfig*.json ./
 
 COPY locales ./locales
 COPY prisma ./prisma
-
-RUN apt-get update \
-    && apt-get install --no-install-recommends -y procps openssl
 
 USER node
 
 # Start the app
 EXPOSE 80
-CMD ["node", "dist/main.js"]
+CMD ["npm", "run", "start:force"]

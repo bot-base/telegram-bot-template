@@ -4,12 +4,12 @@
   "description": "Telegram bot starter template",
   "main": "dist/main.js",
   "scripts": {
-    "format": "eslint \"src/**/*.ts\" --fix",
     "lint": "eslint \"src/**/*.ts\"",
-    "clean": "rimraf dist tsconfig.tsbuildinfo",
-    "build": "npm run clean && tsc",
-    "dev": "tsc-watch --onSuccess \"node dist/main.js\"",
-    "start": "node dist/main.js",
+    "format": "eslint \"src/**/*.ts\" --fix",
+    "typecheck": "tsc",
+    "dev": "tsc-watch --onSuccess \"tsx ./src/main.ts\"",
+    "start": "tsc && tsx ./src/main.ts",
+    "start:force": "tsx ./src/main.ts",
     "prepare": "npx husky install"
   },
   "author": "deptyped <deptyped@gmail.com>",
@@ -30,11 +30,11 @@
     "ioredis": "5.2.5",
     "iso-639-1": "2.1.15",
     "lodash": "4.17.21",
-    "module-alias": "2.2.2",
     "node-fetch": "3.3.0",
     "pino": "8.8.0",
     "pino-pretty": "9.1.1",
-    "prom-client": "14.1.1"
+    "prom-client": "14.1.1",
+    "tsx": "^3.12.2"
   },
   "devDependencies": {
     "@types/debug": "4.1.7",
@@ -54,15 +54,11 @@
     "prettier": "2.8.3",
     "prisma": "4.9.0",
     "rimraf": "4.1.1",
-    "ts-node": "10.9.1",
     "tsc-watch": "6.0.0",
     "type-fest": "3.5.3",
     "typescript": "4.9.4"
   },
   "lint-staged": {
     "*.ts": "npm run lint"
-  },
-  "_moduleAliases": {
-    "~": "dist"
   }
 }

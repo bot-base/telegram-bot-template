@@ -13,9 +13,7 @@
     "parserOptions": {
         "project": [
             "tsconfig.json"
-        ],
-        "ecmaVersion": 13,
-        "sourceType": "module"
+        ]
     },
     "plugins": [
         "@typescript-eslint",
@@ -42,11 +40,6 @@
                 ".ts",
                 ".tsx"
             ]
-        },
-        "import/resolver": {
-            "typescript": {
-                "alwaysTryTypes": true
-            }
         }
     }
 }
