@@ -40,6 +40,11 @@
                 ".ts",
                 ".tsx"
             ]
+        },
+        "import/resolver": {
+            "typescript": {
+                "extensions": [".js", ".jsx", ".ts", ".tsx"]
+            }
         }
     }
 }
