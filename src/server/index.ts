@@ -1,7 +1,6 @@
 import fastify from "fastify";
 import { BotError, webhookCallback } from "grammy";
 import { register } from "prom-client";
-
 import type { Bot } from "~/bot";
 import { errorHandler } from "~/bot/handlers";
 import { Container } from "~/container";

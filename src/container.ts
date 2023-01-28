@@ -1,6 +1,6 @@
 import { createContainer } from "@deptyped/iti";
-import Redis from "ioredis";
 import { RedisAdapter } from "@grammyjs/storage-redis";
+import Redis from "ioredis";
 import { config } from "~/config";
 import { createLogger } from "~/logger";
 import { createPrisma } from "~/prisma";

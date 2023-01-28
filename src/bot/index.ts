@@ -1,25 +1,23 @@
-import { Bot as TelegramBot } from "grammy";
-import { hydrateReply, parseMode } from "@grammyjs/parse-mode";
 import { hydrate } from "@grammyjs/hydrate";
-
-import { Context } from "~/bot/types";
-
-import { errorHandler } from "~/bot/handlers";
-import {
-  updateLogger,
-  session,
-  setScope,
-  i18n,
-  metrics,
-  extendContext,
-} from "~/bot/middlewares";
-import { apiCallsLogger } from "~/bot/transformers";
+import { hydrateReply, parseMode } from "@grammyjs/parse-mode";
+import { Bot as TelegramBot } from "grammy";
 import {
   botAdminFeature,
   languageSelectFeature,
   welcomeFeature,
 } from "~/bot/features";
+import { errorHandler } from "~/bot/handlers";
 import { isMultipleLocales } from "~/bot/i18n";
+import {
+  extendContext,
+  i18n,
+  metrics,
+  session,
+  setScope,
+  updateLogger,
+} from "~/bot/middlewares";
+import { apiCallsLogger } from "~/bot/transformers";
+import { Context } from "~/bot/types";
 import { Container } from "~/container";
 
 export const createBot = (token: string, container: Container) => {

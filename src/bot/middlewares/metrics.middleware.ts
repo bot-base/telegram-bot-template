@@ -1,5 +1,4 @@
 import { Middleware } from "grammy";
-
 import { Context } from "~/bot/types";
 import { updateCounter, updateFailedCounter } from "~/metrics";
 

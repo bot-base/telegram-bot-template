@@ -1,8 +1,7 @@
 #!/usr/bin/env tsx
-
 import { createBot } from "~/bot";
-import { createServer } from "~/server";
 import { container as appContainer, Container } from "~/container";
+import { createServer } from "~/server";
 
 async function main(container: Container) {
   const { config, logger, prisma } = container.items;

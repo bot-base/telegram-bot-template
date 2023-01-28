@@ -1,6 +1,6 @@
 import "dotenv/config";
+import { cleanEnv, json, num, str } from "envalid";
 import { PollingOptions } from "grammy";
-import { cleanEnv, str, num, json } from "envalid";
 
 export const config = cleanEnv(process.env, {
   NODE_ENV: str({ choices: ["development", "production"] }),

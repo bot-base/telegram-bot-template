@@ -1,5 +1,4 @@
 import { Middleware } from "grammy";
-
 import { Context } from "~/bot/types";
 
 export const updateLogger = (): Middleware<Context> => (ctx, next) => {

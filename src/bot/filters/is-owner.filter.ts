@@ -1,5 +1,5 @@
-import { Context } from "~/bot/types";
 import { Role } from "@prisma/client";
+import { Context } from "~/bot/types";
 import { ContextScopeWith } from "~/bot/types/context";
 
 export const isOwnerUser = <C extends Context>(

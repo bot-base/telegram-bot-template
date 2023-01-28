@@ -1,9 +1,8 @@
-import ISO6391, { LanguageCode } from "iso-639-1";
 import { Menu } from "@grammyjs/menu";
-
-import { Context } from "~/bot/types";
-import { i18n } from "~/bot/i18n";
+import ISO6391, { LanguageCode } from "iso-639-1";
 import { logHandle } from "~/bot/helpers/logging";
+import { i18n } from "~/bot/i18n";
+import { Context } from "~/bot/types";
 
 const keyboard = new Menu<Context>("language");
 

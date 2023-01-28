@@ -1,11 +1,10 @@
-import { Context as DefaultContext, SessionFlavor } from "grammy";
+import { HydrateFlavor } from "@grammyjs/hydrate";
 import { I18nFlavor } from "@grammyjs/i18n";
 import { ParseModeFlavor } from "@grammyjs/parse-mode";
-import { HydrateFlavor } from "@grammyjs/hydrate";
 import { User } from "@prisma/client";
-
-import { Logger } from "~/logger";
+import { Context as DefaultContext, SessionFlavor } from "grammy";
 import { Container } from "~/container";
+import { Logger } from "~/logger";
 import { SessionData } from "./session";
 
 export interface ContextScope {
