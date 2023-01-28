@@ -1,7 +1,6 @@
 import { Middleware } from "grammy";
 import { User, Chat } from "grammy/types";
 import { Context } from "~/bot/types";
-import { logger } from "~/logger";
 import { updateHandledCounter } from "~/metrics";
 
 interface LogMetadata {
@@ -27,7 +26,8 @@ export const logHandle =
       chat_id: ctx.chat?.id,
       handler_id: id,
     });
-    logger.info({
+
+    ctx.logger.info({
       msg: `handle ${id}`,
       ...getMetadata(ctx),
     });

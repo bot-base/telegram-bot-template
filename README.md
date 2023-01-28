@@ -1,14 +1,15 @@
 <h1 align="center">🤖 Telegram Bot Template</h1>
 
-Bot starter template based on [grammY](https://grammy.dev/) bot framework and [prisma](https://www.prisma.io/) ORM.  
-Uses PostgreSQL for data storage (MySQL, MongoDB, SQL Server, SQLite [are also supported by prisma](https://www.prisma.io/docs/reference/database-reference/supported-databases)) and Redis for session storage.
+Bot starter template based on [grammY](https://grammy.dev/) bot framework and [Prisma ORM](https://www.prisma.io/).  
+Uses PostgreSQL for data storage (MySQL, MongoDB, SQL Server, SQLite [are also supported by Prisma](https://www.prisma.io/docs/reference/database-reference/supported-databases)) and Redis for session storage.
 
 ## Features
 
 - Config loading and validation
 - Logger
-- Sessions
-- Language picker and internationalization
+- Dependency injection
+- Session storage
+- Internationalization with language change
 - Graceful shutdown
 - Metrics collection (in [prometheus](https://prometheus.io/) format)
 - Fast and low overhead [fastify](https://www.fastify.io/) server

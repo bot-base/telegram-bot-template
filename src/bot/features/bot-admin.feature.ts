@@ -4,8 +4,6 @@ import { or } from "grammy-guard";
 import { Role } from "@prisma/client";
 
 import { Context } from "~/bot/types";
-import { usersService } from "~/services";
-import { config } from "~/config";
 import {
   DEFAULT_LANGUAGE_CODE,
   getGroupChatCommands,
@@ -25,6 +23,8 @@ const feature = composer
 const featureForOwner = composer.chatType("private").filter(isOwnerUser);
 
 featureForOwner.command("admin", logHandle("command-admin"), async (ctx) => {
+  const { userService, config } = ctx.container.items;
+
   if (ctx.match === "") {
     return ctx.reply(
       `Please, pass the Telegram user ID after the command (e.g. <code>/admin ${config.BOT_ADMIN_USER_ID}</code>)`
@@ -41,7 +41,7 @@ featureForOwner.command("admin", logHandle("command-admin"), async (ctx) => {
     return ctx.reply("You're already an administrator");
   }
 
-  let user = await usersService.findByTelegramId(userId, {
+  let user = await userService.findByTelegramId(userId, {
     select: {
       id: true,
       role: true,
@@ -52,7 +52,7 @@ featureForOwner.command("admin", logHandle("command-admin"), async (ctx) => {
     return ctx.reply("User not found");
   }
 
-  user = await usersService.updateByTelegramId(userId, {
+  user = await userService.updateByTelegramId(userId, {
     data: {
       role: user.role === Role.ADMIN ? Role.USER : Role.ADMIN,
     },
@@ -93,9 +93,11 @@ featureForOwner.command("admin", logHandle("command-admin"), async (ctx) => {
 });
 
 feature.command("stats", logHandle("command-stats"), async (ctx) => {
+  const { userService } = ctx.container.items;
+
   await ctx.replyWithChatAction("typing");
 
-  const usersCount = await usersService.count();
+  const usersCount = await userService.count();
 
   const stats = `Users count: ${usersCount}`;
 
@@ -106,6 +108,8 @@ feature.command(
   "setcommands",
   logHandle("command-setcommands"),
   async (ctx) => {
+    const { userService, config } = ctx.container.items;
+
     await ctx.replyWithChatAction("typing");
 
     // set private chat commands
@@ -164,7 +168,7 @@ feature.command(
       }
     );
 
-    const adminUsers = await usersService.findMany({
+    const adminUsers = await userService.findMany({
       where: {
         role: Role.ADMIN,
       },
