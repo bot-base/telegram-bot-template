@@ -2,17 +2,15 @@
 
 import { createBot } from "~/bot";
 import { createServer } from "~/server";
-import { prisma } from "~/prisma";
-import { config } from "~/config";
-import { logger } from "~/logger";
+import { container as appContainer, Container } from "~/container";
 
-async function main() {
-  const bot = createBot(config.BOT_TOKEN);
+async function main(container: Container) {
+  const { config, logger, prisma } = container.items;
+
+  const bot = createBot(config.BOT_TOKEN, container);
   await bot.init();
 
-  const server = await createServer({
-    bot,
-  });
+  const server = await createServer(bot, container);
 
   // Graceful shutdown
   prisma.$on("beforeExit", async () => {
@@ -45,7 +43,7 @@ async function main() {
   }
 }
 
-main().catch((err) => {
-  logger.error(err);
+main(appContainer).catch((err) => {
+  appContainer.get("logger").error(err);
   process.exit(1);
 });

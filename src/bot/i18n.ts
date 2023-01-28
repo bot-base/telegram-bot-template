@@ -7,7 +7,7 @@ export const i18n = new I18n<Context>({
   fluentBundleOptions: {
     useIsolating: false,
   },
-  localeNegotiator: (ctx) => ctx.local.user?.languageCode ?? undefined,
+  localeNegotiator: (ctx) => ctx.scope.user?.languageCode ?? undefined,
 });
 
 export const isMultipleLocales = i18n.locales.length > 1;

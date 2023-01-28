@@ -2,19 +2,20 @@ import fastify from "fastify";
 import { BotError, webhookCallback } from "grammy";
 import { register } from "prom-client";
 
-import { logger } from "~/logger";
-import { handleError } from "~/bot/helpers/error-handler";
-import { prisma } from "~/prisma";
 import type { Bot } from "~/bot";
+import { errorHandler } from "~/bot/handlers";
+import { Container } from "~/container";
 
-export const createServer = async ({ bot }: { bot: Bot }) => {
+export const createServer = async (bot: Bot, container: Container) => {
+  const { logger, prisma } = container.items;
+
   const server = fastify({
     logger,
   });
 
   server.setErrorHandler(async (error, req, res) => {
     if (error instanceof BotError) {
-      handleError(error);
+      errorHandler(error);
 
       await res.code(200).send({});
     } else {

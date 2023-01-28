@@ -1,10 +1,9 @@
 import { Middleware } from "grammy";
 
-import { logger } from "~/logger";
 import { Context } from "~/bot/types";
 
 export const updateLogger = (): Middleware<Context> => (ctx, next) => {
-  logger.debug({
+  ctx.logger.debug({
     msg: "update received",
     ...ctx.update,
   });

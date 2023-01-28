@@ -2,7 +2,6 @@ import ISO6391, { LanguageCode } from "iso-639-1";
 import { Menu } from "@grammyjs/menu";
 
 import { Context } from "~/bot/types";
-import { usersService } from "~/services";
 import { i18n } from "~/bot/i18n";
 import { logHandle } from "~/bot/helpers/logging";
 
@@ -22,10 +21,11 @@ for (let index = 1; index <= i18n.locales.length; index += 1) {
     },
     logHandle("keyboard-language-select"),
     async (ctx) => {
+      const { userService } = ctx.container.items;
       const newLanguageCode = ctx.match;
 
       if (i18n.locales.includes(newLanguageCode)) {
-        ctx.local.user = await usersService.updateByTelegramId(ctx.from.id, {
+        ctx.scope.user = await userService.updateByTelegramId(ctx.from.id, {
           data: {
             languageCode: newLanguageCode,
           },

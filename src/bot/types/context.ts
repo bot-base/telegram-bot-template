@@ -4,19 +4,23 @@ import { ParseModeFlavor } from "@grammyjs/parse-mode";
 import { HydrateFlavor } from "@grammyjs/hydrate";
 import { User } from "@prisma/client";
 
+import { Logger } from "~/logger";
+import { Container } from "~/container";
 import { SessionData } from "./session";
 
-export interface LocalContext {
+export interface ContextScope {
   user?: User;
 }
 
-export interface LocalContextFlavor {
-  local: LocalContext;
+export interface ExtendedContextFlavor {
+  container: Container;
+  scope: ContextScope;
+  logger: Logger;
 }
 
-export type LocalContextWith<P extends keyof LocalContext> = Record<
-  "local",
-  Record<P, NonNullable<LocalContext[P]>>
+export type ContextScopeWith<P extends keyof ContextScope> = Record<
+  "scope",
+  Record<P, NonNullable<ContextScope[P]>>
 >;
 
 export type Context = ParseModeFlavor<
@@ -24,6 +28,6 @@ export type Context = ParseModeFlavor<
     DefaultContext &
       I18nFlavor &
       SessionFlavor<SessionData> &
-      LocalContextFlavor
+      ExtendedContextFlavor
   >
 >;
