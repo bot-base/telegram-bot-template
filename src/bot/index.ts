@@ -6,7 +6,7 @@ import {
   languageSelectFeature,
   welcomeFeature,
 } from "~/bot/features";
-import { errorHandler } from "~/bot/handlers";
+import { errorHandler, unhandledHandler } from "~/bot/handlers";
 import { isMultipleLocales } from "~/bot/i18n";
 import {
   extendContext,
@@ -50,6 +50,8 @@ export const createBot = (token: string, container: Container) => {
   if (isMultipleLocales) {
     bot.use(languageSelectFeature);
   }
+
+  bot.use(unhandledHandler);
 
   if (config.isDev) {
     bot.catch(errorHandler);

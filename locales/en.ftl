@@ -7,3 +7,4 @@ welcome = 👋🏻  Welcome!
 language = 
     .select = Please, select your language
     .changed = Language successfully changed!
+unhandled = Unrecognized command. Try /start
