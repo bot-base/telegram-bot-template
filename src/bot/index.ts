@@ -21,7 +21,7 @@ import { Context } from "~/bot/types";
 import { Container } from "~/container";
 
 export const createBot = (token: string, container: Container) => {
-  const { config, logger, botSessionStorage } = container.items;
+  const { isDev, logger, botSessionStorage } = container.items;
 
   const bot = new TelegramBot<Context>(token);
 
@@ -30,7 +30,7 @@ export const createBot = (token: string, container: Container) => {
   bot.api.config.use(parseMode("HTML"));
   bot.use(extendContext(container));
 
-  if (config.isDev) {
+  if (isDev) {
     bot.api.config.use(apiCallsLogger(logger));
     bot.use(updateLogger());
   }
@@ -53,7 +53,7 @@ export const createBot = (token: string, container: Container) => {
 
   bot.use(unhandledHandler);
 
-  if (config.isDev) {
+  if (isDev) {
     bot.catch(errorHandler);
   }
 

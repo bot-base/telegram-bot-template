@@ -5,6 +5,7 @@ export const createLogger = (config: Config) => {
   const options: LoggerOptions = {
     level: config.LOG_LEVEL,
   };
+  const isDev = config.NODE_ENV === "development";
 
   const transport = pino.transport({
     targets: [
@@ -12,7 +13,7 @@ export const createLogger = (config: Config) => {
         target: "pino-pretty",
         level: config.LOG_LEVEL,
         options: {
-          ...(config.isDev && {
+          ...(isDev && {
             ignore: "pid,hostname",
             colorize: true,
             translateTime: true,

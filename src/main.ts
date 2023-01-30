@@ -4,7 +4,7 @@ import { container as appContainer, Container } from "~/container";
 import { createServer } from "~/server";
 
 async function main(container: Container) {
-  const { config, logger, prisma } = container.items;
+  const { config, isDev, isProd, logger, prisma } = container.items;
 
   const bot = createBot(config.BOT_TOKEN, container);
   await bot.init();
@@ -21,7 +21,7 @@ async function main(container: Container) {
 
   await prisma.$connect();
 
-  if (config.isProd) {
+  if (isProd) {
     await server.listen({
       host: config.BOT_SERVER_HOST,
       port: config.BOT_SERVER_PORT,
@@ -30,7 +30,7 @@ async function main(container: Container) {
     await bot.api.setWebhook(config.BOT_WEBHOOK, {
       allowed_updates: config.BOT_ALLOWED_UPDATES,
     });
-  } else if (config.isDev) {
+  } else if (isDev) {
     await bot.start({
       allowed_updates: config.BOT_ALLOWED_UPDATES,
       onStart: ({ username }) =>

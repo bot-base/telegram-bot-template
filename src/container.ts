@@ -1,7 +1,7 @@
 import { createContainer } from "@deptyped/iti";
 import { RedisAdapter } from "@grammyjs/storage-redis";
 import Redis from "ioredis";
-import { config } from "~/config";
+import { config, isDev, isProd } from "~/config";
 import { createLogger } from "~/logger";
 import { createPrisma } from "~/prisma";
 import { UserService } from "~/services";
@@ -10,6 +10,8 @@ export const createAppContainer = () =>
   createContainer()
     .add({
       config: () => config,
+      isDev: () => isDev,
+      isProd: () => isProd,
     })
     .add((items) => ({
       logger: () => createLogger(items.config),
