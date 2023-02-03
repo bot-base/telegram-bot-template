@@ -33,16 +33,28 @@ const configSchema = z.object({
   REDIS_URL: z.string(),
   BOT_SERVER_HOST: z.string().default("0.0.0.0"),
   BOT_SERVER_PORT: z.coerce.number().positive().default(80),
-  BOT_ALLOWED_UPDATES: z.preprocess(
-    (v: unknown) => JSON.parse(String(v)),
-    z.array(z.enum(updates))
-  ),
+  BOT_ALLOWED_UPDATES: z.preprocess((v: unknown) => {
+    try {
+      return JSON.parse(String(v));
+    } catch (e) {
+      return null;
+    }
+  }, z.array(z.enum(updates))),
   BOT_TOKEN: z.string(),
   BOT_WEBHOOK: z.string().url(),
   BOT_ADMIN_USER_ID: z.coerce.number().finite(),
 });
 
-export const config = configSchema.parse(process.env);
-export const isDev = config.NODE_ENV === "development";
-export const isProd = config.NODE_ENV === "production";
 export type Config = z.infer<typeof configSchema>;
+
+const parseConfig = (env: NodeJS.ProcessEnv) => {
+  const config = configSchema.parse(env);
+
+  return {
+    ...config,
+    isDev: process.env.NODE_ENV === "development",
+    isProd: process.env.NODE_ENV === "production",
+  };
+};
+
+export const config = parseConfig(process.env);

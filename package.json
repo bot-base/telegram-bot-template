@@ -24,7 +24,6 @@
     "@grammyjs/storage-redis": "2.1.0",
     "@prisma/client": "4.9.0",
     "dotenv": "16.0.3",
-    "envalid": "7.3.1",
     "fastify": "4.12.0",
     "grammy": "1.13.1",
     "grammy-guard": "0.3.1",
