@@ -1,5 +1,5 @@
 import { Role } from "@prisma/client";
-import { Composer } from "grammy";
+import { Composer, Keyboard } from "grammy";
 import { or } from "grammy-guard";
 import _ from "lodash";
 import { isAdminUser, isOwnerUser } from "~/bot/filters";
@@ -10,6 +10,7 @@ import {
   getPrivateChatCommands,
 } from "~/bot/helpers/bot-commands";
 import { logHandle } from "~/bot/helpers/logging";
+import { userRequests } from "~/bot/helpers/user-requests";
 import { i18n, isMultipleLocales } from "~/bot/i18n";
 import { Context } from "~/bot/types";
 
@@ -21,80 +22,108 @@ const feature = composer
 
 const featureForOwner = composer.chatType("private").filter(isOwnerUser);
 
-featureForOwner.command("admin", logHandle("command-admin"), async (ctx) => {
-  const { userService, config } = ctx.container.items;
-
-  if (ctx.match === "") {
-    return ctx.reply(
-      `Please, pass the Telegram user ID after the command (e.g. <code>/admin ${config.BOT_ADMIN_USER_ID}</code>)`
-    );
-  }
-
-  const userId = parseInt(ctx.match, 10);
-
-  if (Number.isNaN(userId)) {
-    return ctx.reply("Invalid user ID");
-  }
-
-  if (userId === config.BOT_ADMIN_USER_ID) {
-    return ctx.reply("You're already an administrator");
-  }
-
-  let user = await userService.findByTelegramId(userId, {
-    select: {
-      id: true,
-      role: true,
-    },
-  });
-
-  if (user === null) {
-    return ctx.reply("User not found");
-  }
-
-  user = await userService.updateByTelegramId(userId, {
-    data: {
-      role: user.role === Role.ADMIN ? Role.USER : Role.ADMIN,
-    },
-  });
-
-  const userRoleLabel =
-    user.role === Role.ADMIN ? "an administrator" : "a regular user";
-
-  return Promise.all([
-    ctx.reply(`User with ID ${user.id} is now ${userRoleLabel}`),
-    ctx.api.sendMessage(userId, `You're ${userRoleLabel} now`),
-    user.role === Role.ADMIN
-      ? ctx.api.setMyCommands(
-          [
-            ...getPrivateChatCommands({
-              localeCode: DEFAULT_LANGUAGE_CODE,
-              includeLanguageCommand: isMultipleLocales,
-            }),
-            ...getPrivateChatAdminCommands({
-              localeCode: DEFAULT_LANGUAGE_CODE,
-              includeLanguageCommand: isMultipleLocales,
-            }),
-          ],
+featureForOwner.command("admin", logHandle("command-admin"), (ctx) =>
+  ctx.reply(ctx.t("admin.select-user"), {
+    reply_markup: {
+      resize_keyboard: true,
+      keyboard: new Keyboard()
+        .requestUser(
+          ctx.t("admin.select-user-btn"),
+          userRequests.getId("make-admin"),
           {
+            user_is_bot: false,
+          }
+        )
+        .build(),
+    },
+  })
+);
+
+featureForOwner.filter(
+  userRequests.filter("make-admin"),
+  logHandle("user-shared-for-admin-role"),
+  async (ctx) => {
+    const { userService } = ctx.container.items;
+    const userId = ctx.message.user_shared.user_id;
+
+    let user = await userService.findByTelegramId(userId, {
+      select: {
+        id: true,
+        role: true,
+      },
+    });
+
+    if (user === null) {
+      return ctx.reply(ctx.t("admin.user-not-found"));
+    }
+
+    user = await userService.updateByTelegramId(
+      userId,
+      {
+        data: {
+          role: user.role === Role.ADMIN ? Role.USER : Role.ADMIN,
+        },
+      },
+      {
+        select: {
+          id: true,
+          role: true,
+        },
+      }
+    );
+
+    const notifyOwner = ctx.reply(
+      ctx.t("admin.user-role-changed", {
+        id: user.id,
+        role: user.role,
+      }),
+      {
+        reply_markup: {
+          remove_keyboard: true,
+        },
+      }
+    );
+
+    const notifyUser = ctx.api.sendMessage(
+      userId,
+      ctx.t("admin.your-role-changed", {
+        role: user.role,
+      })
+    );
+
+    const updateCommandsForUser =
+      user.role === Role.ADMIN
+        ? ctx.api.setMyCommands(
+            [
+              ...getPrivateChatCommands({
+                localeCode: DEFAULT_LANGUAGE_CODE,
+                includeLanguageCommand: isMultipleLocales,
+              }),
+              ...getPrivateChatAdminCommands({
+                localeCode: DEFAULT_LANGUAGE_CODE,
+                includeLanguageCommand: isMultipleLocales,
+              }),
+            ],
+            {
+              scope: {
+                type: "chat",
+                chat_id: Number(userId),
+              },
+            }
+          )
+        : ctx.api.deleteMyCommands({
             scope: {
               type: "chat",
               chat_id: Number(userId),
             },
-          }
-        )
-      : ctx.api.deleteMyCommands({
-          scope: {
-            type: "chat",
-            chat_id: Number(userId),
-          },
-        }),
-  ]);
-});
+          });
+
+    return Promise.all([notifyOwner, notifyUser, updateCommandsForUser]);
+  }
+);
 
 feature.command("stats", logHandle("command-stats"), async (ctx) => {
   const { userService } = ctx.container.items;
-
-  await ctx.replyWithChatAction("typing");
 
   const usersCount = await userService.count();
 
@@ -108,8 +137,6 @@ feature.command(
   logHandle("command-setcommands"),
   async (ctx) => {
     const { userService, config } = ctx.container.items;
-
-    await ctx.replyWithChatAction("typing");
 
     // set private chat commands
     await ctx.api.setMyCommands(
@@ -143,20 +170,21 @@ feature.command(
       await Promise.all(requests);
     }
 
-    // set private chat superadmin commands
+    const ownerLocaleCode = await ctx.i18n.getLocale();
+    // set private chat commands for owner
     await ctx.api.setMyCommands(
       [
         ...getPrivateChatCommands({
-          localeCode: DEFAULT_LANGUAGE_CODE,
+          localeCode: ownerLocaleCode,
           includeLanguageCommand: isMultipleLocales,
         }),
         ...getPrivateChatAdminCommands({
-          localeCode: DEFAULT_LANGUAGE_CODE,
+          localeCode: ownerLocaleCode,
           includeLanguageCommand: isMultipleLocales,
         }),
         {
           command: "admin",
-          description: "Make user an administrator",
+          description: ctx.t("admin_command.description"),
         },
       ],
       {
@@ -210,7 +238,7 @@ feature.command(
       }
     );
 
-    return ctx.reply("Commands updated");
+    return ctx.reply(ctx.t("admin.commands-updated"));
   }
 );
 
