@@ -1,5 +1,5 @@
 import { I18n } from "@grammyjs/i18n";
-import { Context } from "~/bot/types";
+import { Context } from "~/bot/context";
 
 export const i18n = new I18n<Context>({
   defaultLocale: "en",

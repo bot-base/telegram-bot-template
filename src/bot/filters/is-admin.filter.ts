@@ -1,6 +1,5 @@
 import { Role } from "@prisma/client";
-import { Context } from "~/bot/types";
-import { ContextScopeWith } from "~/bot/types/context";
+import { Context, ContextScopeWith } from "~/bot/context";
 
 export const isAdminUser = <C extends Context>(
   ctx: C

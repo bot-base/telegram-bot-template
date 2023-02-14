@@ -1,5 +1,5 @@
 import { Middleware } from "grammy";
-import { Context } from "~/bot/types";
+import { Context } from "~/bot/context";
 import { updateCounter, updateFailedCounter } from "~/metrics";
 
 export const metrics = (): Middleware<Context> => async (ctx, next) => {

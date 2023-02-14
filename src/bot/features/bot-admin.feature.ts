@@ -3,6 +3,7 @@ import { Role } from "@prisma/client";
 import { Composer, Keyboard } from "grammy";
 import { or } from "grammy-guard";
 import _ from "lodash";
+import { Context } from "~/bot/context";
 import { isAdminUser, isOwnerUser } from "~/bot/filters";
 import {
   DEFAULT_LANGUAGE_CODE,
@@ -13,7 +14,6 @@ import {
 import { logHandle } from "~/bot/helpers/logging";
 import { userRequests } from "~/bot/helpers/user-requests";
 import { i18n, isMultipleLocales } from "~/bot/i18n";
-import { Context } from "~/bot/types";
 
 const composer = new Composer<Context>();
 

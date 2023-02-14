@@ -2,6 +2,7 @@ import { autoChatAction } from "@grammyjs/auto-chat-action";
 import { hydrate } from "@grammyjs/hydrate";
 import { hydrateReply, parseMode } from "@grammyjs/parse-mode";
 import { Bot as TelegramBot } from "grammy";
+import { createContextConstructor } from "~/bot/context";
 import {
   botAdminFeature,
   languageFeature,
@@ -10,7 +11,6 @@ import {
 import { errorHandler, unhandledHandler } from "~/bot/handlers";
 import { isMultipleLocales } from "~/bot/i18n";
 import {
-  extendContext,
   i18n,
   metrics,
   session,
@@ -18,18 +18,18 @@ import {
   updateLogger,
 } from "~/bot/middlewares";
 import { apiCallsLogger } from "~/bot/transformers";
-import { Context } from "~/bot/types";
 import { Container } from "~/container";
 
 export const createBot = (token: string, container: Container) => {
   const { config, logger, botSessionStorage } = container.items;
 
-  const bot = new TelegramBot<Context>(token);
+  const bot = new TelegramBot(token, {
+    ContextConstructor: createContextConstructor(container),
+  });
 
   // Middlewares
 
   bot.api.config.use(parseMode("HTML"));
-  bot.use(extendContext(container));
 
   if (config.isDev) {
     bot.api.config.use(apiCallsLogger(logger));

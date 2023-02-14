@@ -1,6 +1,6 @@
 import { Role } from "@prisma/client";
 import { Middleware } from "grammy";
-import { Context } from "~/bot/types";
+import { Context } from "~/bot/context";
 
 export const setScope = (): Middleware<Context> => async (ctx, next) => {
   const { config, userService } = ctx.container.items;

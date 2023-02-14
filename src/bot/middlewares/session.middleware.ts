@@ -1,5 +1,5 @@
 import { Middleware, session as createSession, StorageAdapter } from "grammy";
-import { Context } from "~/bot/types";
+import { Context } from "~/bot/context";
 
 export const session = (
   storage: StorageAdapter<unknown>
