@@ -1,3 +1,4 @@
+import { autoChatAction } from "@grammyjs/auto-chat-action";
 import { hydrate } from "@grammyjs/hydrate";
 import { hydrateReply, parseMode } from "@grammyjs/parse-mode";
 import { Bot as TelegramBot } from "grammy";
@@ -36,6 +37,7 @@ export const createBot = (token: string, container: Container) => {
   }
 
   bot.use(metrics());
+  bot.use(autoChatAction());
   bot.use(hydrateReply);
   bot.use(hydrate());
   bot.use(session(botSessionStorage));

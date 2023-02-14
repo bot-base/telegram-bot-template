@@ -1,3 +1,4 @@
+import { AutoChatActionFlavor } from "@grammyjs/auto-chat-action";
 import { HydrateFlavor } from "@grammyjs/hydrate";
 import { I18nFlavor } from "@grammyjs/i18n";
 import { ParseModeFlavor } from "@grammyjs/parse-mode";
@@ -27,6 +28,7 @@ export type Context = ParseModeFlavor<
     DefaultContext &
       I18nFlavor &
       SessionFlavor<SessionData> &
-      ExtendedContextFlavor
+      ExtendedContextFlavor &
+      AutoChatActionFlavor
   >
 >;
