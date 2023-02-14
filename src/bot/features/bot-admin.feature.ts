@@ -1,3 +1,4 @@
+import { chatAction } from "@grammyjs/auto-chat-action";
 import { Role } from "@prisma/client";
 import { Composer, Keyboard } from "grammy";
 import { or } from "grammy-guard";
@@ -42,6 +43,7 @@ featureForOwner.command("admin", logHandle("command-admin"), (ctx) =>
 featureForOwner.filter(
   userRequests.filter("make-admin"),
   logHandle("user-shared-for-admin-role"),
+  chatAction("typing"),
   async (ctx) => {
     const { userService } = ctx.container.items;
     const userId = ctx.message.user_shared.user_id;
@@ -122,19 +124,25 @@ featureForOwner.filter(
   }
 );
 
-feature.command("stats", logHandle("command-stats"), async (ctx) => {
-  const { userService } = ctx.container.items;
+feature.command(
+  "stats",
+  logHandle("command-stats"),
+  chatAction("typing"),
+  async (ctx) => {
+    const { userService } = ctx.container.items;
 
-  const usersCount = await userService.count();
+    const usersCount = await userService.count();
 
-  const stats = `Users count: ${usersCount}`;
+    const stats = `Users count: ${usersCount}`;
 
-  return ctx.reply(stats);
-});
+    return ctx.reply(stats);
+  }
+);
 
 feature.command(
   "setcommands",
   logHandle("command-setcommands"),
+  chatAction("typing"),
   async (ctx) => {
     const { userService, config } = ctx.container.items;
 
