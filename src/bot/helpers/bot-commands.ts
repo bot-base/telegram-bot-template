@@ -36,11 +36,14 @@ export const getPrivateChatAdminCommands = (options: {
   const commands = [
     {
       command: "stats",
-      description: "Stats",
+      description: i18n.t(options.localeCode, "stats_command.description"),
     },
     {
       command: "setcommands",
-      description: "Set bot commands",
+      description: i18n.t(
+        options.localeCode,
+        "setcommands_command.description"
+      ),
     },
   ];
 

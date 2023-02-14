@@ -3,7 +3,7 @@ import { hydrateReply, parseMode } from "@grammyjs/parse-mode";
 import { Bot as TelegramBot } from "grammy";
 import {
   botAdminFeature,
-  languageSelectFeature,
+  languageFeature,
   welcomeFeature,
 } from "~/bot/features";
 import { errorHandler, unhandledHandler } from "~/bot/handlers";
@@ -48,7 +48,7 @@ export const createBot = (token: string, container: Container) => {
   bot.use(welcomeFeature);
 
   if (isMultipleLocales) {
-    bot.use(languageSelectFeature);
+    bot.use(languageFeature);
   }
 
   bot.use(unhandledHandler);
