@@ -1,4 +1,4 @@
-import type { Prisma } from "@prisma/client";
+import { Prisma, Role } from "@prisma/client";
 import _ from "lodash";
 import type { PartialDeep } from "type-fest";
 import type { Logger } from "~/logger";
@@ -19,8 +19,30 @@ export class UserService {
 
   prisma: Dependencies["prisma"];
 
-  findMany<T extends Prisma.UserFindManyArgs>(args?: T) {
-    return this.prisma.user.findMany(args);
+  findAdminUsers<T extends Prisma.UserArgs>(
+    select?: Prisma.SelectSubset<T, Prisma.UserArgs>
+  ) {
+    const query = {
+      where: {
+        role: Role.ADMIN,
+      },
+    } satisfies Prisma.UserFindManyArgs;
+
+    return this.prisma.user.findMany<T & typeof query>(_.merge(query, select));
+  }
+
+  findOwnerUserOrThrow<T extends Prisma.UserArgs>(
+    select?: Prisma.SelectSubset<T, Prisma.UserArgs>
+  ) {
+    const query = {
+      where: {
+        role: Role.OWNER,
+      },
+    } satisfies Prisma.UserFindFirstArgs;
+
+    return this.prisma.user.findFirstOrThrow<T & typeof query>(
+      _.merge(query, select)
+    );
   }
 
   count<T extends Prisma.UserCountArgs>(args?: T) {
