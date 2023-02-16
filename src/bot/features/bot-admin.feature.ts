@@ -144,7 +144,7 @@ feature.command(
   logHandle("command-setcommands"),
   chatAction("typing"),
   async (ctx) => {
-    const { userService, config } = ctx.container.items;
+    const { userService } = ctx.container.items;
 
     // set private chat commands
     await ctx.api.setMyCommands(
@@ -178,7 +178,13 @@ feature.command(
       await Promise.all(requests);
     }
 
-    const ownerLocaleCode = await ctx.i18n.getLocale();
+    const owner = await userService.findOwnerUserOrThrow({
+      select: {
+        telegramId: true,
+        languageCode: true,
+      },
+    });
+    const ownerLocaleCode = owner.languageCode ?? DEFAULT_LANGUAGE_CODE;
     // set private chat commands for owner
     await ctx.api.setMyCommands(
       [
@@ -192,23 +198,18 @@ feature.command(
         }),
         {
           command: "admin",
-          description: ctx.t("admin_command.description"),
+          description: i18n.t(ownerLocaleCode, "admin_command.description"),
         },
       ],
       {
         scope: {
           type: "chat",
-          chat_id: config.BOT_ADMIN_USER_ID,
+          chat_id: Number(owner.telegramId),
         },
       }
     );
 
-    const adminUsers = await userService.findMany({
-      where: {
-        role: Role.ADMIN,
-      },
-    });
-
+    const adminUsers = await userService.findAdminUsers();
     if (!_.isEmpty(adminUsers)) {
       const requests = adminUsers.map((adminUser) =>
         ctx.api.setMyCommands(

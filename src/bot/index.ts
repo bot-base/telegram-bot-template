@@ -1,8 +1,8 @@
 import { autoChatAction } from "@grammyjs/auto-chat-action";
 import { hydrate } from "@grammyjs/hydrate";
 import { hydrateReply, parseMode } from "@grammyjs/parse-mode";
-import { Bot as TelegramBot } from "grammy";
-import { createContextConstructor } from "~/bot/context";
+import { Bot as TelegramBot, BotConfig, StorageAdapter } from "grammy";
+import { Context, createContextConstructor } from "~/bot/context";
 import {
   botAdminFeature,
   languageFeature,
@@ -17,13 +17,21 @@ import {
   setScope,
   updateLogger,
 } from "~/bot/middlewares";
-import { apiCallsLogger } from "~/bot/transformers";
 import { Container } from "~/container";
 
-export const createBot = (token: string, container: Container) => {
-  const { config, logger, botSessionStorage } = container.items;
+type Dependencies = {
+  container: Container;
+  sessionStorage: StorageAdapter<unknown>;
+};
 
+export const createBot = (
+  token: string,
+  { container, sessionStorage }: Dependencies,
+  botConfig?: Omit<BotConfig<Context>, "ContextConstructor">
+) => {
+  const { config } = container.items;
   const bot = new TelegramBot(token, {
+    ...botConfig,
     ContextConstructor: createContextConstructor(container),
   });
 
@@ -32,7 +40,6 @@ export const createBot = (token: string, container: Container) => {
   bot.api.config.use(parseMode("HTML"));
 
   if (config.isDev) {
-    bot.api.config.use(apiCallsLogger(logger));
     bot.use(updateLogger());
   }
 
@@ -40,7 +47,7 @@ export const createBot = (token: string, container: Container) => {
   bot.use(autoChatAction());
   bot.use(hydrateReply);
   bot.use(hydrate());
-  bot.use(session(botSessionStorage));
+  bot.use(session(sessionStorage));
   bot.use(setScope());
   bot.use(i18n());
 
