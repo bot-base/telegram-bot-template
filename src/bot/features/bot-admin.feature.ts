@@ -45,13 +45,14 @@ featureForOwner.filter(
   logHandle("user-shared-for-admin-role"),
   chatAction("typing"),
   async (ctx) => {
-    const { userService } = ctx.container.items;
     const userId = ctx.message.user_shared.user_id;
 
-    let user = await userService.findByTelegramId(userId, {
+    let user = await ctx.prisma.user.findUnique({
+      where: ctx.prisma.user.byTelegramId(userId),
       select: {
         id: true,
-        role: true,
+        languageCode: true,
+        ...ctx.prisma.user.withRoles(),
       },
     });
 
@@ -59,20 +60,17 @@ featureForOwner.filter(
       return ctx.reply(ctx.t("admin.user-not-found"));
     }
 
-    user = await userService.updateByTelegramId(
-      userId,
-      {
-        data: {
-          role: user.role === Role.ADMIN ? Role.USER : Role.ADMIN,
-        },
+    user = await ctx.prisma.user.update({
+      where: ctx.prisma.user.byTelegramId(userId),
+      data: {
+        role: user.role === Role.ADMIN ? Role.USER : Role.ADMIN,
       },
-      {
-        select: {
-          id: true,
-          role: true,
-        },
-      }
-    );
+      select: {
+        id: true,
+        languageCode: true,
+        ...ctx.prisma.user.withRoles(),
+      },
+    });
 
     const notifyOwner = ctx.reply(
       ctx.t("admin.user-role-changed", {
@@ -93,32 +91,31 @@ featureForOwner.filter(
       })
     );
 
-    const updateCommandsForUser =
-      user.role === Role.ADMIN
-        ? ctx.api.setMyCommands(
-            [
-              ...getPrivateChatCommands({
-                localeCode: DEFAULT_LANGUAGE_CODE,
-                includeLanguageCommand: isMultipleLocales,
-              }),
-              ...getPrivateChatAdminCommands({
-                localeCode: DEFAULT_LANGUAGE_CODE,
-                includeLanguageCommand: isMultipleLocales,
-              }),
-            ],
-            {
-              scope: {
-                type: "chat",
-                chat_id: Number(userId),
-              },
-            }
-          )
-        : ctx.api.deleteMyCommands({
+    const updateCommandsForUser = user.isAdmin
+      ? ctx.api.setMyCommands(
+          [
+            ...getPrivateChatCommands({
+              localeCode: user.languageCode ?? DEFAULT_LANGUAGE_CODE,
+              includeLanguageCommand: isMultipleLocales,
+            }),
+            ...getPrivateChatAdminCommands({
+              localeCode: user.languageCode ?? DEFAULT_LANGUAGE_CODE,
+              includeLanguageCommand: isMultipleLocales,
+            }),
+          ],
+          {
             scope: {
               type: "chat",
               chat_id: Number(userId),
             },
-          });
+          }
+        )
+      : ctx.api.deleteMyCommands({
+          scope: {
+            type: "chat",
+            chat_id: Number(userId),
+          },
+        });
 
     return Promise.all([notifyOwner, notifyUser, updateCommandsForUser]);
   }
@@ -129,13 +126,9 @@ feature.command(
   logHandle("command-stats"),
   chatAction("typing"),
   async (ctx) => {
-    const { userService } = ctx.container.items;
+    const usersCount = await ctx.prisma.user.count();
 
-    const usersCount = await userService.count();
-
-    const stats = `Users count: ${usersCount}`;
-
-    return ctx.reply(stats);
+    return ctx.reply(`Users count: ${usersCount}`);
   }
 );
 
@@ -144,8 +137,6 @@ feature.command(
   logHandle("command-setcommands"),
   chatAction("typing"),
   async (ctx) => {
-    const { userService } = ctx.container.items;
-
     // set private chat commands
     await ctx.api.setMyCommands(
       getPrivateChatCommands({
@@ -178,27 +169,28 @@ feature.command(
       await Promise.all(requests);
     }
 
-    const owner = await userService.findOwnerUserOrThrow({
+    const owner = await ctx.prisma.user.findFirstOrThrow({
+      where: ctx.prisma.user.hasOwnerRole(),
       select: {
         telegramId: true,
         languageCode: true,
       },
     });
-    const ownerLocaleCode = owner.languageCode ?? DEFAULT_LANGUAGE_CODE;
+    const ownerLanguageCode = owner.languageCode ?? DEFAULT_LANGUAGE_CODE;
     // set private chat commands for owner
     await ctx.api.setMyCommands(
       [
         ...getPrivateChatCommands({
-          localeCode: ownerLocaleCode,
+          localeCode: ownerLanguageCode,
           includeLanguageCommand: isMultipleLocales,
         }),
         ...getPrivateChatAdminCommands({
-          localeCode: ownerLocaleCode,
+          localeCode: ownerLanguageCode,
           includeLanguageCommand: isMultipleLocales,
         }),
         {
           command: "admin",
-          description: i18n.t(ownerLocaleCode, "admin_command.description"),
+          description: i18n.t(ownerLanguageCode, "admin_command.description"),
         },
       ],
       {
@@ -209,24 +201,30 @@ feature.command(
       }
     );
 
-    const adminUsers = await userService.findAdminUsers();
+    const adminUsers = await ctx.prisma.user.findMany({
+      where: ctx.prisma.user.hasAdminRole(),
+      select: {
+        telegramId: true,
+        languageCode: true,
+      },
+    });
     if (!_.isEmpty(adminUsers)) {
-      const requests = adminUsers.map((adminUser) =>
+      const requests = adminUsers.map((admin) =>
         ctx.api.setMyCommands(
           [
             ...getPrivateChatCommands({
-              localeCode: DEFAULT_LANGUAGE_CODE,
+              localeCode: admin.languageCode ?? DEFAULT_LANGUAGE_CODE,
               includeLanguageCommand: isMultipleLocales,
             }),
             ...getPrivateChatAdminCommands({
-              localeCode: DEFAULT_LANGUAGE_CODE,
+              localeCode: admin.languageCode ?? DEFAULT_LANGUAGE_CODE,
               includeLanguageCommand: isMultipleLocales,
             }),
           ],
           {
             scope: {
               type: "chat",
-              chat_id: Number(adminUser.telegramId),
+              chat_id: Number(admin.telegramId),
             },
           }
         )

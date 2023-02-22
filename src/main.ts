@@ -7,7 +7,7 @@ import { container } from "~/container";
 import { createServer } from "~/server";
 
 async function main() {
-  const { config, logger, prisma, userService } = container.items;
+  const { config, logger, prisma } = container.items;
   const bot = createBot(config.BOT_TOKEN, {
     container,
     sessionStorage: new RedisAdapter({
@@ -29,7 +29,8 @@ async function main() {
   await prisma.$connect();
 
   // update bot owner role
-  await userService.updateByTelegramId(config.BOT_ADMIN_USER_ID, {
+  await prisma.user.update({
+    where: prisma.user.byTelegramId(config.BOT_ADMIN_USER_ID),
     data: {
       role: Role.OWNER,
     },
