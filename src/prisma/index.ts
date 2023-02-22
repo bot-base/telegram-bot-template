@@ -1,6 +1,8 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 import { Logger } from "~/logger";
 
+import userExtension from "~/prisma/user.extension";
+
 const parseParameters = (parameters: string): unknown[] => {
   try {
     return JSON.parse(parameters) as unknown[];
@@ -79,7 +81,7 @@ export const createPrisma = (logger: Logger) => {
     });
   });
 
-  return prisma;
+  return prisma.$extends(userExtension);
 };
 
 export type PrismaClientX = ReturnType<typeof createPrisma>;

@@ -2,7 +2,6 @@ import { createContainer } from "@deptyped/iti";
 import { config } from "~/config";
 import { createLogger } from "~/logger";
 import { createPrisma } from "~/prisma";
-import { UserService } from "~/services";
 
 export const createAppContainer = () =>
   createContainer()
@@ -14,13 +13,6 @@ export const createAppContainer = () =>
     }))
     .add((items) => ({
       prisma: () => createPrisma(items.logger),
-    }))
-    .add(({ prisma, logger }) => ({
-      userService: () =>
-        new UserService({
-          prisma,
-          logger,
-        }),
     }));
 
 export type Container = ReturnType<typeof createAppContainer>;

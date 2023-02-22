@@ -1,4 +1,4 @@
-import { User } from "@prisma/client";
+import { UserPayload } from "@prisma/client";
 import { Api, Context as DefaultContext, RawApi, SessionFlavor } from "grammy";
 import { Update, UserFromGetMe } from "grammy/types";
 import { Container } from "~/container";
@@ -8,13 +8,20 @@ import { AutoChatActionFlavor } from "@grammyjs/auto-chat-action";
 import { HydrateFlavor } from "@grammyjs/hydrate";
 import { I18nFlavor } from "@grammyjs/i18n";
 import { ParseModeFlavor } from "@grammyjs/parse-mode";
+import { PrismaClientX } from "~/prisma";
+
+type ScopeUser = Omit<
+  UserPayload<PrismaClientX["$extends"]["extArgs"]>["scalars"],
+  "updatedAt" | "createdAt"
+>;
 
 export interface ContextScope {
-  user?: User;
+  user?: ScopeUser;
 }
 
 type ExtendedContextFlavor = {
   container: Container;
+  prisma: PrismaClientX;
   logger: Logger;
   scope: ContextScope;
 };
@@ -42,6 +49,8 @@ export function createContextConstructor(container: Container) {
   return class extends DefaultContext implements ExtendedContextFlavor {
     container: Container;
 
+    prisma: PrismaClientX;
+
     logger: Logger;
 
     scope: ContextScope;
@@ -50,6 +59,7 @@ export function createContextConstructor(container: Container) {
       super(update, api, me);
 
       this.container = container;
+      this.prisma = container.items.prisma;
       this.logger = container.items.logger;
       this.scope = {};
     }

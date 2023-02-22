@@ -19,13 +19,13 @@ feature.callbackQuery(
   changeLanguageData.filter(),
   logHandle("keyboard-language-select"),
   async (ctx) => {
-    const { userService } = ctx.container.items;
     const { code: languageCode } = changeLanguageData.unpack(
       ctx.callbackQuery.data
     );
 
     if (i18n.locales.includes(languageCode)) {
-      ctx.scope.user = await userService.updateByTelegramId(ctx.from.id, {
+      ctx.scope.user = await ctx.prisma.user.update({
+        where: ctx.prisma.user.byTelegramId(ctx.from.id),
         data: {
           languageCode,
         },
