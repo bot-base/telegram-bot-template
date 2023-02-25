@@ -1,6 +1,6 @@
+import { Update, UserFromGetMe } from "@grammyjs/types";
 import { UserPayload } from "@prisma/client";
 import { Api, Context as DefaultContext, RawApi, SessionFlavor } from "grammy";
-import { Update, UserFromGetMe } from "grammy/types";
 import { Container } from "~/container";
 import { Logger } from "~/logger";
 

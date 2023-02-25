@@ -1,5 +1,5 @@
+import { Chat, User } from "@grammyjs/types";
 import { Middleware } from "grammy";
-import { Chat, User } from "grammy/types";
 import { Context } from "~/bot/context";
 import { updateHandledCounter } from "~/metrics";
 

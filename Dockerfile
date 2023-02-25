@@ -30,7 +30,7 @@ FROM base AS runner
 COPY . .
 
 # Install only production app dependencies
-RUN npm ci --only=production
+RUN npm ci --omit=dev
 
 # Copy Prisma client
 COPY --from=builder /usr/src/node_modules/.prisma ./node_modules/.prisma
