@@ -1,4 +1,4 @@
-import { createContainer } from "@deptyped/iti";
+import { createContainer } from "iti";
 import { config } from "~/config";
 import { createLogger } from "~/logger";
 import { createPrisma } from "~/prisma";
