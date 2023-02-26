@@ -29,9 +29,13 @@ async function main() {
   await prisma.$connect();
 
   // update bot owner role
-  await prisma.user.update({
+  await prisma.user.upsert({
     where: prisma.user.byTelegramId(config.BOT_ADMIN_USER_ID),
-    data: {
+    create: {
+      telegramId: config.BOT_ADMIN_USER_ID,
+      role: Role.OWNER,
+    },
+    update: {
       role: Role.OWNER,
     },
   });
