@@ -1,5 +1,6 @@
 import { ErrorHandler } from "grammy";
 import { Context } from "~/bot/context";
+import { getFullMetadata } from "~/bot/helpers/logging";
 
 export const errorHandler: ErrorHandler<Context> = (error) => {
   const { ctx } = error;
@@ -7,6 +8,6 @@ export const errorHandler: ErrorHandler<Context> = (error) => {
 
   ctx.logger.error({
     err,
-    ...ctx.update,
+    ...getFullMetadata(ctx),
   });
 };

@@ -9,6 +9,7 @@ import {
   welcomeFeature,
 } from "~/bot/features";
 import { errorHandler, unhandledHandler } from "~/bot/handlers";
+import { logHandle } from "~/bot/helpers/logging";
 import { isMultipleLocales } from "~/bot/i18n";
 import {
   i18n,
@@ -60,7 +61,7 @@ export const createBot = (
     bot.use(languageFeature);
   }
 
-  bot.use(unhandledHandler);
+  bot.use(logHandle("unhandled"), unhandledHandler);
 
   if (config.isDev) {
     bot.catch(errorHandler);

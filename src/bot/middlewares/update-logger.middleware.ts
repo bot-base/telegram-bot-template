@@ -1,5 +1,6 @@
 import { Middleware } from "grammy";
 import { Context } from "~/bot/context";
+import { getFullMetadata } from "~/bot/helpers/logging";
 
 export const updateLogger = (): Middleware<Context> => (ctx, next) => {
   ctx.api.config.use((prev, method, payload, signal) => {
@@ -14,7 +15,7 @@ export const updateLogger = (): Middleware<Context> => (ctx, next) => {
 
   ctx.logger.debug({
     msg: "update received",
-    ...ctx.update,
+    ...getFullMetadata(ctx),
   });
 
   return next();

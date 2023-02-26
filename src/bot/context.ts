@@ -60,7 +60,9 @@ export function createContextConstructor(container: Container) {
 
       this.container = container;
       this.prisma = container.items.prisma;
-      this.logger = container.items.logger;
+      this.logger = container.items.logger.child({
+        update_id: this.update.update_id,
+      });
       this.scope = {};
     }
   } as unknown as new (
