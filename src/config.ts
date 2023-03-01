@@ -45,8 +45,6 @@ const configSchema = z.object({
   BOT_ADMIN_USER_ID: z.coerce.number().finite(),
 });
 
-export type Config = z.infer<typeof configSchema>;
-
 const parseConfig = (env: NodeJS.ProcessEnv) => {
   const config = configSchema.parse(env);
 
@@ -56,5 +54,7 @@ const parseConfig = (env: NodeJS.ProcessEnv) => {
     isProd: process.env.NODE_ENV === "production",
   };
 };
+
+export type Config = ReturnType<typeof parseConfig>;
 
 export const config = parseConfig(process.env);
