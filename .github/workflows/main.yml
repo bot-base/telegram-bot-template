@@ -34,7 +34,7 @@ jobs:
         if: ${{ github.ref != 'refs/heads/main' }}
         with:
           context: .
-          push: true
+          push: ${{ !github.event.pull_request.head.repo.fork }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
       - name: Build and Push Latest Docker Image
