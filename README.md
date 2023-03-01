@@ -93,20 +93,20 @@ cp .example.postgres.env docker-compose.prod.postgres.env
     npm i
 
     # run migrations
-    docker-compose run bot npx prisma migrate deploy
+    docker compose run bot npx prisma migrate deploy
 
     # run bot
-    docker-compose up
+    docker compose up
     ```
 
     Production mode:
 
     ```bash
     # run migrations
-    docker-compose -f docker-compose.yml -f docker-compose.prod.yml run bot npx prisma migrate deploy
+    docker compose -f docker-compose.yml -f docker-compose.prod.yml run bot npx prisma migrate deploy
 
     # run bot
-    docker-compose -f docker-compose.yml -f docker-compose.prod.yml up
+    docker compose -f docker-compose.yml -f docker-compose.prod.yml up
     ```
 
 </details>

@@ -1,7 +1,9 @@
+import { chatAction } from "@grammyjs/auto-chat-action";
 import { Role } from "@prisma/client";
-import { Composer } from "grammy";
+import { Composer, Keyboard } from "grammy";
 import { or } from "grammy-guard";
 import _ from "lodash";
+import type { Context } from "~/bot/context";
 import { isAdminUser, isOwnerUser } from "~/bot/filters";
 import {
   DEFAULT_LANGUAGE_CODE,
@@ -10,8 +12,8 @@ import {
   getPrivateChatCommands,
 } from "~/bot/helpers/bot-commands";
 import { logHandle } from "~/bot/helpers/logging";
+import { userRequests } from "~/bot/helpers/user-requests";
 import { i18n, isMultipleLocales } from "~/bot/i18n";
-import { Context } from "~/bot/types";
 
 const composer = new Composer<Context>();
 
@@ -21,57 +23,83 @@ const feature = composer
 
 const featureForOwner = composer.chatType("private").filter(isOwnerUser);
 
-featureForOwner.command("admin", logHandle("command-admin"), async (ctx) => {
-  const { userService, config } = ctx.container.items;
+featureForOwner.command("admin", logHandle("command-admin"), (ctx) =>
+  ctx.reply(ctx.t("admin.select-user"), {
+    reply_markup: {
+      resize_keyboard: true,
+      keyboard: new Keyboard()
+        .requestUser(
+          ctx.t("admin.select-user-btn"),
+          userRequests.getId("make-admin"),
+          {
+            user_is_bot: false,
+          }
+        )
+        .build(),
+    },
+  })
+);
 
-  if (ctx.match === "") {
-    return ctx.reply(
-      `Please, pass the Telegram user ID after the command (e.g. <code>/admin ${config.BOT_ADMIN_USER_ID}</code>)`
+featureForOwner.filter(
+  userRequests.filter("make-admin"),
+  logHandle("user-shared-for-admin-role"),
+  chatAction("typing"),
+  async (ctx) => {
+    const userId = ctx.message.user_shared.user_id;
+
+    let user = await ctx.prisma.user.findUnique({
+      where: ctx.prisma.user.byTelegramId(userId),
+      select: {
+        id: true,
+        languageCode: true,
+        ...ctx.prisma.user.withRoles(),
+      },
+    });
+
+    if (user === null) {
+      return ctx.reply(ctx.t("admin.user-not-found"));
+    }
+
+    user = await ctx.prisma.user.update({
+      where: ctx.prisma.user.byTelegramId(userId),
+      data: {
+        role: user.role === Role.ADMIN ? Role.USER : Role.ADMIN,
+      },
+      select: {
+        id: true,
+        languageCode: true,
+        ...ctx.prisma.user.withRoles(),
+      },
+    });
+
+    const notifyOwner = ctx.reply(
+      ctx.t("admin.user-role-changed", {
+        id: user.id,
+        role: user.role,
+      }),
+      {
+        reply_markup: {
+          remove_keyboard: true,
+        },
+      }
     );
-  }
 
-  const userId = parseInt(ctx.match, 10);
+    const notifyUser = ctx.api.sendMessage(
+      userId,
+      ctx.t("admin.your-role-changed", {
+        role: user.role,
+      })
+    );
 
-  if (Number.isNaN(userId)) {
-    return ctx.reply("Invalid user ID");
-  }
-
-  if (userId === config.BOT_ADMIN_USER_ID) {
-    return ctx.reply("You're already an administrator");
-  }
-
-  let user = await userService.findByTelegramId(userId, {
-    select: {
-      id: true,
-      role: true,
-    },
-  });
-
-  if (user === null) {
-    return ctx.reply("User not found");
-  }
-
-  user = await userService.updateByTelegramId(userId, {
-    data: {
-      role: user.role === Role.ADMIN ? Role.USER : Role.ADMIN,
-    },
-  });
-
-  const userRoleLabel =
-    user.role === Role.ADMIN ? "an administrator" : "a regular user";
-
-  return Promise.all([
-    ctx.reply(`User with ID ${user.id} is now ${userRoleLabel}`),
-    ctx.api.sendMessage(userId, `You're ${userRoleLabel} now`),
-    user.role === Role.ADMIN
+    const updateCommandsForUser = user.isAdmin
       ? ctx.api.setMyCommands(
           [
             ...getPrivateChatCommands({
-              localeCode: DEFAULT_LANGUAGE_CODE,
+              localeCode: user.languageCode ?? DEFAULT_LANGUAGE_CODE,
               includeLanguageCommand: isMultipleLocales,
             }),
             ...getPrivateChatAdminCommands({
-              localeCode: DEFAULT_LANGUAGE_CODE,
+              localeCode: user.languageCode ?? DEFAULT_LANGUAGE_CODE,
               includeLanguageCommand: isMultipleLocales,
             }),
           ],
@@ -87,30 +115,28 @@ featureForOwner.command("admin", logHandle("command-admin"), async (ctx) => {
             type: "chat",
             chat_id: Number(userId),
           },
-        }),
-  ]);
-});
+        });
 
-feature.command("stats", logHandle("command-stats"), async (ctx) => {
-  const { userService } = ctx.container.items;
+    return Promise.all([notifyOwner, notifyUser, updateCommandsForUser]);
+  }
+);
 
-  await ctx.replyWithChatAction("typing");
+feature.command(
+  "stats",
+  logHandle("command-stats"),
+  chatAction("typing"),
+  async (ctx) => {
+    const usersCount = await ctx.prisma.user.count();
 
-  const usersCount = await userService.count();
-
-  const stats = `Users count: ${usersCount}`;
-
-  return ctx.reply(stats);
-});
+    return ctx.reply(`Users count: ${usersCount}`);
+  }
+);
 
 feature.command(
   "setcommands",
   logHandle("command-setcommands"),
+  chatAction("typing"),
   async (ctx) => {
-    const { userService, config } = ctx.container.items;
-
-    await ctx.replyWithChatAction("typing");
-
     // set private chat commands
     await ctx.api.setMyCommands(
       getPrivateChatCommands({
@@ -143,53 +169,62 @@ feature.command(
       await Promise.all(requests);
     }
 
-    // set private chat superadmin commands
+    const owner = await ctx.prisma.user.findFirstOrThrow({
+      where: ctx.prisma.user.hasOwnerRole(),
+      select: {
+        telegramId: true,
+        languageCode: true,
+      },
+    });
+    const ownerLanguageCode = owner.languageCode ?? DEFAULT_LANGUAGE_CODE;
+    // set private chat commands for owner
     await ctx.api.setMyCommands(
       [
         ...getPrivateChatCommands({
-          localeCode: DEFAULT_LANGUAGE_CODE,
+          localeCode: ownerLanguageCode,
           includeLanguageCommand: isMultipleLocales,
         }),
         ...getPrivateChatAdminCommands({
-          localeCode: DEFAULT_LANGUAGE_CODE,
+          localeCode: ownerLanguageCode,
           includeLanguageCommand: isMultipleLocales,
         }),
         {
           command: "admin",
-          description: "Make user an administrator",
+          description: i18n.t(ownerLanguageCode, "admin_command.description"),
         },
       ],
       {
         scope: {
           type: "chat",
-          chat_id: config.BOT_ADMIN_USER_ID,
+          chat_id: Number(owner.telegramId),
         },
       }
     );
 
-    const adminUsers = await userService.findMany({
-      where: {
-        role: Role.ADMIN,
+    const adminUsers = await ctx.prisma.user.findMany({
+      where: ctx.prisma.user.hasAdminRole(),
+      select: {
+        telegramId: true,
+        languageCode: true,
       },
     });
-
     if (!_.isEmpty(adminUsers)) {
-      const requests = adminUsers.map((adminUser) =>
+      const requests = adminUsers.map((admin) =>
         ctx.api.setMyCommands(
           [
             ...getPrivateChatCommands({
-              localeCode: DEFAULT_LANGUAGE_CODE,
+              localeCode: admin.languageCode ?? DEFAULT_LANGUAGE_CODE,
               includeLanguageCommand: isMultipleLocales,
             }),
             ...getPrivateChatAdminCommands({
-              localeCode: DEFAULT_LANGUAGE_CODE,
+              localeCode: admin.languageCode ?? DEFAULT_LANGUAGE_CODE,
               includeLanguageCommand: isMultipleLocales,
             }),
           ],
           {
             scope: {
               type: "chat",
-              chat_id: Number(adminUser.telegramId),
+              chat_id: Number(admin.telegramId),
             },
           }
         )
@@ -210,7 +245,7 @@ feature.command(
       }
     );
 
-    return ctx.reply("Commands updated");
+    return ctx.reply(ctx.t("admin.commands-updated"));
   }
 );
 
