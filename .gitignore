@@ -130,3 +130,6 @@ dist
 data/
 
 *.env
+
+# Jetbrains IDE
+.idea/
