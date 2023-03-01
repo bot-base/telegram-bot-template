@@ -1,4 +1,3 @@
-export * from "./extend-context.middleware";
 export * from "./i18n.middleware";
 export * from "./metrics.middleware";
 export * from "./session.middleware";

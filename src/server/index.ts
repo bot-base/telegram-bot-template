@@ -3,7 +3,7 @@ import { BotError, webhookCallback } from "grammy";
 import { register } from "prom-client";
 import type { Bot } from "~/bot";
 import { errorHandler } from "~/bot/handlers";
-import { Container } from "~/container";
+import type { Container } from "~/container";
 
 export const createServer = async (bot: Bot, container: Container) => {
   const { logger, prisma } = container.items;

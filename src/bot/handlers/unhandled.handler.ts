@@ -1,5 +1,4 @@
-import { Middleware } from "grammy";
-import { Context } from "~/bot/types";
+import type { Context } from "~/bot/context";
 
-export const unhandledHandler: Middleware<Context> = (ctx) =>
-  ctx.reply(ctx.t("unhandled"));
+export const unhandledHandler = <C extends Context>(ctx: C) =>
+  ctx.chat && ctx.reply(ctx.t("unhandled"));

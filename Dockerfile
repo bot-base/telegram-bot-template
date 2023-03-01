@@ -21,20 +21,19 @@ RUN npm ci \
 # Bundle app source
 COPY . .
 
-# Build app
-RUN npm run typecheck \
-    && npm prune --omit=dev
+# Type check app
+RUN npm run typecheck
 
 FROM base AS runner
 
-# Copy from build image
-COPY --from=builder /usr/src/node_modules ./node_modules
-COPY --from=builder /usr/src/src ./src
-COPY --from=builder /usr/src/package*.json ./
-COPY --from=builder /usr/src/tsconfig*.json ./
+# Bundle app source
+COPY . .
 
-COPY locales ./locales
-COPY prisma ./prisma
+# Install only production app dependencies
+RUN npm ci --omit=dev
+
+# Copy Prisma client
+COPY --from=builder /usr/src/node_modules/.prisma ./node_modules/.prisma
 
 USER node
 
