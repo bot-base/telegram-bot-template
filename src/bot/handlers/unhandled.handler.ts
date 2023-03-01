@@ -1,4 +1,4 @@
-import { Context } from "~/bot/context";
+import type { Context } from "~/bot/context";
 
 export const unhandledHandler = <C extends Context>(ctx: C) =>
-  ctx.reply(ctx.t("unhandled"));
+  ctx.chat && ctx.reply(ctx.t("unhandled"));

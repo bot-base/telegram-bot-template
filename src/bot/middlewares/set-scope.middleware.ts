@@ -1,5 +1,5 @@
 import { Middleware } from "grammy";
-import { Context } from "~/bot/context";
+import type { Context } from "~/bot/context";
 
 export const setScope = (): Middleware<Context> => async (ctx, next) => {
   if (ctx.from?.is_bot === false) {

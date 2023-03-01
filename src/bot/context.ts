@@ -1,7 +1,7 @@
 import { Update, UserFromGetMe } from "@grammyjs/types";
 import { UserPayload } from "@prisma/client";
-import { Api, Context as DefaultContext, RawApi, SessionFlavor } from "grammy";
-import { Container } from "~/container";
+import { Context as DefaultContext, SessionFlavor, type Api } from "grammy";
+import type { Container } from "~/container";
 import { Logger } from "~/logger";
 
 import { AutoChatActionFlavor } from "@grammyjs/auto-chat-action";
@@ -65,9 +65,5 @@ export function createContextConstructor(container: Container) {
       });
       this.scope = {};
     }
-  } as unknown as new (
-    update: Update,
-    api: Api<RawApi>,
-    me: UserFromGetMe
-  ) => Context;
+  } as unknown as new (update: Update, api: Api, me: UserFromGetMe) => Context;
 }

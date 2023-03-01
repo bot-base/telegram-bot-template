@@ -1,6 +1,6 @@
 import { Middleware } from "grammy";
 import _ from "lodash";
-import { Context } from "~/bot/context";
+import type { Context } from "~/bot/context";
 import { updateHandledCounter } from "~/metrics";
 
 export const getChatInfo = (ctx: Context) => {

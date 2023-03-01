@@ -26,7 +26,8 @@
         "prefer-arrow-callback": "off",
         "consistent-return": "off",
         "import/prefer-default-export": "off",
-        "import/extensions": "off"
+        "import/extensions": "off",
+        "no-underscore-dangle": "off"
     },
     "settings": {
         "import/parsers": {

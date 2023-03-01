@@ -3,7 +3,7 @@ import { Role } from "@prisma/client";
 import { Composer, Keyboard } from "grammy";
 import { or } from "grammy-guard";
 import _ from "lodash";
-import { Context } from "~/bot/context";
+import type { Context } from "~/bot/context";
 import { isAdminUser, isOwnerUser } from "~/bot/filters";
 import {
   DEFAULT_LANGUAGE_CODE,

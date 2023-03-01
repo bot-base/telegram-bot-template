@@ -18,7 +18,7 @@ import {
   setScope,
   updateLogger,
 } from "~/bot/middlewares";
-import { Container } from "~/container";
+import type { Container } from "~/container";
 
 type Dependencies = {
   container: Container;

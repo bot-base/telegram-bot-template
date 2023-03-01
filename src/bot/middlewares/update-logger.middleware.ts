@@ -1,5 +1,5 @@
 import { Middleware } from "grammy";
-import { Context } from "~/bot/context";
+import type { Context } from "~/bot/context";
 import { getFullMetadata } from "~/bot/helpers/logging";
 
 export const updateLogger = (): Middleware<Context> => (ctx, next) => {
