@@ -21,7 +21,7 @@
     "@grammyjs/i18n": "1.0.1",
     "@grammyjs/parse-mode": "1.6.0",
     "@grammyjs/storage-redis": "2.1.4",
-    "@grammyjs/types": "2.12.1",
+    "@grammyjs/types": "3.0.3",
     "@prisma/client": "4.11.0",
     "callback-data": "1.0.2",
     "dotenv": "16.0.3",
