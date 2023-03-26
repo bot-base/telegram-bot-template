@@ -21,7 +21,7 @@
     "@grammyjs/i18n": "1.0.1",
     "@grammyjs/parse-mode": "1.6.0",
     "@grammyjs/storage-redis": "2.1.4",
-    "@grammyjs/types": "2.12.1",
+    "@grammyjs/types": "3.0.3",
     "@prisma/client": "4.11.0",
     "callback-data": "1.0.2",
     "dotenv": "16.0.3",
@@ -33,10 +33,10 @@
     "iti": "0.6.0",
     "lodash": "4.17.21",
     "pino": "8.11.0",
-    "pino-pretty": "9.4.0",
+    "pino-pretty": "10.0.0",
     "prom-client": "14.2.0",
     "tsx": "3.12.6",
-    "zod": "^3.20.2"
+    "zod": "3.21.4"
   },
   "devDependencies": {
     "@types/debug": "4.1.7",
@@ -59,7 +59,7 @@
     "rimraf": "4.4.1",
     "tsc-watch": "6.0.0",
     "type-fest": "3.7.0",
-    "typescript": "4.9.5"
+    "typescript": "5.0.2"
   },
   "engines": {
     "node": ">=18.0.0",
