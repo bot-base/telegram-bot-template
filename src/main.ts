@@ -8,7 +8,7 @@ import { createServer } from "~/server";
 
 const container = createAppContainer();
 
-async function main() {
+try {
   const { config, logger, prisma } = container;
   const bot = createBot(config.BOT_TOKEN, {
     container,
@@ -61,9 +61,7 @@ async function main() {
         }),
     });
   }
-}
-
-main().catch((err) => {
+} catch (err) {
   container.logger.error(err);
   process.exit(1);
-});
+}
