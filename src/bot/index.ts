@@ -1,7 +1,7 @@
 import { autoChatAction } from "@grammyjs/auto-chat-action";
 import { hydrate } from "@grammyjs/hydrate";
 import { hydrateReply, parseMode } from "@grammyjs/parse-mode";
-import { Bot as TelegramBot, BotConfig, StorageAdapter } from "grammy";
+import { BotConfig, StorageAdapter, Bot as TelegramBot } from "grammy";
 import { Context, createContextConstructor } from "~/bot/context";
 import {
   botAdminFeature,
