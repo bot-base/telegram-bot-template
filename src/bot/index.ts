@@ -6,10 +6,10 @@ import { Context, createContextConstructor } from "~/bot/context";
 import {
   botAdminFeature,
   languageFeature,
+  unhandledFeature,
   welcomeFeature,
 } from "~/bot/features";
-import { errorHandler, unhandledHandler } from "~/bot/handlers";
-import { logHandle } from "~/bot/helpers/logging";
+import { errorHandler } from "~/bot/handlers";
 import { isMultipleLocales } from "~/bot/i18n";
 import {
   i18n,
@@ -61,7 +61,7 @@ export const createBot = (
     bot.use(languageFeature);
   }
 
-  bot.use(logHandle("unhandled"), unhandledHandler);
+  bot.use(unhandledFeature);
 
   if (config.isDev) {
     bot.catch(errorHandler);
