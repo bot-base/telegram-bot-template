@@ -6,7 +6,7 @@ import { errorHandler } from "~/bot/handlers";
 import type { Container } from "~/container";
 
 export const createServer = async (bot: Bot, container: Container) => {
-  const { logger, prisma } = container.items;
+  const { logger, prisma } = container;
 
   const server = fastify({
     logger,

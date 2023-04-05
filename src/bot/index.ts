@@ -30,7 +30,7 @@ export const createBot = (
   { container, sessionStorage }: Dependencies,
   botConfig?: Omit<BotConfig<Context>, "ContextConstructor">
 ) => {
-  const { config } = container.items;
+  const { config } = container;
   const bot = new TelegramBot(token, {
     ...botConfig,
     ContextConstructor: createContextConstructor(container),

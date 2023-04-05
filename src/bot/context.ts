@@ -59,8 +59,8 @@ export function createContextConstructor(container: Container) {
       super(update, api, me);
 
       this.container = container;
-      this.prisma = container.items.prisma;
-      this.logger = container.items.logger.child({
+      this.prisma = container.prisma;
+      this.logger = container.logger.child({
         update_id: this.update.update_id,
       });
       this.scope = {};

@@ -3,11 +3,13 @@ import { RedisAdapter } from "@grammyjs/storage-redis";
 import { Role } from "@prisma/client";
 import Redis from "ioredis";
 import { createBot } from "~/bot";
-import { container } from "~/container";
+import { createAppContainer } from "~/container";
 import { createServer } from "~/server";
 
+const container = createAppContainer();
+
 async function main() {
-  const { config, logger, prisma } = container.items;
+  const { config, logger, prisma } = container;
   const bot = createBot(config.BOT_TOKEN, {
     container,
     sessionStorage: new RedisAdapter({
@@ -62,6 +64,6 @@ async function main() {
 }
 
 main().catch((err) => {
-  container.items.logger.error(err);
+  container.logger.error(err);
   process.exit(1);
 });
