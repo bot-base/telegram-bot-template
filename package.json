@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "description": "Telegram bot starter template",
   "main": "dist/main.js",
+  "type": "module",
   "scripts": {
     "lint": "eslint \"src/**/*.ts\"",
     "format": "eslint \"src/**/*.ts\" --fix",
