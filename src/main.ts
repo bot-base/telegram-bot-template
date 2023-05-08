@@ -1,7 +1,7 @@
 #!/usr/bin/env tsx
 import { RedisAdapter } from "@grammyjs/storage-redis";
 import { Role } from "@prisma/client";
-import { createBot } from "~/bot";
+import { Bot, createBot } from "~/bot";
 import { createAppContainer } from "~/container";
 import { createServer } from "~/server";
 
@@ -9,21 +9,36 @@ const container = createAppContainer();
 
 try {
   const { config, logger, prisma, redis } = container;
-  const bot = createBot(config.BOT_TOKEN, {
-    container,
-    sessionStorage: new RedisAdapter({
-      instance: redis,
-    }),
-  });
-  await bot.init();
 
-  const server = await createServer(bot, container);
+  const bots = new Map<string, Bot>();
+  const server = await createServer(
+    {
+      getBot: async (token) => {
+        if (bots.has(token)) {
+          return bots.get(token) as Bot;
+        }
+
+        const bot = createBot(token, {
+          container,
+          sessionStorage: new RedisAdapter({
+            instance: redis,
+          }),
+        });
+        await bot.init();
+
+        bots.set(token, bot);
+
+        return bot;
+      },
+    },
+    container
+  );
 
   // Graceful shutdown
   prisma.$on("beforeExit", async () => {
     logger.info("shutdown");
 
-    await bot.stop();
+    await Promise.all(Object.values(bots).map((bot: Bot) => bot.stop()));
     await server.close();
   });
 
@@ -41,25 +56,10 @@ try {
     },
   });
 
-  if (config.isProd) {
-    await server.listen({
-      host: config.BOT_SERVER_HOST,
-      port: config.BOT_SERVER_PORT,
-    });
-
-    await bot.api.setWebhook(config.BOT_WEBHOOK, {
-      allowed_updates: config.BOT_ALLOWED_UPDATES,
-    });
-  } else if (config.isDev) {
-    await bot.start({
-      allowed_updates: config.BOT_ALLOWED_UPDATES,
-      onStart: ({ username }) =>
-        logger.info({
-          msg: "bot running...",
-          username,
-        }),
-    });
-  }
+  await server.listen({
+    host: config.BOT_SERVER_HOST,
+    port: config.BOT_SERVER_PORT,
+  });
 } catch (err) {
   container.logger.error(err);
   process.exit(1);

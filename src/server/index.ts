@@ -5,7 +5,14 @@ import type { Bot } from "~/bot";
 import { errorHandler } from "~/bot/handlers";
 import type { Container } from "~/container";
 
-export const createServer = async (bot: Bot, container: Container) => {
+export const createServer = async (
+  {
+    getBot,
+  }: {
+    getBot: (token: string) => Promise<Bot>;
+  },
+  container: Container
+) => {
   const { logger, prisma } = container;
 
   const server = fastify({
@@ -24,9 +31,13 @@ export const createServer = async (bot: Bot, container: Container) => {
     }
   });
 
-  server.post(`/${bot.token}`, webhookCallback(bot, "fastify"));
+  server.post("/:token([0-9]+:[a-zA-Z0-9_-]+)", async (req, res) => {
+    const { token } = req.params as { token: string };
 
-  server.get(`/${bot.token}/metrics`, async (req, res) => {
+    return webhookCallback(await getBot(token), "fastify")(req, res);
+  });
+
+  server.get(`/metrics`, async (req, res) => {
     try {
       const appMetrics = await register.metrics();
       const prismaMetrics = await prisma.$metrics.prometheus();
