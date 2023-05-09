@@ -11,8 +11,8 @@ export const session = (
     getSessionKey(ctx: ContextWithoutSession) {
       // Give every user their one personal session storage per bot
       // (an independent session for the same user in each bot)
-      return ctx.from === undefined || ctx.me === undefined
+      return ctx.chat === undefined || ctx.me === undefined
         ? undefined
-        : `${ctx.from.id}/${ctx.me.id}`;
+        : `${ctx.chat.id}/${ctx.me.id}`;
     },
   });
