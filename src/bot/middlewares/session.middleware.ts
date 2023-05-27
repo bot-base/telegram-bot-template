@@ -9,10 +9,11 @@ export const session = (
     initial: () => ({}),
     storage,
     getSessionKey(ctx: ContextWithoutSession) {
+      const chatId = ctx.chat?.id ?? ctx.inlineQuery?.from?.id;
       // Give every user their one personal session storage per bot
       // (an independent session for the same user in each bot)
-      return ctx.chat === undefined || ctx.me === undefined
+      return chatId === undefined || ctx.me === undefined
         ? undefined
-        : `${ctx.chat.id}/${ctx.me.id}`;
+        : `${chatId}/${ctx.me.id}`;
     },
   });
