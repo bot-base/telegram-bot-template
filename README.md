@@ -7,7 +7,6 @@ Uses PostgreSQL for data storage (MySQL, MongoDB, SQL Server, SQLite [are also s
 
 - Config loading and validation
 - Logger
-- Dependency injection
 - Session storage
 - Internationalization with language change
 - Graceful shutdown

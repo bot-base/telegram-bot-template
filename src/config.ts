@@ -1,22 +1,6 @@
 import "dotenv/config";
+import { API_CONSTANTS } from "grammy";
 import z from "zod";
-
-const updates = [
-  "message",
-  "poll",
-  "poll_answer",
-  "my_chat_member",
-  "chat_member",
-  "chat_join_request",
-  "edited_message",
-  "channel_post",
-  "edited_channel_post",
-  "inline_query",
-  "chosen_inline_result",
-  "callback_query",
-  "shipping_query",
-  "pre_checkout_query",
-] as const;
 
 const configSchema = z.object({
   NODE_ENV: z.enum(["development", "production"]),
@@ -39,7 +23,7 @@ const configSchema = z.object({
     } catch (e) {
       return null;
     }
-  }, z.array(z.enum(updates))),
+  }, z.array(z.enum(API_CONSTANTS.ALL_UPDATE_TYPES))),
   BOT_TOKEN: z.string(),
   BOT_WEBHOOK: z.string().url(),
   BOT_ADMIN_USER_ID: z.coerce.number().finite(),

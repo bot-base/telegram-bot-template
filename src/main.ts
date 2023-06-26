@@ -20,7 +20,7 @@ try {
   const server = await createServer(bot, container);
 
   // Graceful shutdown
-  prisma.$on("beforeExit", async () => {
+  prisma.raw.$on("beforeExit", async () => {
     logger.info("shutdown");
 
     await bot.stop();

@@ -20,7 +20,7 @@ export const createServer = async (bot: Bot, container: Container) => {
     } else {
       logger.error(error);
 
-      await res.status(500).send({ error: "Oops! something went wrong." });
+      await res.status(500).send({ error: "Oops! Something went wrong." });
     }
   });
 
@@ -29,7 +29,7 @@ export const createServer = async (bot: Bot, container: Container) => {
   server.get(`/${bot.token}/metrics`, async (req, res) => {
     try {
       const appMetrics = await register.metrics();
-      const prismaMetrics = await prisma.$metrics.prometheus();
+      const prismaMetrics = await prisma.raw.$metrics.prometheus();
       const metrics = appMetrics + prismaMetrics;
 
       await res.header("Content-Type", register.contentType).send(metrics);

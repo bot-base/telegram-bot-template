@@ -81,7 +81,13 @@ export const createPrisma = (logger: Logger) => {
     });
   });
 
-  return prisma.$extends(userExtension);
+  return prisma
+    .$extends({
+      client: {
+        raw: prisma,
+      },
+    })
+    .$extends(userExtension);
 };
 
 export type PrismaClientX = ReturnType<typeof createPrisma>;

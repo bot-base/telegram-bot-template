@@ -14,7 +14,7 @@ export const createChangeLanguageKeyboard = async (ctx: Context) => {
     return `${isActive ? "✅ " : ""}${ISO6391.getNativeName(code)}`;
   };
 
-  return new InlineKeyboard(
+  return InlineKeyboard.from(
     _.chunk(
       i18n.locales.map((localeCode) => ({
         text: getLabel(localeCode),
