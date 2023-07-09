@@ -27,7 +27,7 @@
     "callback-data": "1.0.2",
     "dotenv": "16.3.1",
     "fastify": "4.19.2",
-    "grammy": "1.17.1",
+    "grammy": "1.17.2",
     "grammy-guard": "0.5.0",
     "ioredis": "5.3.2",
     "iso-639-1": "2.1.15",
