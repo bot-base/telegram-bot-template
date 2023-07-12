@@ -61,7 +61,7 @@ try {
         }),
     });
   }
-} catch (err) {
-  container.logger.error(err);
+} catch (error) {
+  container.logger.error(error);
   process.exit(1);
 }

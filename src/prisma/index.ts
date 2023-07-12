@@ -33,51 +33,51 @@ export const createPrisma = (logger: Logger) => {
     ],
   });
 
-  prisma.$on("query", (e: Prisma.QueryEvent) => {
+  prisma.$on("query", (event: Prisma.QueryEvent) => {
     const parameters = parseParameters(
-      e.params.replace(
+      event.params.replaceAll(
         /\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.?\d* UTC/g,
-        (date) => `"${date}"`
-      )
+        (date) => `"${date}"`,
+      ),
     );
-    const query = e.query.replace(
+    const query = event.query.replaceAll(
       /(\?|\$\d+)/g,
-      (match, param, offset, string: string) => {
+      (match, parameter_, offset, string: string) => {
         const parameter = JSON.stringify(parameters.shift());
         const previousChar = string.charAt(offset - 1);
 
         return (previousChar === "," ? " " : "") + parameter;
-      }
+      },
     );
 
     logger.debug({
       msg: "database query",
       query,
-      duration: e.duration,
+      duration: event.duration,
     });
   });
 
-  prisma.$on("error", (e: Prisma.LogEvent) => {
+  prisma.$on("error", (event: Prisma.LogEvent) => {
     logger.error({
       msg: "database error",
-      target: e.target,
-      message: e.message,
+      target: event.target,
+      message: event.message,
     });
   });
 
-  prisma.$on("info", (e: Prisma.LogEvent) => {
+  prisma.$on("info", (event: Prisma.LogEvent) => {
     logger.info({
       msg: "database info",
-      target: e.target,
-      message: e.message,
+      target: event.target,
+      message: event.message,
     });
   });
 
-  prisma.$on("warn", (e: Prisma.LogEvent) => {
+  prisma.$on("warn", (event: Prisma.LogEvent) => {
     logger.warn({
       msg: "database warning",
-      target: e.target,
-      message: e.message,
+      target: event.target,
+      message: event.message,
     });
   });
 

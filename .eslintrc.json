@@ -1,44 +1,57 @@
 {
-    "env": {
-        "es2021": true,
-        "node": true
-    },
-    "extends": [
-        "airbnb-base",
-        "eslint:recommended",
-        "plugin:prettier/recommended",
-        "plugin:@typescript-eslint/recommended"
+  "env": {
+    "es2021": true,
+    "node": true
+  },
+  "extends": [
+    "airbnb-base",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:unicorn/recommended",
+    "plugin:prettier/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": [
+      "tsconfig.json"
+    ]
+  },
+  "plugins": [
+    "@typescript-eslint",
+    "prettier",
+    "unicorn",
+    "import"
+  ],
+  "rules": {
+    "arrow-body-style": "off",
+    "prefer-arrow-callback": "off",
+    "consistent-return": "off",
+    "import/prefer-default-export": "off",
+    "import/extensions": "off",
+    "no-underscore-dangle": "off",
+    "prettier/prettier": [
+      "error",
+      {
+        "trailingComma": "all"
+      }
     ],
-    "parser": "@typescript-eslint/parser",
-    "parserOptions": {
-        "project": [
-            "tsconfig.json"
-        ]
-    },
-    "plugins": [
-        "@typescript-eslint",
-        "prettier",
-        "import"
-    ],
-    "rules": {
-        "prettier/prettier":[ "error", {
-            "endOfLine": "auto"
-        }],
-        "arrow-body-style": "off",
-        "prefer-arrow-callback": "off",
-        "consistent-return": "off",
-        "import/prefer-default-export": "off",
-        "import/extensions": "off",
-        "no-underscore-dangle": "off"
-    },
-    "settings": {
-        "import/parsers": {
-            "@typescript-eslint/parser": [".ts"]
-        },
-        "import/resolver": {
-            "typescript": {
-                "extensions": [".js", ".ts"]
-            }
+    "unicorn/no-array-callback-reference": "off",
+    "unicorn/prevent-abbreviations": [
+      "error",
+      {
+        "replacements": {
+          "ctx": false
         }
+      }
+    ]
+  },
+  "settings": {
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts"]
+    },
+    "import/resolver": {
+      "typescript": {
+        "extensions": [".js", ".ts"]
+      }
     }
+  }
 }

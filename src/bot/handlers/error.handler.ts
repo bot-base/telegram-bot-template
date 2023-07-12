@@ -4,10 +4,10 @@ import { getFullMetadata } from "~/bot/helpers/logging";
 
 export const errorHandler: ErrorHandler<Context> = (error) => {
   const { ctx } = error;
-  const err = error.error;
+  const error_ = error.error;
 
   ctx.logger.error({
-    err,
+    err: error_,
     ...getFullMetadata(ctx),
   });
 };

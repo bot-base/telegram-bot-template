@@ -28,7 +28,7 @@ type Dependencies = {
 export const createBot = (
   token: string,
   { container, sessionStorage }: Dependencies,
-  botConfig?: Omit<BotConfig<Context>, "ContextConstructor">
+  botConfig?: Omit<BotConfig<Context>, "ContextConstructor">,
 ) => {
   const { config } = container;
   const bot = new TelegramBot(token, {

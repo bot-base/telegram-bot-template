@@ -22,7 +22,7 @@ export const createChangeLanguageKeyboard = async (ctx: Context) => {
           code: localeCode,
         }),
       })),
-      2
-    )
+      2,
+    ),
   );
 };

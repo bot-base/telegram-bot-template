@@ -7,11 +7,11 @@ const composer = new Composer<Context>();
 const feature = composer.chatType("private");
 
 feature.on("message", logHandle("unhandled-message"), (ctx) =>
-  ctx.reply(ctx.t("unhandled"))
+  ctx.reply(ctx.t("unhandled")),
 );
 
 feature.on("callback_query", logHandle("unhandled-callback-query"), (ctx) =>
-  ctx.answerCallbackQuery()
+  ctx.answerCallbackQuery(),
 );
 
 export { composer as unhandledFeature };

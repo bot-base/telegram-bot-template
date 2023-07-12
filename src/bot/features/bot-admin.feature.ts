@@ -33,11 +33,11 @@ featureForOwner.command("admin", logHandle("command-admin"), (ctx) =>
           userRequests.getId("make-admin"),
           {
             user_is_bot: false,
-          }
+          },
         )
         .build(),
     },
-  })
+  }),
 );
 
 featureForOwner.filter(
@@ -81,14 +81,14 @@ featureForOwner.filter(
         reply_markup: {
           remove_keyboard: true,
         },
-      }
+      },
     );
 
     const notifyUser = ctx.api.sendMessage(
       userId,
       ctx.t("admin.your-role-changed", {
         role: user.role,
-      })
+      }),
     );
 
     const updateCommandsForUser = user.isAdmin
@@ -108,7 +108,7 @@ featureForOwner.filter(
               type: "chat",
               chat_id: Number(userId),
             },
-          }
+          },
         )
       : ctx.api.deleteMyCommands({
           scope: {
@@ -118,7 +118,7 @@ featureForOwner.filter(
         });
 
     return Promise.all([notifyOwner, notifyUser, updateCommandsForUser]);
-  }
+  },
 );
 
 feature.command(
@@ -129,7 +129,7 @@ feature.command(
     const usersCount = await ctx.prisma.user.count();
 
     return ctx.reply(`Users count: ${usersCount}`);
-  }
+  },
 );
 
 feature.command(
@@ -147,7 +147,7 @@ feature.command(
         scope: {
           type: "all_private_chats",
         },
-      }
+      },
     );
 
     if (isMultipleLocales) {
@@ -162,8 +162,8 @@ feature.command(
             scope: {
               type: "all_private_chats",
             },
-          }
-        )
+          },
+        ),
       );
 
       await Promise.all(requests);
@@ -198,7 +198,7 @@ feature.command(
           type: "chat",
           chat_id: Number(owner.telegramId),
         },
-      }
+      },
     );
 
     const adminUsers = await ctx.prisma.user.findMany({
@@ -226,8 +226,8 @@ feature.command(
               type: "chat",
               chat_id: Number(admin.telegramId),
             },
-          }
-        )
+          },
+        ),
       );
 
       await Promise.all(requests);
@@ -242,11 +242,11 @@ feature.command(
         scope: {
           type: "all_group_chats",
         },
-      }
+      },
     );
 
     return ctx.reply(ctx.t("admin.commands-updated"));
-  }
+  },
 );
 
 export { composer as botAdminFeature };

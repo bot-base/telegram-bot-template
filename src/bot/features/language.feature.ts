@@ -12,7 +12,7 @@ const feature = composer.chatType("private");
 feature.command("language", logHandle("command-language"), async (ctx) =>
   ctx.reply(ctx.t("language.select"), {
     reply_markup: await createChangeLanguageKeyboard(ctx),
-  })
+  }),
 );
 
 feature.callbackQuery(
@@ -20,7 +20,7 @@ feature.callbackQuery(
   logHandle("keyboard-language-select"),
   async (ctx) => {
     const { code: languageCode } = changeLanguageData.unpack(
-      ctx.callbackQuery.data
+      ctx.callbackQuery.data,
     );
 
     if (i18n.locales.includes(languageCode)) {
@@ -37,7 +37,7 @@ feature.callbackQuery(
         reply_markup: await createChangeLanguageKeyboard(ctx),
       });
     }
-  }
+  },
 );
 
 export { composer as languageFeature };

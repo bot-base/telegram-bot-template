@@ -17,20 +17,23 @@ const configSchema = z.object({
   REDIS_URL: z.string(),
   BOT_SERVER_HOST: z.string().default("0.0.0.0"),
   BOT_SERVER_PORT: z.coerce.number().positive().default(80),
-  BOT_ALLOWED_UPDATES: z.preprocess((v: unknown) => {
-    try {
-      return JSON.parse(String(v));
-    } catch (e) {
-      return null;
-    }
-  }, z.array(z.enum(API_CONSTANTS.ALL_UPDATE_TYPES))),
+  BOT_ALLOWED_UPDATES: z.preprocess(
+    (v: unknown) => {
+      try {
+        return JSON.parse(String(v));
+      } catch {
+        /* empty */
+      }
+    },
+    z.array(z.enum(API_CONSTANTS.ALL_UPDATE_TYPES)),
+  ),
   BOT_TOKEN: z.string(),
   BOT_WEBHOOK: z.string().url(),
   BOT_ADMIN_USER_ID: z.coerce.number().finite(),
 });
 
-const parseConfig = (env: NodeJS.ProcessEnv) => {
-  const config = configSchema.parse(env);
+const parseConfig = (environment: NodeJS.ProcessEnv) => {
+  const config = configSchema.parse(environment);
 
   return {
     ...config,

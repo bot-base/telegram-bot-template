@@ -4,7 +4,7 @@ export const DEFAULT_LANGUAGE_CODE = "en";
 
 if (!i18n.locales.includes(DEFAULT_LANGUAGE_CODE)) {
   throw new Error(
-    `Localization for default language code (${DEFAULT_LANGUAGE_CODE}) is missing`
+    `Localization for default language code (${DEFAULT_LANGUAGE_CODE}) is missing`,
   );
 }
 
@@ -42,7 +42,7 @@ export const getPrivateChatAdminCommands = (options: {
       command: "setcommands",
       description: i18n.t(
         options.localeCode,
-        "setcommands_command.description"
+        "setcommands_command.description",
       ),
     },
   ];
@@ -50,6 +50,7 @@ export const getPrivateChatAdminCommands = (options: {
   return commands;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const getGroupChatCommands = (options: { localeCode: string }) => {
   return [];
 };

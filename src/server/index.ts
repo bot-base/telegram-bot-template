@@ -12,29 +12,29 @@ export const createServer = async (bot: Bot, container: Container) => {
     logger,
   });
 
-  server.setErrorHandler(async (error, req, res) => {
+  server.setErrorHandler(async (error, request, response) => {
     if (error instanceof BotError) {
       errorHandler(error);
 
-      await res.code(200).send({});
+      await response.code(200).send({});
     } else {
       logger.error(error);
 
-      await res.status(500).send({ error: "Oops! Something went wrong." });
+      await response.status(500).send({ error: "Oops! Something went wrong." });
     }
   });
 
   server.post(`/${bot.token}`, webhookCallback(bot, "fastify"));
 
-  server.get(`/${bot.token}/metrics`, async (req, res) => {
+  server.get(`/${bot.token}/metrics`, async (request, response) => {
     try {
       const appMetrics = await register.metrics();
       const prismaMetrics = await prisma.raw.$metrics.prometheus();
       const metrics = appMetrics + prismaMetrics;
 
-      await res.header("Content-Type", register.contentType).send(metrics);
-    } catch (err) {
-      await res.status(500).send(err);
+      await response.header("Content-Type", register.contentType).send(metrics);
+    } catch (error) {
+      await response.status(500).send(error);
     }
   });
 
