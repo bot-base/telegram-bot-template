@@ -1,6 +1,7 @@
 #!/usr/bin/env tsx
 import { RedisAdapter } from "@grammyjs/storage-redis";
 import { Role } from "@prisma/client";
+import { onShutdown } from "node-graceful-shutdown";
 import { createBot } from "~/bot";
 import { createAppContainer } from "~/container";
 import { createServer } from "~/server";
@@ -20,7 +21,7 @@ try {
   const server = await createServer(bot, container);
 
   // Graceful shutdown
-  prisma.raw.$on("beforeExit", async () => {
+  onShutdown(async () => {
     logger.info("shutdown");
 
     await bot.stop();
