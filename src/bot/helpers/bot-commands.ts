@@ -1,3 +1,4 @@
+import { BotCommand } from "@grammyjs/types";
 import { i18n } from "~/bot/i18n";
 
 export const DEFAULT_LANGUAGE_CODE = "en";
@@ -12,7 +13,7 @@ export const getPrivateChatCommands = (options: {
   localeCode: string;
   includeLanguageCommand: boolean;
 }) => {
-  const commands = [
+  const commands: BotCommand[] = [
     {
       command: "start",
       description: i18n.t(options.localeCode, "start_command.description"),
@@ -33,7 +34,7 @@ export const getPrivateChatAdminCommands = (options: {
   localeCode: string;
   includeLanguageCommand: boolean;
 }) => {
-  const commands = [
+  const commands: BotCommand[] = [
     {
       command: "stats",
       description: i18n.t(options.localeCode, "stats_command.description"),
