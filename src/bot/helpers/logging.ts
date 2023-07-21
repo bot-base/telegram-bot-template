@@ -5,8 +5,13 @@ import { updateHandledCounter } from "~/metrics";
 
 export const getChatInfo = (ctx: Context) => {
   if (!_.isNil(ctx.chat)) {
+    const { id, type } = ctx.chat;
+
     return {
-      chat: _.pick(ctx.chat, ["id", "type"]),
+      chat: {
+        id,
+        type,
+      },
     };
   }
 
@@ -15,14 +20,23 @@ export const getChatInfo = (ctx: Context) => {
 
 export const getSenderInfo = (ctx: Context) => {
   if (!_.isNil(ctx.senderChat)) {
+    const { id, type } = ctx.senderChat;
+
     return {
-      sender: _.pick(ctx.senderChat, ["id", "type"]),
+      sender: {
+        id,
+        type,
+      },
     };
   }
 
   if (!_.isNil(ctx.from)) {
+    const { id } = ctx.from;
+
     return {
-      sender: _.pick(ctx.from, ["id"]),
+      sender: {
+        id,
+      },
     };
   }
 
