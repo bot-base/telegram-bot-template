@@ -2,15 +2,14 @@
   "name": "telegram-bot-template",
   "version": "0.1.0",
   "description": "Telegram bot starter template",
-  "main": "dist/main.js",
   "type": "module",
   "scripts": {
     "lint": "eslint \"src/**/*.ts\"",
     "format": "eslint \"src/**/*.ts\" --fix",
     "typecheck": "tsc",
-    "dev": "tsc-watch --onSuccess \"tsx ./src/main.ts\"",
-    "start": "tsc && tsx ./src/main.ts",
-    "start:force": "tsx ./src/main.ts",
+    "dev": "tsc-watch --onSuccess \"tsx ./scripts/start.ts\"",
+    "start": "tsc && tsx ./scripts/start.ts",
+    "start:force": "tsx ./scripts/start.ts",
     "prepare": "npx husky install"
   },
   "author": "deptyped <deptyped@gmail.com>",

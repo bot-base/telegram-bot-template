@@ -11,14 +11,15 @@
     "moduleResolution": "bundler",
     "sourceMap": true,
     "outDir": "dist",
-    "baseUrl": "src",
+    "baseUrl": ".",
     "paths": {
       "~/*": [
-        "*"
+        "src/*"
       ]
     }
   },
   "include": [
-    "src/**/*"
+    "src/**/*",
+    "scripts/**/*"
   ]
 }
