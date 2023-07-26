@@ -33,7 +33,7 @@
     "lodash": "4.17.21",
     "node-graceful-shutdown": "1.1.5",
     "pino": "8.14.1",
-    "pino-pretty": "10.1.0",
+    "pino-pretty": "10.2.0",
     "prom-client": "14.2.0",
     "tsx": "3.12.7",
     "zod": "3.21.4"
@@ -41,10 +41,10 @@
   "devDependencies": {
     "@types/debug": "4.1.8",
     "@types/ioredis": "4.28.10",
-    "@types/lodash": "4.14.195",
-    "@types/node": "20.4.4",
-    "@typescript-eslint/eslint-plugin": "6.1.0",
-    "@typescript-eslint/parser": "6.1.0",
+    "@types/lodash": "4.14.196",
+    "@types/node": "20.4.5",
+    "@typescript-eslint/eslint-plugin": "6.2.0",
+    "@typescript-eslint/parser": "6.2.0",
     "eslint": "8.45.0",
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-config-prettier": "8.8.0",
