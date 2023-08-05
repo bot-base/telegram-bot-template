@@ -32,7 +32,7 @@
     "iso-639-1": "2.1.15",
     "lodash": "4.17.21",
     "node-graceful-shutdown": "1.1.5",
-    "pino": "8.14.2",
+    "pino": "8.15.0",
     "pino-pretty": "10.2.0",
     "prom-client": "14.2.0",
     "tsx": "3.12.7",
