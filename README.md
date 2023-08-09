@@ -1,132 +1,146 @@
 <h1 align="center">🤖 Telegram Bot Template</h1>
 
-Bot starter template based on [grammY](https://grammy.dev/) bot framework and [Prisma ORM](https://www.prisma.io/).  
-Uses PostgreSQL for data storage (MySQL, MongoDB, SQL Server, SQLite [are also supported by Prisma](https://www.prisma.io/docs/reference/database-reference/supported-databases)) and Redis for session storage.
+<img align="right" width="35%" src="https://github.com/bot-base/telegram-bot-template/assets/26162440/c4371683-3e99-4b1c-ae8e-11ccbea78f4b">
+
+Bot starter template based on [grammY](https://grammy.dev/) bot framework.  
 
 ## Features
 
+- Scalable structure
 - Config loading and validation
-- Logger
-- Session storage
-- Internationalization with language change
+- Internationalization, language changing
 - Graceful shutdown
-- Metrics collection (in [prometheus](https://prometheus.io/) format)
-- Fast and low overhead [fastify](https://www.fastify.io/) server
-- Ready-to-use Docker setup
+- Logger (powered by [pino](https://github.com/pinojs/pino))
+- Fast and low overhead server (powered by [fastify](https://github.com/fastify/fastify))
+- Ready-to-use deployment setups:
+    - [Docker](#docker)
+    - [Vercel](#vercel)
+- Examples:
+    - [Prisma ORM](#prisma-orm)
 
 ## Usage
 
-Clone this repo or generate new repo using this template via [link](https://github.com/bot-base/telegram-bot-template/generate)
+1. [Create a new repository](https://github.com/bot-base/telegram-bot-template/generate) using this template.
+
+2.  Create an environment variables file:
 
 ```bash
-git clone https://github.com/bot-base/telegram-bot-template
+cp .env.example .env
 ```
 
-<details>
-<summary>Launch</summary>
+3.  Set BOT_TOKEN [environment variable](#environment-variables) in `.env` file.
 
-1.  Create environment variables file
 
-```bash
-cp .example.bot.env .env
-```
-
-2.  Edit [environment variables](#environment-variables-reference) in `.env`
-
-3.  Launch bot
+4.  Launch bot
 
     Development mode:
 
     ```bash
-    # install dependencies
+    # 1. Install dependencies
     npm i
 
-    # run migrations
-    npx prisma migrate deploy
-
-    # run bot
+    # 2. Run bot (in watch mode)
     npm run dev
     ```
 
     Production mode:
 
     ```bash
-    # install dependencies
+    # 1. Install dependencies
     npm i --only=prod
 
-    # run migrations
-    npx prisma migrate deploy
+    # 2. Set NODE_ENV to production and change BOT_WEBHOOK to the actual URL to receive updates
 
-    # build bot
-    npm run build
-
-    # run bot
-    npm start
+    # 3. Run bot
+    npm start 
+    # or
+    npm run start:force # if you want to skip type checking
     ```
 
-</details>
+### List of available commands
+- `npm run lint` — Lint source code.
+- `npm run format` — Format source code.
+- `npm run typecheck` — Runs type checking.
+- `npm run dev` — Starts the bot in development mode.
+- `npm run start` — Starts the bot.
+- `npm run start:force` — Starts the bot without type checking.
 
-<details>
-<summary>Launch using Docker</summary>
+## Deploy
 
-1.  Create development and production environment variables files
+### Docker 
 
-```bash
-# development
-cp .example.bot.env docker-compose.dev.bot.env
-cp .example.postgres.env docker-compose.dev.postgres.env
+Branch:
+[deploy/docker-compose](https://github.com/bot-base/telegram-bot-template/tree/deploy/docker-compose) 
+([open diff](https://github.com/bot-base/telegram-bot-template/compare/deploy/docker-compose))
 
-# production
-cp .example.bot.env docker-compose.prod.bot.env
-cp .example.postgres.env docker-compose.prod.postgres.env
+Use in your project:
+
+1. Add the template repository as a remote
+
+```sh
+git remote add template git@github.com:bot-base/telegram-bot-template.git
+git remote update
 ```
 
-2.  Edit [environment variables](#environment-variables-reference) in `docker-compose.dev.bot.env` and `docker-compose.prod.bot.env`
+2. Merge deployment setup
 
-3.  Launch bot
+```sh
+git merge template/deploy/docker-compose -X theirs --no-commit --allow-unrelated-histories
+```
 
-    Development mode:
+### Vercel
 
-    ```bash
-    # install dependencies
-    npm i
+Branch:
+[deploy/vercel](https://github.com/bot-base/telegram-bot-template/tree/deploy/vercel) 
+([open diff](https://github.com/bot-base/telegram-bot-template/compare/deploy/vercel))
 
-    # run migrations
-    docker compose run bot npx prisma migrate deploy
+Use in your project:
 
-    # run bot
-    docker compose up
-    ```
+1. Add the template repository as a remote
 
-    Production mode:
+```sh
+git remote add template git@github.com:bot-base/telegram-bot-template.git
+git remote update
+```
 
-    ```bash
-    # run migrations
-    docker compose -f docker-compose.yml -f docker-compose.prod.yml run bot npx prisma migrate deploy
+2. Merge deployment setup
 
-    # run bot
-    docker compose -f docker-compose.yml -f docker-compose.prod.yml up
-    ```
-
-</details>
+```sh
+git merge template/deploy/vercel -X theirs --no-commit --allow-unrelated-histories
+```
 
 ## Examples
 
-- [Conversations](https://github.com/bot-base/telegram-bot-template/compare/examples/conversations)
-- [Queues](https://github.com/bot-base/telegram-bot-template/compare/examples/queues)
+### Prisma ORM
 
-## Environment variables reference
+Branch:
+[example/prisma](https://github.com/bot-base/telegram-bot-template/tree/example/prisma) 
+([open diff](https://github.com/bot-base/telegram-bot-template/compare/example/prisma))
+
+Use in your project:
+
+1. Add the template repository as a remote
+
+```sh
+git remote add template git@github.com:bot-base/telegram-bot-template.git
+git remote update
+```
+
+2. Merge example
+
+```sh
+git merge template/example/prisma -X theirs --no-commit --allow-unrelated-histories
+```
+
+## Environment Variables
 
 | Variable            | Description                                                                                                                                               |
 | ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| NODE_ENV            | Node environment                                                                                                                                          |
+| NODE_ENV            | Node environment (development or production)                                                                                                                                          |
 | LOG_LEVEL           | Log level                                                                                                                                                 |
-| CHECKPOINT_DISABLE  | [Prisma Telemetry](https://www.prisma.io/docs/concepts/more/telemetry)                                                                                    |
-| DATABASE_URL        | Database URL                                                                                                                                              |
-| REDIS_URL           | Redis URL                                                                                                                                                 |
-| BOT_SERVER_HOST     | Server address                                                                                                                                            |
-| BOT_SERVER_PORT     | Server port                                                                                                                                               |
+| BOT_SERVER_HOST     | Server address (default 0.0.0.0)                                                                                                                                            |
+| BOT_SERVER_PORT     | Server port (default 80)                                                                                                                                               |
 | BOT_ALLOWED_UPDATES | List of [update types](https://core.telegram.org/bots/api#update) to receive                                                                              |
 | BOT_TOKEN           | Token, get it from [@BotFather](https://t.me/BotFather)                                                                                                   |
-| BOT_WEBHOOK         | <details><summary>Webhook endpoint</summary>Used for setup a webhook in production mode.</details>                                                        |
-| BOT_ADMIN_USER_ID   | <details><summary>Administrator user ID</summary>Commands, such as `/stats` or `/setcommands`, will only be available to the user with this ID.</details> |
+| BOT_WEBHOOK         | <details><summary>Webhook endpoint</summary>Will be used to setup webhook in production mode.</details>                                                        |
+| BOT_ADMIN_USER_ID   | <details><summary>Administrator user ID</summary>Commands, such as `/setcommands`, will only be available to the user with this ID.</details> |

@@ -1,1 +1,2 @@
-export * from "./error.handler";
+export * from "./error.js";
+export * from "./commands/setcommands.js";

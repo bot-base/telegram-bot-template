@@ -45,6 +45,9 @@ jspm_packages/
 # Snowpack dependency directory (https://snowpack.dev/)
 web_modules/
 
+# TypeScript build
+build
+
 # TypeScript cache
 *.tsbuildinfo
 
@@ -133,3 +136,7 @@ data/
 
 # Jetbrains IDE
 .idea/
+
+# Ignore SQLite database
+*.db
+*.db-journal

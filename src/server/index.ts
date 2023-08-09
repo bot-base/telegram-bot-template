@@ -1,13 +1,10 @@
 import fastify from "fastify";
 import { BotError, webhookCallback } from "grammy";
-import { register } from "prom-client";
-import type { Bot } from "~/bot";
-import { errorHandler } from "~/bot/handlers";
-import type { Container } from "~/container";
+import type { Bot } from "#root/bot/index.js";
+import { errorHandler } from "#root/bot/handlers/index.js";
+import { logger } from "#root/logger.js";
 
-export const createServer = async (bot: Bot, container: Container) => {
-  const { logger, prisma } = container;
-
+export const createServer = async (bot: Bot) => {
   const server = fastify({
     logger,
   });
@@ -24,19 +21,9 @@ export const createServer = async (bot: Bot, container: Container) => {
     }
   });
 
+  server.get("/", () => ({ status: true }));
+
   server.post(`/${bot.token}`, webhookCallback(bot, "fastify"));
-
-  server.get(`/${bot.token}/metrics`, async (request, response) => {
-    try {
-      const appMetrics = await register.metrics();
-      const prismaMetrics = await prisma.raw.$metrics.prometheus();
-      const metrics = appMetrics + prismaMetrics;
-
-      await response.header("Content-Type", register.contentType).send(metrics);
-    } catch (error) {
-      await response.status(500).send(error);
-    }
-  });
 
   return server;
 };

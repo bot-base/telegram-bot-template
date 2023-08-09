@@ -1,66 +1,63 @@
 import { autoChatAction } from "@grammyjs/auto-chat-action";
 import { hydrate } from "@grammyjs/hydrate";
 import { hydrateReply, parseMode } from "@grammyjs/parse-mode";
-import { BotConfig, StorageAdapter, Bot as TelegramBot } from "grammy";
-import { Context, createContextConstructor } from "~/bot/context";
+import { BotConfig, StorageAdapter, Bot as TelegramBot, session } from "grammy";
+import {
+  Context,
+  SessionData,
+  createContextConstructor,
+} from "#root/bot/context.js";
 import {
   botAdminFeature,
   languageFeature,
   unhandledFeature,
   welcomeFeature,
-} from "~/bot/features";
-import { errorHandler } from "~/bot/handlers";
-import { isMultipleLocales } from "~/bot/i18n";
-import {
-  i18n,
-  metrics,
-  session,
-  setScope,
-  updateLogger,
-} from "~/bot/middlewares";
-import type { Container } from "~/container";
+} from "#root/bot/features/index.js";
+import { errorHandler } from "#root/bot/handlers/index.js";
+import { i18n, isMultipleLocales } from "#root/bot/i18n.js";
+import { updateLogger } from "#root/bot/middlewares/index.js";
+import { config } from "#root/config.js";
+import { logger } from "#root/logger.js";
 
-type Dependencies = {
-  container: Container;
-  sessionStorage: StorageAdapter<unknown>;
+type Options = {
+  sessionStorage?: StorageAdapter<SessionData>;
+  config?: Omit<BotConfig<Context>, "ContextConstructor">;
 };
 
-export const createBot = (
-  token: string,
-  { container, sessionStorage }: Dependencies,
-  botConfig?: Omit<BotConfig<Context>, "ContextConstructor">,
-) => {
-  const { config } = container;
+export function createBot(token: string, options: Options = {}) {
+  const { sessionStorage } = options;
   const bot = new TelegramBot(token, {
-    ...botConfig,
-    ContextConstructor: createContextConstructor(container),
+    ...options.config,
+    ContextConstructor: createContextConstructor({ logger }),
   });
 
   // Middlewares
-
   bot.api.config.use(parseMode("HTML"));
 
   if (config.isDev) {
     bot.use(updateLogger());
   }
 
-  bot.use(metrics());
-  bot.use(autoChatAction());
+  bot.use(autoChatAction(bot.api));
   bot.use(hydrateReply);
   bot.use(hydrate());
-  bot.use(session(sessionStorage));
-  bot.use(setScope());
-  bot.use(i18n());
+  bot.use(
+    session({
+      initial: () => ({}),
+      storage: sessionStorage,
+    }),
+  );
+  bot.use(i18n);
 
   // Handlers
-
-  bot.use(botAdminFeature);
   bot.use(welcomeFeature);
+  bot.use(botAdminFeature);
 
   if (isMultipleLocales) {
     bot.use(languageFeature);
   }
 
+  // must be the last handler
   bot.use(unhandledFeature);
 
   if (config.isDev) {
@@ -68,6 +65,6 @@ export const createBot = (
   }
 
   return bot;
-};
+}
 
 export type Bot = ReturnType<typeof createBot>;

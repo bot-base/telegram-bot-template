@@ -1,28 +1,31 @@
-import pino, { type DestinationStream, type LoggerOptions } from "pino";
-import { Config } from "~/config";
+import { pino } from "pino";
+import { config } from "#root/config.js";
 
-export const createLogger = (config: Config) => {
-  const options: LoggerOptions = {
-    level: config.LOG_LEVEL,
-  };
-
-  const transport = pino.transport({
+export const logger = pino({
+  level: config.LOG_LEVEL,
+  transport: {
     targets: [
-      {
-        target: "pino-pretty",
-        level: config.LOG_LEVEL,
-        options: {
-          ...(config.isDev && {
-            ignore: "pid,hostname",
-            colorize: true,
-            translateTime: true,
-          }),
-        },
-      },
+      ...(config.isDev
+        ? [
+            {
+              target: "pino-pretty",
+              level: config.LOG_LEVEL,
+              options: {
+                ignore: "pid,hostname",
+                colorize: true,
+                translateTime: true,
+              },
+            },
+          ]
+        : [
+            {
+              target: "pino/file",
+              level: config.LOG_LEVEL,
+              options: {},
+            },
+          ]),
     ],
-  }) as DestinationStream;
+  },
+});
 
-  return pino(options, transport);
-};
-
-export type Logger = ReturnType<typeof createLogger>;
+export type Logger = typeof logger;

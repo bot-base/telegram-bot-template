@@ -1,1 +1,1 @@
-export * from "./change-language.keyboard";
+export * from "./change-language.js";

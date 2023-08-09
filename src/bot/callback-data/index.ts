@@ -1,1 +1,1 @@
-export * from "./language.data";
+export * from "./change-language.js";

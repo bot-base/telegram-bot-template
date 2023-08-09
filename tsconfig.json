@@ -5,16 +5,15 @@
     "esModuleInterop": true,
     "preserveWatchOutput": true,
     "noEmit": true,
-    "allowImportingTsExtensions": true,
-    "module": "ES2022",
+    "module": "NodeNext",
     "target": "ES2021",
-    "moduleResolution": "bundler",
+    "moduleResolution": "NodeNext",
     "sourceMap": true,
-    "outDir": "dist",
-    "baseUrl": ".",
+    "outDir": "build",
+    "rootDir": ".",
     "paths": {
-      "~/*": [
-        "src/*"
+      "#root/*": [
+        "./src/*"
       ]
     }
   },

@@ -1,6 +1,6 @@
 import "dotenv/config";
-import { API_CONSTANTS } from "grammy";
 import z from "zod";
+import { API_CONSTANTS } from "grammy";
 
 const configSchema = z.object({
   NODE_ENV: z.enum(["development", "production"]),
@@ -13,8 +13,6 @@ const configSchema = z.object({
     "fatal",
     "silent",
   ]),
-  DATABASE_URL: z.string(),
-  REDIS_URL: z.string(),
   BOT_SERVER_HOST: z.string().default("0.0.0.0"),
   BOT_SERVER_PORT: z.coerce.number().positive().default(80),
   BOT_ALLOWED_UPDATES: z.preprocess(

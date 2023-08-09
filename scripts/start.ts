@@ -1,24 +1,16 @@
 #!/usr/bin/env tsx
-import { RedisAdapter } from "@grammyjs/storage-redis";
-import { Role } from "@prisma/client";
-import { onShutdown } from "node-graceful-shutdown";
-import { createBot } from "~/bot";
-import { createAppContainer } from "~/container";
-import { createServer } from "~/server";
 
-const container = createAppContainer();
+import { onShutdown } from "node-graceful-shutdown";
+import { createBot } from "#root/bot/index.js";
+import { config } from "#root/config.js";
+import { logger } from "#root/logger.js";
+import { createServer } from "#root/server/index.js";
 
 try {
-  const { config, logger, prisma, redis } = container;
-  const bot = createBot(config.BOT_TOKEN, {
-    container,
-    sessionStorage: new RedisAdapter({
-      instance: redis,
-    }),
-  });
+  const bot = createBot(config.BOT_TOKEN);
   await bot.init();
 
-  const server = await createServer(bot, container);
+  const server = await createServer(bot);
 
   // Graceful shutdown
   onShutdown(async () => {
@@ -26,20 +18,6 @@ try {
 
     await bot.stop();
     await server.close();
-  });
-
-  await prisma.$connect();
-
-  // update bot owner role
-  await prisma.user.upsert({
-    where: prisma.user.byTelegramId(config.BOT_ADMIN_USER_ID),
-    create: {
-      telegramId: config.BOT_ADMIN_USER_ID,
-      role: Role.OWNER,
-    },
-    update: {
-      role: Role.OWNER,
-    },
   });
 
   if (config.isProd) {
@@ -62,6 +40,6 @@ try {
     });
   }
 } catch (error) {
-  container.logger.error(error);
+  logger.error(error);
   process.exit(1);
 }
