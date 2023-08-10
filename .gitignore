@@ -136,3 +136,6 @@ data/
 # Ignore SQLite database
 *.db
 *.db-journal
+
+# Vercel project configuration
+.vercel
