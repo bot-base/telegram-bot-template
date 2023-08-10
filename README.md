@@ -54,20 +54,55 @@ Follow these steps to set up and run your bot using this template:
     npm run dev
     ```
 
-   **Production Mode:**
+    **Production Mode:**
 
-    Install only production dependencies:
+    Install Vercel CLI:
     ```bash
-    npm install --only=prod
+    npm i -g vercel
     ```
 
-    Set `DEBUG` environment variable to `false` in your `.env` file.
-
-    Start the bot in production mode:
+    Create a project:
     ```bash
-    npm run start:force # skip type checking and start
-    # or
-    npm start # with type checking (requires development dependencies)
+    vercel link
+    ```
+
+    Set `NODEJS_HELPERS` environment variable to `0`:
+    ```bash
+    vercel env add NODEJS_HELPERS
+    ```
+
+    Set `BOT_MODE` environment variable to `webhook`:
+    ```bash
+    vercel env add BOT_MODE
+    ```
+
+    Set `BOT_TOKEN` environment variable:
+    ```bash
+    vercel env add BOT_TOKEN --sensitive
+    ```
+
+    Set `BOT_WEBHOOK_SECRET` environment variable to a random secret token:
+    ```bash
+    # Generate and set secret token using Node
+    node -e "console.log(crypto.randomBytes(256*0.75).toString('base64url'))" | vercel env add BOT_WEBHOOK_SECRET --sensitive production
+    ```
+    ```bash
+    # OR using Python
+    python3 -c "import secrets; print(secrets.token_urlsafe(256))" | vercel env add BOT_WEBHOOK_SECRET --sensitive production
+    ```
+    ```bash
+    # OR set manually:
+    vercel env add BOT_WEBHOOK_SECRET --sensitive
+    ```
+
+    Deploy your bot:
+    ```bash
+    vercel
+    ```
+
+    After successful deployment, set up a webhook to connect your Vercel app with Telegram, modify the below URL to your credentials and visit it from your browser:
+    ```
+    https://APP_NAME.vercel.app/BOT_TOKEN
     ```
 
 ### List of Available Commands
@@ -300,16 +335,6 @@ bun add -d @types/bun
     <td>
       <i>Optional.</i>
       Enables debug mode. You may use <code>config.isDebug</code> flag to enable debugging functions.
-    </td>
-  </tr>
-  <tr>
-    <td>BOT_WEBHOOK</td>
-    <td>
-        String
-    </td>
-    <td>
-        <i>Optional in <code>polling</code> mode.</i>
-        Webhook endpoint URL, used to configure webhook.
     </td>
   </tr>
   <tr>

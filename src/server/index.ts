@@ -58,6 +58,24 @@ export function createServer(dependencies: Dependencies) {
   server.get('/', c => c.json({ status: true }))
 
   if (config.isWebhookMode) {
+    server.get(`/${bot.token}`, async (c) => {
+      const hostname = c.req.header('x-forwarded-host')
+      if (typeof hostname === 'string') {
+        const webhookUrl = new URL('webhook', `https://${hostname}`).href
+        await bot.api.setWebhook(webhookUrl, {
+          allowed_updates: config.botAllowedUpdates,
+          secret_token: config.botWebhookSecret,
+        })
+        return c.json({
+          status: true,
+        })
+      }
+      c.status(500)
+      return c.json({
+        status: false,
+      })
+    })
+
     server.post(
       '/webhook',
       webhookCallback(bot, 'hono', {
