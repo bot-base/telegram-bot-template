@@ -88,7 +88,7 @@ git remote update
 2. Merge deployment setup
 
 ```sh
-git merge template/deploy/docker-compose -X theirs --no-commit --allow-unrelated-histories
+git merge template/deploy/docker-compose -X theirs --squash --no-commit --allow-unrelated-histories
 ```
 
 ### Vercel ([vercel.com](https://vercel.com))
@@ -109,7 +109,7 @@ git remote update
 2. Merge deployment setup
 
 ```sh
-git merge template/deploy/vercel -X theirs --no-commit --allow-unrelated-histories
+git merge template/deploy/vercel -X theirs --squash --no-commit --allow-unrelated-histories
 ```
 
 ## Examples
@@ -132,7 +132,7 @@ git remote update
 2. Merge example
 
 ```sh
-git merge template/example/prisma -X theirs --no-commit --allow-unrelated-histories
+git merge template/example/prisma -X theirs --squash --no-commit --allow-unrelated-histories
 ```
 
 ### grammY conversations ([grammy.dev/plugins/conversations](https://grammy.dev/plugins/conversations))
@@ -153,7 +153,7 @@ git remote update
 2. Merge example
 
 ```sh
-git merge template/example/conversations-plugin -X theirs --no-commit --allow-unrelated-histories
+git merge template/example/conversations-plugin -X theirs --squash --no-commit --allow-unrelated-histories
 ```
 
 ### grammY runner ([grammy.dev/plugins/runner](https://grammy.dev/plugins/runner))
@@ -174,7 +174,7 @@ git remote update
 2. Merge example
 
 ```sh
-git merge template/example/runner-plugin -X theirs --no-commit --allow-unrelated-histories
+git merge template/example/runner-plugin -X theirs --squash --no-commit --allow-unrelated-histories
 ```
 
 ## Environment Variables
