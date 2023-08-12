@@ -8,19 +8,20 @@ import { createServer } from "#root/server/index.js";
 
 try {
   const bot = createBot(config.BOT_TOKEN);
-  await bot.init();
-
   const server = await createServer(bot);
 
   // Graceful shutdown
   onShutdown(async () => {
     logger.info("shutdown");
 
-    await bot.stop();
     await server.close();
+    await bot.stop();
   });
 
   if (config.isProd) {
+    // to prevent receiving updates before the bot is ready
+    await bot.init();
+
     await server.listen({
       host: config.BOT_SERVER_HOST,
       port: config.BOT_SERVER_PORT,
