@@ -11,7 +11,7 @@
     "format": "eslint \"src/**/*.ts\" --fix",
     "typecheck": "tsc",
     "build": "tsc --noEmit false",
-    "dev": "tsx watch --clear-screen=false ./scripts/start.ts",
+    "dev": "tsc-watch --onSuccess \"tsx ./scripts/start.ts\"",
     "start": "tsc && tsx ./scripts/start.ts",
     "start:force": "tsx ./scripts/start.ts",
     "prepare": "npx husky install"
@@ -52,6 +52,7 @@
     "lint-staged": "13.2.3",
     "prettier": "3.0.1",
     "prettier-plugin-organize-imports": "3.2.3",
+    "tsc-watch": "6.0.4",
     "typescript": "5.1.6"
   },
   "engines": {
