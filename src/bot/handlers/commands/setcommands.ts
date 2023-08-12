@@ -1,4 +1,5 @@
 import { BotCommand } from "@grammyjs/types";
+import { CommandContext } from "grammy";
 import { i18n, isMultipleLocales } from "#root/bot/i18n.js";
 import { config } from "#root/config.js";
 import type { Context } from "#root/bot/context.js";
@@ -33,7 +34,7 @@ function getGroupChatCommands(localeCode: string): BotCommand[] {
   return [];
 }
 
-export async function setCommandsHandler(ctx: Context) {
+export async function setCommandsHandler(ctx: CommandContext<Context>) {
   const DEFAULT_LANGUAGE_CODE = "en";
 
   // set private chat commands
