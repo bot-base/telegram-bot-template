@@ -13,10 +13,13 @@ Bot starter template based on [grammY](https://grammy.dev/) bot framework.
 - Logger (powered by [pino](https://github.com/pinojs/pino))
 - Fast and low overhead server (powered by [fastify](https://github.com/fastify/fastify))
 - Ready-to-use deployment setups:
-    - [Docker](#docker)
-    - [Vercel](#vercel)
+    - [Docker](#docker-dockercom)
+    - [Vercel](#vercel-vercelcom)
 - Examples:
-    - [Prisma ORM](#prisma-orm)
+    - [Prisma ORM](#prisma-orm-prismaio)
+    - grammY plugins:
+        - [Conversations](#grammy-conversations-grammydevpluginsconversations)
+        - [Runner](#grammy-runner-grammydevpluginsrunner)
 
 ## Usage
 
@@ -67,7 +70,7 @@ cp .env.example .env
 
 ## Deploy
 
-### Docker 
+### Docker ([docker.com](https://docker.com))
 
 Branch:
 [deploy/docker-compose](https://github.com/bot-base/telegram-bot-template/tree/deploy/docker-compose) 
@@ -88,7 +91,7 @@ git remote update
 git merge template/deploy/docker-compose -X theirs --no-commit --allow-unrelated-histories
 ```
 
-### Vercel
+### Vercel ([vercel.com](https://vercel.com))
 
 Branch:
 [deploy/vercel](https://github.com/bot-base/telegram-bot-template/tree/deploy/vercel) 
@@ -111,7 +114,7 @@ git merge template/deploy/vercel -X theirs --no-commit --allow-unrelated-histori
 
 ## Examples
 
-### Prisma ORM
+### Prisma ORM ([prisma.io](https://prisma.io))
 
 Branch:
 [example/prisma](https://github.com/bot-base/telegram-bot-template/tree/example/prisma) 
@@ -130,6 +133,48 @@ git remote update
 
 ```sh
 git merge template/example/prisma -X theirs --no-commit --allow-unrelated-histories
+```
+
+### grammY conversations ([grammy.dev/plugins/conversations](https://grammy.dev/plugins/conversations))
+
+Branch:
+[example/conversations-plugin](https://github.com/bot-base/telegram-bot-template/tree/example/conversations-plugin) 
+([open diff](https://github.com/bot-base/telegram-bot-template/compare/example/conversations-plugin))
+
+Use in your project:
+
+1. Add the template repository as a remote
+
+```sh
+git remote add template git@github.com:bot-base/telegram-bot-template.git
+git remote update
+```
+
+2. Merge example
+
+```sh
+git merge template/example/conversations-plugin -X theirs --no-commit --allow-unrelated-histories
+```
+
+### grammY runner ([grammy.dev/plugins/runner](https://grammy.dev/plugins/runner))
+
+Branch:
+[example/runner-plugin](https://github.com/bot-base/telegram-bot-template/tree/example/runner-plugin) 
+([open diff](https://github.com/bot-base/telegram-bot-template/compare/example/runner-plugin))
+
+Use in your project:
+
+1. Add the template repository as a remote
+
+```sh
+git remote add template git@github.com:bot-base/telegram-bot-template.git
+git remote update
+```
+
+2. Merge example
+
+```sh
+git merge template/example/runner-plugin -X theirs --no-commit --allow-unrelated-histories
 ```
 
 ## Environment Variables
