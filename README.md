@@ -22,6 +22,7 @@ Bot starter template based on [grammY](https://grammy.dev/) bot framework.
         - [Runner](#grammy-runner-grammydevpluginsrunner)
     - Web Apps:
         - [Vanilla](#web-app-vite-typescript) (No frameworks)
+        - [Vue](#web-app-with-vue-vue-vite-typescript)
 
 ## Usage
 
@@ -119,8 +120,8 @@ git merge template/deploy/vercel -X theirs --squash --no-commit --allow-unrelate
 ### Prisma ORM ([prisma.io](https://prisma.io))
 
 Branch:
-[example/prisma](https://github.com/bot-base/telegram-bot-template/tree/example/prisma) 
-([open diff](https://github.com/bot-base/telegram-bot-template/compare/example/prisma))
+[example/orm-prisma](https://github.com/bot-base/telegram-bot-template/tree/example/orm-prisma) 
+([open diff](https://github.com/bot-base/telegram-bot-template/compare/example/orm-prisma))
 
 Use in your project:
 
@@ -134,14 +135,14 @@ git remote update
 2. Merge example
 
 ```sh
-git merge template/example/prisma -X theirs --squash --no-commit --allow-unrelated-histories
+git merge template/example/orm-prisma -X theirs --squash --no-commit --allow-unrelated-histories
 ```
 
 ### grammY conversations ([grammy.dev/plugins/conversations](https://grammy.dev/plugins/conversations))
 
 Branch:
-[example/conversations-plugin](https://github.com/bot-base/telegram-bot-template/tree/example/conversations-plugin) 
-([open diff](https://github.com/bot-base/telegram-bot-template/compare/example/conversations-plugin))
+[example/plugin-conversations](https://github.com/bot-base/telegram-bot-template/tree/example/plugin-conversations) 
+([open diff](https://github.com/bot-base/telegram-bot-template/compare/example/plugin-conversations))
 
 Use in your project:
 
@@ -155,14 +156,14 @@ git remote update
 2. Merge example
 
 ```sh
-git merge template/example/conversations-plugin -X theirs --squash --no-commit --allow-unrelated-histories
+git merge template/example/plugin-conversations -X theirs --squash --no-commit --allow-unrelated-histories
 ```
 
 ### grammY runner ([grammy.dev/plugins/runner](https://grammy.dev/plugins/runner))
 
 Branch:
-[example/runner-plugin](https://github.com/bot-base/telegram-bot-template/tree/example/runner-plugin) 
-([open diff](https://github.com/bot-base/telegram-bot-template/compare/example/runner-plugin))
+[example/plugin-runner](https://github.com/bot-base/telegram-bot-template/tree/example/plugin-runner) 
+([open diff](https://github.com/bot-base/telegram-bot-template/compare/example/plugin-runner))
 
 Use in your project:
 
@@ -176,7 +177,7 @@ git remote update
 2. Merge example
 
 ```sh
-git merge template/example/runner-plugin -X theirs --squash --no-commit --allow-unrelated-histories
+git merge template/example/plugin-runner -X theirs --squash --no-commit --allow-unrelated-histories
 ```
 
 ### Web App ([Vite](https://vitejs.dev), TypeScript)
@@ -198,6 +199,27 @@ git remote update
 
 ```sh
 git merge template/example/webapp -X theirs --squash --no-commit --allow-unrelated-histories
+```
+
+### Web App with Vue ([Vue](https://vuejs.org), [Vite](https://vitejs.dev), TypeScript)
+
+Branch:
+[example/webapp-vue](https://github.com/bot-base/telegram-bot-template/tree/example/webapp-vue) 
+([open diff](https://github.com/bot-base/telegram-bot-template/compare/example/webapp-vue))
+
+Use in your project:
+
+1. Add the template repository as a remote
+
+```sh
+git remote add template git@github.com:bot-base/telegram-bot-template.git
+git remote update
+```
+
+2. Merge example
+
+```sh
+git merge template/example/webapp-vue -X theirs --squash --no-commit --allow-unrelated-histories
 ```
 
 ## Environment Variables
