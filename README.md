@@ -20,6 +20,8 @@ Bot starter template based on [grammY](https://grammy.dev/) bot framework.
     - grammY plugins:
         - [Conversations](#grammy-conversations-grammydevpluginsconversations)
         - [Runner](#grammy-runner-grammydevpluginsrunner)
+    - Web Apps:
+        - [Vanilla](#web-app-vite-typescript) (No frameworks)
 
 ## Usage
 
@@ -175,6 +177,27 @@ git remote update
 
 ```sh
 git merge template/example/runner-plugin -X theirs --squash --no-commit --allow-unrelated-histories
+```
+
+### Web App ([Vite](https://vitejs.dev), TypeScript)
+
+Branch:
+[example/webapp](https://github.com/bot-base/telegram-bot-template/tree/example/webapp) 
+([open diff](https://github.com/bot-base/telegram-bot-template/compare/example/webapp))
+
+Use in your project:
+
+1. Add the template repository as a remote
+
+```sh
+git remote add template git@github.com:bot-base/telegram-bot-template.git
+git remote update
+```
+
+2. Merge example
+
+```sh
+git merge template/example/webapp -X theirs --squash --no-commit --allow-unrelated-histories
 ```
 
 ## Environment Variables
