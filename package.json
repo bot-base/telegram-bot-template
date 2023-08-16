@@ -7,8 +7,8 @@
     "#root/*": "./build/src/*"
   },
   "scripts": {
-    "lint": "eslint \"src/**/*.ts\"",
-    "format": "eslint \"src/**/*.ts\" --fix",
+    "lint": "eslint .",
+    "format": "eslint . --fix",
     "typecheck": "tsc",
     "build": "tsc --noEmit false",
     "dev": "tsc-watch --onSuccess \"tsx ./scripts/start.ts\"",
