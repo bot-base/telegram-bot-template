@@ -224,13 +224,89 @@ git merge template/example/webapp-vue -X theirs --squash --no-commit --allow-unr
 
 ## Environment Variables
 
-| Variable            | Description                                                                                                                                               |
-| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| NODE_ENV            | Node environment (development or production)                                                                                                                                          |
-| LOG_LEVEL           | Log level                                                                                                                                                 |
-| BOT_SERVER_HOST     | Server address (default 0.0.0.0)                                                                                                                                            |
-| BOT_SERVER_PORT     | Server port (default 80)                                                                                                                                               |
-| BOT_ALLOWED_UPDATES | List of [update types](https://core.telegram.org/bots/api#update) to receive                                                                              |
-| BOT_TOKEN           | Token, get it from [@BotFather](https://t.me/BotFather)                                                                                                   |
-| BOT_WEBHOOK         | <details><summary>Webhook endpoint</summary>Will be used to setup webhook in production mode.</details>                                                        |
-| BOT_ADMIN_USER_ID   | <details><summary>Administrator user ID</summary>Commands, such as `/setcommands`, will only be available to the user with this ID.</details> |
+<table>
+<thead>
+  <tr>
+    <th>Variable</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>NODE_ENV</td>
+    <td>String</td>
+    <td>Application environment (<code>development</code> or <code>production</code>)</td>
+  </tr>
+  <tr>
+    <td>BOT_TOKEN</td>
+    <td>
+        String
+    </td>
+    <td>
+        Token, get it from <a href="https://t.me/BotFather">@BotFather</a>.
+    </td>
+  </tr>
+  <tr>
+    <td>BOT_WEBHOOK</td>
+    <td>
+        String
+    </td>
+    <td>
+        Webhook endpoint, used to configure webhook in <b>production</b> environment.
+    </td>
+  </tr>
+  <tr>
+    <td>LOG_LEVEL</td>
+    <td>
+        String
+    </td>
+    <td>
+        <i>Optional.</i>
+        Application log level. 
+        See <a href="https://github.com/pinojs/pino/blob/master/docs/api.md#level-string">Pino docs</a> for a complete list of available log levels. <br/>
+        Defaults to <code>info</code>.
+    </td>
+  </tr>
+  <tr>
+    <td>BOT_SERVER_HOST</td>
+    <td>
+        String
+    </td>
+    <td>
+        <i>Optional.</i> Server address. <br/>
+        Defaults to <code>0.0.0.0</code>.
+    </td>
+  </tr>
+  <tr>
+    <td>BOT_SERVER_PORT</td>
+    <td>
+        Number
+    </td>
+    <td>
+        <i>Optional.</i> Server port. <br/>
+        Defaults to <code>80</code>.
+    </td>
+  </tr>
+  <tr>
+    <td>BOT_ALLOWED_UPDATES</td>
+    <td>
+        Array of String
+    </td>
+    <td>
+        <i>Optional.</i> A JSON-serialized list of the update types you want your bot to receive. See <a href="https://core.telegram.org/bots/api#update">Update</a> for a complete list of available update types. <br/>
+        Defaults to an empty array (all update types except <code>chat_member</code>).
+    </td>
+  </tr>
+  <tr>
+    <td>BOT_ADMIN_USER_ID</td>
+    <td>
+        Number or <br> Array of Number
+    </td>
+    <td>
+        <i>Optional.</i> Administrator user ID. Commands such as <code>/setcommands</code> will only be available to a user with this ID. <br/>
+        Defaults to an empty array.
+    </td>
+  </tr>
+</tbody>
+</table>
