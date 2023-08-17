@@ -41,6 +41,7 @@
         "trailingComma": "all"
       }
     ],
+    "unicorn/no-array-method-this-argument": "off",
     "unicorn/no-array-callback-reference": "off",
     "unicorn/prevent-abbreviations": [
       "error",
