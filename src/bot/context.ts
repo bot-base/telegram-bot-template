@@ -36,6 +36,7 @@ export function createContextConstructor({ logger }: Dependencies) {
       super(update, api, me);
 
       this.logger = logger.child({
+        bot_id: me.id,
         update_id: this.update.update_id,
       });
     }

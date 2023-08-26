@@ -7,7 +7,11 @@ import { config } from "#root/config.js";
 import { requestLogger } from "#root/server/middlewares/request-logger.js";
 import { getPath } from "hono/utils/url";
 
-export const createServer = async (bot: Bot) => {
+export const createServer = async ({
+  getBot,
+}: {
+  getBot: (token: string) => Promise<Bot>;
+}) => {
   const server = new Hono();
 
   if (config.isDev) {
@@ -40,12 +44,11 @@ export const createServer = async (bot: Bot) => {
 
   server.get("/", (c) => c.json({ status: true }));
 
-  server.post(
-    "/webhook",
-    webhookCallback(bot, "hono", {
-      secretToken: config.BOT_WEBHOOK_SECRET,
-    }),
-  );
+  server.post("/:token{[0-9]+:[a-zA-Z0-9_-]+}", async (c) => {
+    const { token } = c.req.param();
+
+    return webhookCallback(await getBot(token), "hono")(c);
+  });
 
   return server;
 };
