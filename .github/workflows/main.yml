@@ -9,11 +9,9 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
         node-version: [18.x]
-
     steps:
       - uses: actions/checkout@v3
       - name: Use Node.js ${{ matrix.node-version }}
@@ -23,3 +21,21 @@ jobs:
       - run: npm ci
       - run: npm run lint
       - run: npm run typecheck
+
+  auto-merge:
+    if: github.event_name == 'pull_request' && github.actor == 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    needs: build-and-test
+    env:
+      token: ${{ secrets.DEPENDABOT_TOKEN }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Check if secrets.DEPENDABOT_TOKEN is set
+        if: ${{ env.token == '' }}
+        run: exit 1
+      - uses: ahmadnassri/action-dependabot-auto-merge@v2
+        with:
+          target: minor
+          command: squash and merge
+          # https://github.com/ahmadnassri/action-dependabot-auto-merge#token-scope
+          github-token: ${{ env.token }}
