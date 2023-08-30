@@ -28,7 +28,7 @@
     "callback-data": "1.1.0",
     "dotenv": "16.3.1",
     "fastify": "4.22.0",
-    "grammy": "1.17.2",
+    "grammy": "1.18.1",
     "grammy-guard": "0.5.0",
     "iso-639-1": "2.1.15",
     "node-graceful-shutdown": "1.1.5",
