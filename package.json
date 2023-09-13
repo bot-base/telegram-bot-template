@@ -34,7 +34,7 @@
     "node-graceful-shutdown": "1.1.5",
     "pino": "8.15.1",
     "pino-pretty": "10.2.0",
-    "tsx": "3.12.8",
+    "tsx": "3.12.9",
     "zod": "3.22.2"
   },
   "devDependencies": {
