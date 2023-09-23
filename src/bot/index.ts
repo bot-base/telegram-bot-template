@@ -30,39 +30,36 @@ export function createBot(token: string, options: Options = {}) {
     ...options.config,
     ContextConstructor: createContextConstructor({ logger }),
   });
+  const protectedBot = bot.errorBoundary(errorHandler);
 
   // Middlewares
   bot.api.config.use(parseMode("HTML"));
 
   if (config.isDev) {
-    bot.use(updateLogger());
+    protectedBot.use(updateLogger());
   }
 
-  bot.use(autoChatAction(bot.api));
-  bot.use(hydrateReply);
-  bot.use(hydrate());
-  bot.use(
+  protectedBot.use(autoChatAction(bot.api));
+  protectedBot.use(hydrateReply);
+  protectedBot.use(hydrate());
+  protectedBot.use(
     session({
       initial: () => ({}),
       storage: sessionStorage,
     }),
   );
-  bot.use(i18n);
+  protectedBot.use(i18n);
 
   // Handlers
-  bot.use(welcomeFeature);
-  bot.use(botAdminFeature);
+  protectedBot.use(welcomeFeature);
+  protectedBot.use(botAdminFeature);
 
   if (isMultipleLocales) {
-    bot.use(languageFeature);
+    protectedBot.use(languageFeature);
   }
 
   // must be the last handler
-  bot.use(unhandledFeature);
-
-  if (config.isDev) {
-    bot.catch(errorHandler);
-  }
+  protectedBot.use(unhandledFeature);
 
   return bot;
 }
