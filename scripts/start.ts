@@ -18,7 +18,7 @@ try {
     await bot.stop();
   });
 
-  if (config.isProd) {
+  if (config.BOT_MODE === "webhook") {
     // to prevent receiving updates before the bot is ready
     await bot.init();
 
@@ -30,7 +30,7 @@ try {
     await bot.api.setWebhook(config.BOT_WEBHOOK, {
       allowed_updates: config.BOT_ALLOWED_UPDATES,
     });
-  } else if (config.isDev) {
+  } else if (config.BOT_MODE === "polling") {
     await bot.start({
       allowed_updates: config.BOT_ALLOWED_UPDATES,
       onStart: ({ username }) =>

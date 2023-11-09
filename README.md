@@ -26,49 +26,62 @@ Bot starter template based on [grammY](https://grammy.dev/) bot framework.
 
 ## Usage
 
-1. [Create a new repository](https://github.com/bot-base/telegram-bot-template/generate) using this template.
+Follow these steps to set up and run your bot using this template:
 
-2.  Create an environment variables file:
+1. **Create a New Repository**
 
-```bash
-cp .env.example .env
-```
+    Start by creating a new repository using this template. You can do this by clicking [here](https://github.com/bot-base/telegram-bot-template/generate).
 
-3.  Set BOT_TOKEN [environment variable](#environment-variables) in `.env` file.
+2. **Environment Variables Setup**
+    
+    Create an environment variables file by copying the provided example file:
+     ```bash
+     cp .env.example .env
+     ```
+    Open the newly created `.env` file and set the `BOT_TOKEN` environment variable.
 
+3. **Launching the Bot**
+    
+    You can run your bot in both development and production modes.
 
-4.  Launch bot
-
-    Development mode:
-
+    **Development Mode:**
+    
+    Install the required dependencies:
     ```bash
-    # 1. Install dependencies
-    npm i
-
-    # 2. Run bot (in watch mode)
+    npm install
+    ```
+    Start the bot in watch mode (auto-reload when code changes):
+    ```bash
     npm run dev
     ```
 
-    Production mode:
-
+   **Production Mode:**
+    
+    Install only production dependencies (no development dependencies):
     ```bash
-    # 1. Install dependencies
-    npm i --only=prod
-
-    # 2. Set NODE_ENV to production and change BOT_WEBHOOK to the actual URL to receive updates
-
-    # 3. Run bot
-    npm start 
+    npm install --only=prod
+    ```
+    
+    Set the `NODE_ENV` environment variable to "production" in your `.env` file. Also, make sure to update `BOT_WEBHOOK` with the actual URL where your bot will receive updates.
+    ```dotenv
+    NODE_ENV=production
+    BOT_WEBHOOK=<your_webhook_url>
+    ```
+    
+    Start the bot in production mode:
+    ```bash
+    npm start
     # or
     npm run start:force # if you want to skip type checking
     ```
 
-### List of available commands
+### List of Available Commands
+
 - `npm run lint` — Lint source code.
 - `npm run format` — Format source code.
-- `npm run typecheck` — Runs type checking.
-- `npm run dev` — Starts the bot in development mode.
-- `npm run start` — Starts the bot.
+- `npm run typecheck` — Run type checking.
+- `npm run dev` — Start the bot in development mode.
+- `npm run start` — Start the bot.
 - `npm run start:force` — Starts the bot without type checking.
 
 ## Deploy
@@ -236,7 +249,7 @@ git merge template/example/webapp-vue -X theirs --squash --no-commit --allow-unr
   <tr>
     <td>NODE_ENV</td>
     <td>String</td>
-    <td>Application environment (<code>development</code> or <code>production</code>)</td>
+    <td>Specifies the application environment. (<code>development</code> or <code>production</code>)</td>
   </tr>
   <tr>
     <td>BOT_TOKEN</td>
@@ -244,7 +257,30 @@ git merge template/example/webapp-vue -X theirs --squash --no-commit --allow-unr
         String
     </td>
     <td>
-        Token, get it from <a href="https://t.me/BotFather">@BotFather</a>.
+        Telegram Bot API token obtained from <a href="https://t.me/BotFather">@BotFather</a>.
+    </td>
+  </tr>
+    <tr>
+    <td>LOG_LEVEL</td>
+    <td>
+        String
+    </td>
+    <td>
+        <i>Optional.</i>
+        Specifies the application log level. <br/>
+        For example, use <code>info</code> for general logging. View the <a href="https://github.com/pinojs/pino/blob/master/docs/api.md#level-string">Pino documentation</a> for more log level options. <br/>
+        Defaults to <code>info</code>.
+    </td>
+  </tr>
+  <tr>
+    <td>BOT_MODE</td>
+    <td>
+        String
+    </td>
+    <td>
+        <i>Optional.</i>
+        Specifies method to receive incoming updates. (<code>polling</code> or <code>webhook</code>)
+        Defaults to <code>polling</code>.
     </td>
   </tr>
   <tr>
@@ -253,19 +289,8 @@ git merge template/example/webapp-vue -X theirs --squash --no-commit --allow-unr
         String
     </td>
     <td>
-        Webhook endpoint, used to configure webhook in <b>production</b> environment.
-    </td>
-  </tr>
-  <tr>
-    <td>LOG_LEVEL</td>
-    <td>
-        String
-    </td>
-    <td>
-        <i>Optional.</i>
-        Application log level. 
-        See <a href="https://github.com/pinojs/pino/blob/master/docs/api.md#level-string">Pino docs</a> for a complete list of available log levels. <br/>
-        Defaults to <code>info</code>.
+        <i>Optional in <code>polling</code> mode.</i>
+        Webhook endpoint URL, used to configure webhook in <b>production</b> environment.
     </td>
   </tr>
   <tr>
@@ -274,7 +299,7 @@ git merge template/example/webapp-vue -X theirs --squash --no-commit --allow-unr
         String
     </td>
     <td>
-        <i>Optional.</i> Server address. <br/>
+        <i>Optional.</i> Specifies the server hostname. <br/>
         Defaults to <code>0.0.0.0</code>.
     </td>
   </tr>
@@ -284,7 +309,7 @@ git merge template/example/webapp-vue -X theirs --squash --no-commit --allow-unr
         Number
     </td>
     <td>
-        <i>Optional.</i> Server port. <br/>
+        <i>Optional.</i> Specifies the server port. <br/>
         Defaults to <code>80</code>.
     </td>
   </tr>
@@ -299,12 +324,14 @@ git merge template/example/webapp-vue -X theirs --squash --no-commit --allow-unr
     </td>
   </tr>
   <tr>
-    <td>BOT_ADMIN_USER_ID</td>
+    <td>BOT_ADMINS</td>
     <td>
-        Number or <br> Array of Number
+        Array of Number
     </td>
     <td>
-        <i>Optional.</i> Administrator user ID. Commands such as <code>/setcommands</code> will only be available to a user with this ID. <br/>
+        <i>Optional.</i> 
+        Administrator user IDs. 
+        Use this to specify user IDs that have special privileges, such as executing <code>/setcommands</code>. <br/>
         Defaults to an empty array.
     </td>
   </tr>

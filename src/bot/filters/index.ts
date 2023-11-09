@@ -1,1 +1,1 @@
-export * from "./is-bot-admin.js";
+export * from "./is-admin.js";

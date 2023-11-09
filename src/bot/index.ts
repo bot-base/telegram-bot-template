@@ -8,7 +8,7 @@ import {
   createContextConstructor,
 } from "#root/bot/context.js";
 import {
-  botAdminFeature,
+  adminFeature,
   languageFeature,
   unhandledFeature,
   welcomeFeature,
@@ -52,7 +52,7 @@ export function createBot(token: string, options: Options = {}) {
 
   // Handlers
   protectedBot.use(welcomeFeature);
-  protectedBot.use(botAdminFeature);
+  protectedBot.use(adminFeature);
 
   if (isMultipleLocales) {
     protectedBot.use(languageFeature);

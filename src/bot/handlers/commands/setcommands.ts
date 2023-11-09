@@ -101,7 +101,7 @@ export async function setCommandsHandler(ctx: CommandContext<Context>) {
     {
       scope: {
         type: "chat",
-        chat_id: Number(config.BOT_ADMIN_USER_ID),
+        chat_id: Number(config.BOT_ADMINS),
       },
     },
   );
