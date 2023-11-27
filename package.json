@@ -34,7 +34,7 @@
     "node-graceful-shutdown": "1.1.5",
     "pino": "8.16.2",
     "pino-pretty": "10.2.3",
-    "tsx": "3.14.0",
+    "tsx": "4.5.0",
     "znv": "0.4.0",
     "zod": "3.22.4"
   },
