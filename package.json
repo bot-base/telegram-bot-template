@@ -27,7 +27,7 @@
     "@grammyjs/types": "3.4.6",
     "callback-data": "1.1.1",
     "dotenv": "16.4.1",
-    "fastify": "4.25.2",
+    "fastify": "4.26.0",
     "grammy": "1.20.3",
     "grammy-guard": "0.5.0",
     "iso-639-1": "3.1.0",
