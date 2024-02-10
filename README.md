@@ -84,6 +84,30 @@ Follow these steps to set up and run your bot using this template:
 - `npm run start` — Start the bot.
 - `npm run start:force` — Starts the bot without type checking.
 
+### Directory Structure
+
+```
+project-root/
+  ├── locales # Localization files
+  └── src
+      ├── bot # Contains the code related to the bot
+      │   ├── callback-data # Callback data builders
+      │   ├── features      # Implementations of bot features
+      │   ├── filters       # Update filters
+      │   ├── handlers      # Update handlers
+      │   ├── helpers       # Utility functions
+      │   ├── keyboards     # Keyboard builders
+      │   ├── middlewares   # Middleware functions
+      │   ├── i18n.ts       # Internationalization setup
+      │   ├── context.ts    # Context object definition
+      │   └── index.ts      # Bot entry point
+      ├── server # Contains the code related to the web server
+      │   └── index.ts # Web server entry point
+      ├── config.ts # Application config
+      ├── logger.ts # Logging setup
+      └── main.ts   # Application entry point
+```
+
 ## Deploy
 
 ### Docker ([docker.com](https://docker.com))
