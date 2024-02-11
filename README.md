@@ -20,9 +20,6 @@ Bot starter template based on [grammY](https://grammy.dev/) bot framework.
     - grammY plugins:
         - [Conversations](#grammy-conversations-grammydevpluginsconversations)
         - [Runner](#grammy-runner-grammydevpluginsrunner)
-    - Web Apps:
-        - [Vanilla](#web-app-vite-typescript) (No frameworks)
-        - [Vue](#web-app-with-vue-vue-vite-typescript)
 
 ## Usage
 
@@ -175,6 +172,13 @@ git remote update
 git merge template/example/orm-prisma -X theirs --squash --no-commit --allow-unrelated-histories
 ```
 
+3. Install dependencies
+
+```sh
+npm i -D prisma
+npm i @prisma/client
+```
+
 ### grammY conversations ([grammy.dev/plugins/conversations](https://grammy.dev/plugins/conversations))
 
 Branch:
@@ -194,6 +198,12 @@ git remote update
 
 ```sh
 git merge template/example/plugin-conversations -X theirs --squash --no-commit --allow-unrelated-histories
+```
+
+3. Install dependencies
+
+```sh
+npm i @grammyjs/conversations
 ```
 
 ### grammY runner ([grammy.dev/plugins/runner](https://grammy.dev/plugins/runner))
@@ -217,46 +227,10 @@ git remote update
 git merge template/example/plugin-runner -X theirs --squash --no-commit --allow-unrelated-histories
 ```
 
-### Web App ([Vite](https://vitejs.dev), TypeScript)
-
-Branch:
-[example/webapp](https://github.com/bot-base/telegram-bot-template/tree/example/webapp) 
-([open diff](https://github.com/bot-base/telegram-bot-template/compare/example/webapp))
-
-Use in your project:
-
-1. Add the template repository as a remote
+3. Install dependencies
 
 ```sh
-git remote add template git@github.com:bot-base/telegram-bot-template.git
-git remote update
-```
-
-2. Merge example
-
-```sh
-git merge template/example/webapp -X theirs --squash --no-commit --allow-unrelated-histories
-```
-
-### Web App with Vue ([Vue](https://vuejs.org), [Vite](https://vitejs.dev), TypeScript)
-
-Branch:
-[example/webapp-vue](https://github.com/bot-base/telegram-bot-template/tree/example/webapp-vue) 
-([open diff](https://github.com/bot-base/telegram-bot-template/compare/example/webapp-vue))
-
-Use in your project:
-
-1. Add the template repository as a remote
-
-```sh
-git remote add template git@github.com:bot-base/telegram-bot-template.git
-git remote update
-```
-
-2. Merge example
-
-```sh
-git merge template/example/webapp-vue -X theirs --squash --no-commit --allow-unrelated-histories
+npm i @grammyjs/runner
 ```
 
 ## Environment Variables
