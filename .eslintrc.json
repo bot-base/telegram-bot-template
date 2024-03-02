@@ -35,6 +35,10 @@
     "import/prefer-default-export": "off",
     "import/extensions": "off",
     "no-underscore-dangle": "off",
+    "no-restricted-syntax": [
+      "off",
+      "ForOfStatement"
+    ],
     "prettier/prettier": [
       "error",
       {
