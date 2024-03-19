@@ -1,0 +1,10 @@
+services:
+
+  bot:
+    ports:
+      - '3000:80'
+    volumes:
+      - '.:/usr/src'
+    env_file:
+      - .env.bot.dev
+    command: npm run dev
