@@ -20,3 +20,5 @@ export const createServer = async (bot: Bot) => {
 
   return server;
 };
+
+export type Server = Awaited<ReturnType<typeof createServer>>;
