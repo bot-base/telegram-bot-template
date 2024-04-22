@@ -36,7 +36,7 @@
     "pino-pretty": "10.3.1",
     "tsx": "4.7.2",
     "znv": "0.4.0",
-    "zod": "3.22.5"
+    "zod": "3.23.0"
   },
   "devDependencies": {
     "@types/node": "20.12.7",
