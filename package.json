@@ -26,7 +26,6 @@
     "@grammyjs/parse-mode": "1.9.0",
     "@grammyjs/types": "3.5.2",
     "callback-data": "1.1.1",
-    "dotenv": "16.4.5",
     "fastify": "4.26.2",
     "grammy": "1.21.2",
     "grammy-guard": "0.5.0",

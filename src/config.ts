@@ -1,7 +1,13 @@
-import "dotenv/config";
+import { loadEnvFile } from "node:process";
 import z from "zod";
 import { parseEnv, port } from "znv";
 import { API_CONSTANTS } from "grammy";
+
+try {
+  loadEnvFile();
+} catch {
+  // No .env file found
+}
 
 const createConfigFromEnvironment = (environment: NodeJS.ProcessEnv) => {
   const config = parseEnv(environment, {
