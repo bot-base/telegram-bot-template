@@ -13,7 +13,7 @@ try {
 
   // graceful shutdown
   onShutdown(async () => {
-    logger.info("shutdown");
+    logger.info("Shutdown");
 
     await bot.stop();
   });
@@ -47,12 +47,16 @@ try {
       allowed_updates: config.BOT_ALLOWED_UPDATES,
       secret_token: config.BOT_WEBHOOK_SECRET,
     });
+    logger.info({
+      msg: "Webhook was set",
+      url: config.BOT_WEBHOOK,
+    });
   } else if (config.BOT_MODE === "polling") {
     await bot.start({
       allowed_updates: config.BOT_ALLOWED_UPDATES,
       onStart: ({ username }) =>
         logger.info({
-          msg: "bot running...",
+          msg: "Bot running...",
           username,
         }),
     });

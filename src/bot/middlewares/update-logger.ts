@@ -7,7 +7,7 @@ export function updateLogger(): Middleware<Context> {
   return async (ctx, next) => {
     ctx.api.config.use((previous, method, payload, signal) => {
       ctx.logger.debug({
-        msg: "bot api call",
+        msg: "Bot API call",
         method,
         payload,
       });
@@ -16,7 +16,7 @@ export function updateLogger(): Middleware<Context> {
     });
 
     ctx.logger.debug({
-      msg: "update received",
+      msg: "Update received",
       update: getUpdateInfo(ctx),
     });
 
@@ -26,8 +26,8 @@ export function updateLogger(): Middleware<Context> {
     } finally {
       const endTime = performance.now();
       ctx.logger.debug({
-        msg: "update processed",
-        duration: endTime - startTime,
+        msg: "Update processed",
+        elapsed: endTime - startTime,
       });
     }
   };
