@@ -11,7 +11,7 @@ Bot starter template based on [grammY](https://grammy.dev/) bot framework.
 - Internationalization, language changing
 - Graceful shutdown
 - Logger (powered by [pino](https://github.com/pinojs/pino))
-- Fast and low overhead server (powered by [fastify](https://github.com/fastify/fastify))
+- Ultrafast and multi-runtime server (powered by [hono](https://github.com/honojs/hono))
 - Ready-to-use deployment setups:
     - [Docker](#docker-dockercom)
     - [Vercel](#vercel-vercelcom)
@@ -59,17 +59,23 @@ Follow these steps to set up and run your bot using this template:
     npm install --only=prod
     ```
     
-    Set the `NODE_ENV` environment variable to "production" in your `.env` file. Also, make sure to update `BOT_WEBHOOK` with the actual URL where your bot will receive updates.
+    Set `NODE_ENV` environment variable to `production` in your `.env` file. 
+    Set `BOT_MODE` environment variable to `webhook`. 
+    Update `BOT_WEBHOOK` with the actual URL where your bot will receive updates.
+    Update `BOT_WEBHOOK_SECRET` with a random secret token.
+
     ```dotenv
     NODE_ENV=production
-    BOT_WEBHOOK=<your_webhook_url>
+    BOT_MODE=webhook
+    BOT_WEBHOOK=<server_url>/webhook
+    BOT_WEBHOOK_SECRET=<random_secret_value>
     ```
     
     Start the bot in production mode:
     ```bash
-    npm start
+    npm start # with type checking (requires development dependencies)
     # or
-    npm run start:force # if you want to skip type checking
+    npm run start:force # skip type checking and start
     ```
 
 ### List of Available Commands
@@ -277,7 +283,7 @@ npm i @grammyjs/runner
     </td>
     <td>
         <i>Optional.</i>
-        Specifies method to receive incoming updates. (<code>polling</code> or <code>webhook</code>)
+        Specifies method to receive incoming updates (<code>polling</code> or <code>webhook</code>).
         Defaults to <code>polling</code>.
     </td>
   </tr>
@@ -288,7 +294,17 @@ npm i @grammyjs/runner
     </td>
     <td>
         <i>Optional in <code>polling</code> mode.</i>
-        Webhook endpoint URL, used to configure webhook in <b>production</b> environment.
+        Webhook endpoint URL, used to configure webhook.
+    </td>
+  </tr>
+  <tr>
+    <td>BOT_WEBHOOK_SECRET</td>
+    <td>
+        String
+    </td>
+    <td>
+        <i>Optional in <code>polling</code> mode.</i>
+        A secret token that is used to ensure that a request is sent from Telegram, used to configure webhook.
     </td>
   </tr>
   <tr>
@@ -318,7 +334,7 @@ npm i @grammyjs/runner
     </td>
     <td>
         <i>Optional.</i> A JSON-serialized list of the update types you want your bot to receive. See <a href="https://core.telegram.org/bots/api#update">Update</a> for a complete list of available update types. <br/>
-        Defaults to an empty array (all update types except <code>chat_member</code>).
+        Defaults to an empty array (all update types except <code>chat_member</code>, <code>message_reaction</code> and <code>message_reaction_count</code>).
     </td>
   </tr>
   <tr>

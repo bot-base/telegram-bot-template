@@ -24,6 +24,7 @@ const createConfigFromEnvironment = (environment: NodeJS.ProcessEnv) => {
     },
     BOT_TOKEN: z.string(),
     BOT_WEBHOOK: z.string().default(""),
+    BOT_WEBHOOK_SECRET: z.string().default(""),
     BOT_SERVER_HOST: z.string().default("0.0.0.0"),
     BOT_SERVER_PORT: port().default(80),
     BOT_ALLOWED_UPDATES: z
@@ -38,6 +39,12 @@ const createConfigFromEnvironment = (environment: NodeJS.ProcessEnv) => {
       .url()
       .parse(config.BOT_WEBHOOK, {
         path: ["BOT_WEBHOOK"],
+      });
+    // validate webhook secret in webhook mode
+    z.string()
+      .min(1)
+      .parse(config.BOT_WEBHOOK_SECRET, {
+        path: ["BOT_WEBHOOK_SECRET"],
       });
   }
 
