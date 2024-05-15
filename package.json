@@ -14,7 +14,7 @@
     "dev": "tsc-watch --onSuccess \"tsx ./src/main.ts\"",
     "start": "tsc && tsx ./src/main.ts",
     "start:force": "tsx ./src/main.ts",
-    "prepare": "husky"
+    "prepare": "husky || true"
   },
   "author": "deptyped <deptyped@gmail.com>",
   "license": "MIT",
