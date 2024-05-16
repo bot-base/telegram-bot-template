@@ -18,9 +18,9 @@
     "format": "eslint . --fix",
     "typecheck": "tsc",
     "build": "tsc --noEmit false",
-    "dev": "tsc-watch --onSuccess \"tsx ./src/main.ts\"",
-    "start": "tsc && tsx ./src/main.ts",
-    "start:force": "tsx ./src/main.ts",
+    "dev": "bun --watch ./src/main.ts",
+    "start": "tsc && bun ./src/main.ts",
+    "start:force": "bun ./src/main.ts",
     "prepare": "husky || true"
   },
   "dependencies": {
