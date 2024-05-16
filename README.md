@@ -16,10 +16,13 @@ Bot starter template based on [grammY](https://grammy.dev/) bot framework.
     - [Docker](#docker-dockercom)
     - [Vercel](#vercel-vercelcom)
 - Examples:
-    - [Prisma ORM](#prisma-orm-prismaio)
     - grammY plugins:
         - [Conversations](#grammy-conversations-grammydevpluginsconversations)
         - [Runner](#grammy-runner-grammydevpluginsrunner)
+    - Databases:
+      - [Prisma ORM](#prisma-orm-prismaio)
+    - Runtimes:
+      - [Bun](#bun-bunsh)
 
 ## Usage
 
@@ -155,34 +158,6 @@ git merge template/deploy/vercel -X theirs --squash --no-commit --allow-unrelate
 
 ## Examples
 
-### Prisma ORM ([prisma.io](https://prisma.io))
-
-Branch:
-[example/orm-prisma](https://github.com/bot-base/telegram-bot-template/tree/example/orm-prisma) 
-([open diff](https://github.com/bot-base/telegram-bot-template/compare/example/orm-prisma))
-
-Use in your project:
-
-1. Add the template repository as a remote
-
-```sh
-git remote add template git@github.com:bot-base/telegram-bot-template.git
-git remote update
-```
-
-2. Merge example
-
-```sh
-git merge template/example/orm-prisma -X theirs --squash --no-commit --allow-unrelated-histories
-```
-
-3. Install dependencies
-
-```sh
-npm i -D prisma
-npm i @prisma/client
-```
-
 ### grammY conversations ([grammy.dev/plugins/conversations](https://grammy.dev/plugins/conversations))
 
 Branch:
@@ -235,6 +210,71 @@ git merge template/example/plugin-runner -X theirs --squash --no-commit --allow-
 
 ```sh
 npm i @grammyjs/runner
+```
+
+### Prisma ORM ([prisma.io](https://prisma.io))
+
+Branch:
+[example/orm-prisma](https://github.com/bot-base/telegram-bot-template/tree/example/orm-prisma) 
+([open diff](https://github.com/bot-base/telegram-bot-template/compare/example/orm-prisma))
+
+Use in your project:
+
+1. Add the template repository as a remote
+
+```sh
+git remote add template git@github.com:bot-base/telegram-bot-template.git
+git remote update
+```
+
+2. Merge example
+
+```sh
+git merge template/example/orm-prisma -X theirs --squash --no-commit --allow-unrelated-histories
+```
+
+3. Install dependencies
+
+```sh
+npm i -D prisma
+npm i @prisma/client
+```
+
+### Bun ([bun.sh](https://bun.sh))
+
+Branch:
+[example/runtime-bun](https://github.com/bot-base/telegram-bot-template/tree/example/runtime-bun) 
+([open diff](https://github.com/bot-base/telegram-bot-template/compare/example/runtime-bun))
+
+Use in your project:
+
+1. Add the template repository as a remote
+
+```sh
+git remote add template git@github.com:bot-base/telegram-bot-template.git
+git remote update
+```
+
+2. Merge example
+
+```sh
+git merge template/example/runtime-bun -X theirs --squash --no-commit --allow-unrelated-histories
+```
+
+3. Install dependencies
+
+```sh
+# remove Node-related dependencies
+npm r @types/node tsx tsc-watch
+
+# install dependencies
+bun i
+
+# remove npm lockfile
+rm package-lock.json
+
+# install bun typings
+bun add -d @types/bun
 ```
 
 ## Environment Variables
