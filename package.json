@@ -1,10 +1,17 @@
 {
   "name": "telegram-bot-template",
-  "version": "0.1.0",
-  "description": "Telegram bot starter template",
   "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Telegram bot starter template",
   "imports": {
     "#root/*": "./build/src/*"
+  },
+  "author": "deptyped <deptyped@gmail.com>",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
   },
   "scripts": {
     "lint": "eslint .",
@@ -16,9 +23,6 @@
     "start:force": "tsx ./src/main.ts",
     "prepare": "husky || true"
   },
-  "author": "deptyped <deptyped@gmail.com>",
-  "license": "MIT",
-  "private": true,
   "dependencies": {
     "@grammyjs/auto-chat-action": "0.1.1",
     "@grammyjs/hydrate": "1.4.1",
@@ -38,26 +42,13 @@
     "zod": "3.23.8"
   },
   "devDependencies": {
+    "@antfu/eslint-config": "2.18.1",
     "@types/node": "20.12.12",
-    "@typescript-eslint/eslint-plugin": "7.10.0",
-    "@typescript-eslint/parser": "7.10.0",
     "eslint": "8.57.0",
-    "eslint-config-airbnb-base": "15.0.0",
-    "eslint-config-prettier": "9.1.0",
-    "eslint-import-resolver-typescript": "3.6.1",
-    "eslint-plugin-import": "2.29.1",
-    "eslint-plugin-prettier": "5.1.3",
-    "eslint-plugin-unicorn": "53.0.0",
     "husky": "9.0.11",
     "lint-staged": "15.2.4",
-    "prettier": "3.2.5",
-    "prettier-plugin-organize-imports": "3.2.4",
     "tsc-watch": "6.2.0",
     "typescript": "5.4.5"
-  },
-  "engines": {
-    "node": ">=18.0.0",
-    "npm": ">=8.0.0"
   },
   "lint-staged": {
     "*.ts": "eslint"
