@@ -14,7 +14,7 @@ type Variables = {
   logger: Logger;
 };
 
-export const createServer = async (bot: Bot) => {
+export const createServer = (bot: Bot) => {
   const server = new Hono<{
     Variables: Variables;
   }>();

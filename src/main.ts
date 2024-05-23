@@ -40,7 +40,7 @@ async function startPolling() {
 
 async function startWebhook() {
   const bot = createBot(config.BOT_TOKEN);
-  const server = await createServer(bot);
+  const server = createServer(bot);
 
   let serverHandle: undefined | ReturnType<typeof serve>;
   const startServer = () =>
