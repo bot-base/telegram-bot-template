@@ -2,7 +2,7 @@
 
 <img align="right" width="35%" src="https://github.com/bot-base/telegram-bot-template/assets/26162440/c4371683-3e99-4b1c-ae8e-11ccbea78f4b">
 
-Bot starter template based on [grammY](https://grammy.dev/) bot framework.  
+Bot starter template based on [grammY](https://grammy.dev/) bot framework.
 
 ## Features
 
@@ -33,7 +33,7 @@ Follow these steps to set up and run your bot using this template:
     Start by creating a new repository using this template. You can do this by clicking [here](https://github.com/bot-base/telegram-bot-template/generate).
 
 2. **Environment Variables Setup**
-    
+
     Create an environment variables file by copying the provided example file:
      ```bash
      cp .env.example .env
@@ -41,11 +41,11 @@ Follow these steps to set up and run your bot using this template:
     Open the newly created `.env` file and set the `BOT_TOKEN` environment variable.
 
 3. **Launching the Bot**
-    
+
     You can run your bot in both development and production modes.
 
     **Development Mode:**
-    
+
     Install the required dependencies:
     ```bash
     npm install
@@ -56,14 +56,14 @@ Follow these steps to set up and run your bot using this template:
     ```
 
    **Production Mode:**
-    
+
     Install only production dependencies (no development dependencies):
     ```bash
     npm install --only=prod
     ```
-    
-    Set `NODE_ENV` environment variable to `production` in your `.env` file.  
-    Update `BOT_WEBHOOK` with the actual URL where your bot will receive updates.  
+
+    Set `NODE_ENV` environment variable to `production` in your `.env` file.
+    Update `BOT_WEBHOOK` with the actual URL where your bot will receive updates.
     Update `BOT_WEBHOOK_SECRET` with a random secret token.
 
     ```dotenv
@@ -71,7 +71,7 @@ Follow these steps to set up and run your bot using this template:
     BOT_WEBHOOK=<server_url>/webhook
     BOT_WEBHOOK_SECRET=<random_secret_value>
     ```
-    
+
     Start the bot in production mode:
     ```bash
     npm start # with type checking (requires development dependencies)
@@ -117,7 +117,7 @@ project-root/
 ### Docker ([docker.com](https://docker.com))
 
 Branch:
-[deploy/docker-compose](https://github.com/bot-base/telegram-bot-template/tree/deploy/docker-compose) 
+[deploy/docker-compose](https://github.com/bot-base/telegram-bot-template/tree/deploy/docker-compose)
 ([open diff](https://github.com/bot-base/telegram-bot-template/compare/deploy/docker-compose))
 
 Use in your project:
@@ -138,7 +138,7 @@ git merge template/deploy/docker-compose -X theirs --squash --no-commit --allow-
 ### Vercel ([vercel.com](https://vercel.com))
 
 Branch:
-[deploy/vercel](https://github.com/bot-base/telegram-bot-template/tree/deploy/vercel) 
+[deploy/vercel](https://github.com/bot-base/telegram-bot-template/tree/deploy/vercel)
 ([open diff](https://github.com/bot-base/telegram-bot-template/compare/deploy/vercel))
 
 Use in your project:
@@ -161,7 +161,7 @@ git merge template/deploy/vercel -X theirs --squash --no-commit --allow-unrelate
 ### grammY conversations ([grammy.dev/plugins/conversations](https://grammy.dev/plugins/conversations))
 
 Branch:
-[example/plugin-conversations](https://github.com/bot-base/telegram-bot-template/tree/example/plugin-conversations) 
+[example/plugin-conversations](https://github.com/bot-base/telegram-bot-template/tree/example/plugin-conversations)
 ([open diff](https://github.com/bot-base/telegram-bot-template/compare/example/plugin-conversations))
 
 Use in your project:
@@ -188,7 +188,7 @@ npm i @grammyjs/conversations
 ### grammY runner ([grammy.dev/plugins/runner](https://grammy.dev/plugins/runner))
 
 Branch:
-[example/plugin-runner](https://github.com/bot-base/telegram-bot-template/tree/example/plugin-runner) 
+[example/plugin-runner](https://github.com/bot-base/telegram-bot-template/tree/example/plugin-runner)
 ([open diff](https://github.com/bot-base/telegram-bot-template/compare/example/plugin-runner))
 
 Use in your project:
@@ -215,7 +215,7 @@ npm i @grammyjs/runner
 ### Prisma ORM ([prisma.io](https://prisma.io))
 
 Branch:
-[example/orm-prisma](https://github.com/bot-base/telegram-bot-template/tree/example/orm-prisma) 
+[example/orm-prisma](https://github.com/bot-base/telegram-bot-template/tree/example/orm-prisma)
 ([open diff](https://github.com/bot-base/telegram-bot-template/compare/example/orm-prisma))
 
 Use in your project:
@@ -243,7 +243,7 @@ npm i @prisma/client
 ### Bun ([bun.sh](https://bun.sh))
 
 Branch:
-[example/runtime-bun](https://github.com/bot-base/telegram-bot-template/tree/example/runtime-bun) 
+[example/runtime-bun](https://github.com/bot-base/telegram-bot-template/tree/example/runtime-bun)
 ([open diff](https://github.com/bot-base/telegram-bot-template/compare/example/runtime-bun))
 
 Use in your project:
@@ -381,8 +381,8 @@ bun add -d @types/bun
         Array of Number
     </td>
     <td>
-        <i>Optional.</i> 
-        Administrator user IDs. 
+        <i>Optional.</i>
+        Administrator user IDs.
         Use this to specify user IDs that have special privileges, such as executing <code>/setcommands</code>. <br/>
         Defaults to an empty array.
     </td>

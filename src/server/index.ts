@@ -1,39 +1,38 @@
-import { Hono } from "hono";
-import { HTTPException } from "hono/http-exception";
-import { webhookCallback } from "grammy";
-import type { Bot } from "#root/bot/index.js";
-import { config } from "#root/config.js";
-import { requestLogger } from "#root/server/middlewares/request-logger.js";
-import { getPath } from "hono/utils/url";
-import { Logger } from "#root/logger.js";
-import { requestId } from "./middlewares/request-id.js";
-import { logger } from "./middlewares/logger.js";
+import { Hono } from 'hono'
+import { HTTPException } from 'hono/http-exception'
+import { webhookCallback } from 'grammy'
+import { getPath } from 'hono/utils/url'
+import { requestId } from './middlewares/request-id.js'
+import { logger } from './middlewares/logger.js'
+import type { Bot } from '#root/bot/index.js'
+import { config } from '#root/config.js'
+import { requestLogger } from '#root/server/middlewares/request-logger.js'
+import type { Logger } from '#root/logger.js'
 
-type Variables = {
-  requestId: string;
-  logger: Logger;
-};
-
-export const createServer = (bot: Bot) => {
-  const server = new Hono<{
-    Variables: Variables;
-  }>();
-
-  server.use(requestId());
-  server.use(logger());
-
-  if (config.isDev) {
-    server.use(requestLogger());
+interface Env {
+  Variables: {
+    requestId: string
+    logger: Logger
   }
+}
+
+export function createServer(bot: Bot) {
+  const server = new Hono<Env>()
+
+  server.use(requestId())
+  server.use(logger())
+
+  if (config.isDev)
+    server.use(requestLogger())
 
   server.onError(async (error, c) => {
     if (error instanceof HTTPException) {
-      if (error.status < 500) {
-        c.var.logger.info(error);
-      } else {
-        c.var.logger.error(error);
-      }
-      return error.getResponse();
+      if (error.status < 500)
+        c.var.logger.info(error)
+      else
+        c.var.logger.error(error)
+
+      return error.getResponse()
     }
 
     // unexpected error
@@ -41,25 +40,25 @@ export const createServer = (bot: Bot) => {
       err: error,
       method: c.req.raw.method,
       path: getPath(c.req.raw),
-    });
+    })
     return c.json(
       {
-        error: "Oops! Something went wrong.",
+        error: 'Oops! Something went wrong.',
       },
       500,
-    );
-  });
+    )
+  })
 
-  server.get("/", (c) => c.json({ status: true }));
+  server.get('/', c => c.json({ status: true }))
 
   server.post(
-    "/webhook",
-    webhookCallback(bot, "hono", {
+    '/webhook',
+    webhookCallback(bot, 'hono', {
       secretToken: config.BOT_WEBHOOK_SECRET,
     }),
-  );
+  )
 
-  return server;
-};
+  return server
+}
 
-export type Server = Awaited<ReturnType<typeof createServer>>;
+export type Server = Awaited<ReturnType<typeof createServer>>

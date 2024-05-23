@@ -1,2 +1,2 @@
-export * from "./error.js";
-export * from "./commands/setcommands.js";
+export * from './error.js'
+export * from './commands/setcommands.js'

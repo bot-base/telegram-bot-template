@@ -1,4 +1,4 @@
-import { isUserHasId } from "grammy-guard";
-import { config } from "#root/config.js";
+import { isUserHasId } from 'grammy-guard'
+import { config } from '#root/config.js'
 
-export const isAdmin = isUserHasId(...config.BOT_ADMINS);
+export const isAdmin = isUserHasId(...config.BOT_ADMINS)

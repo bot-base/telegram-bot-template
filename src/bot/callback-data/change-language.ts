@@ -1,5 +1,5 @@
-import { createCallbackData } from "callback-data";
+import { createCallbackData } from 'callback-data'
 
-export const changeLanguageData = createCallbackData("language", {
+export const changeLanguageData = createCallbackData('language', {
   code: String,
-});
+})

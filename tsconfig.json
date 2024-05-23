@@ -1,21 +1,21 @@
 {
   "compilerOptions": {
-    "strict": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "preserveWatchOutput": true,
-    "noEmit": true,
-    "module": "NodeNext",
     "target": "ES2021",
-    "moduleResolution": "NodeNext",
-    "sourceMap": true,
-    "outDir": "build",
     "rootDir": ".",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "paths": {
       "#root/*": [
         "./src/*"
       ]
-    }
+    },
+    "strict": true,
+    "noEmit": true,
+    "outDir": "build",
+    "sourceMap": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "preserveWatchOutput": true
   },
   "include": [
     "src/**/*"
