@@ -2,13 +2,25 @@ import { Hono } from "hono";
 import { HTTPException } from "hono/http-exception";
 import { webhookCallback } from "grammy";
 import type { Bot } from "#root/bot/index.js";
-import { logger } from "#root/logger.js";
 import { config } from "#root/config.js";
 import { requestLogger } from "#root/server/middlewares/request-logger.js";
 import { getPath } from "hono/utils/url";
+import { Logger } from "#root/logger.js";
+import { requestId } from "./middlewares/request-id.js";
+import { logger } from "./middlewares/logger.js";
+
+type Variables = {
+  requestId: string;
+  logger: Logger;
+};
 
 export const createServer = async (bot: Bot) => {
-  const server = new Hono();
+  const server = new Hono<{
+    Variables: Variables;
+  }>();
+
+  server.use(requestId());
+  server.use(logger());
 
   if (config.isDev) {
     server.use(requestLogger());
@@ -17,15 +29,15 @@ export const createServer = async (bot: Bot) => {
   server.onError(async (error, c) => {
     if (error instanceof HTTPException) {
       if (error.status < 500) {
-        logger.info(error);
+        c.var.logger.info(error);
       } else {
-        logger.error(error);
+        c.var.logger.error(error);
       }
       return error.getResponse();
     }
 
     // unexpected error
-    logger.error({
+    c.var.logger.error({
       err: error,
       method: c.req.raw.method,
       path: getPath(c.req.raw),
