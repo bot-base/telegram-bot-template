@@ -1,5 +1,6 @@
 import type { Config } from '#root/config.js'
 import type { Logger } from '#root/logger.js'
+import type { PrismaClientX } from '#root/prisma/index.js'
 import type { AutoChatActionFlavor } from '@grammyjs/auto-chat-action'
 import type { HydrateFlavor } from '@grammyjs/hydrate'
 import type { I18nFlavor } from '@grammyjs/i18n'
@@ -13,6 +14,7 @@ export interface SessionData {
 interface ExtendedContextFlavor {
   logger: Logger
   config: Config
+  prisma: PrismaClientX
 }
 
 export type Context = ParseModeFlavor<

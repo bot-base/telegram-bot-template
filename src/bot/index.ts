@@ -1,6 +1,7 @@
 import type { Context } from '#root/bot/context.js'
 import type { Config } from '#root/config.js'
 import type { Logger } from '#root/logger.js'
+import type { PrismaClientX } from '#root/prisma/index.js'
 import type { BotConfig } from 'grammy'
 import { adminFeature } from '#root/bot/features/admin.js'
 import { languageFeature } from '#root/bot/features/language.js'
@@ -19,6 +20,7 @@ import { MemorySessionStorage, Bot as TelegramBot } from 'grammy'
 interface Dependencies {
   config: Config
   logger: Logger
+  prisma: PrismaClientX
 }
 
 function getSessionKey(ctx: Omit<Context, 'session'>) {
@@ -29,6 +31,7 @@ export function createBot(token: string, dependencies: Dependencies, botConfig?:
   const {
     config,
     logger,
+    prisma,
   } = dependencies
 
   const bot = new TelegramBot<Context>(token, botConfig)
@@ -38,6 +41,7 @@ export function createBot(token: string, dependencies: Dependencies, botConfig?:
     ctx.logger = logger.child({
       update_id: ctx.update.update_id,
     })
+    ctx.prisma = prisma
 
     await next()
   })

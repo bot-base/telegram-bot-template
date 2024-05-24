@@ -7,6 +7,7 @@ import process from 'node:process'
 import { createBot } from '#root/bot/index.js'
 import { config } from '#root/config.js'
 import { logger } from '#root/logger.js'
+import { prisma } from '#root/prisma/index.js'
 import { createServer, createServerManager } from '#root/server/index.js'
 import { run } from '@grammyjs/runner'
 
@@ -14,6 +15,7 @@ async function startPolling(config: PollingConfig) {
   const bot = createBot(config.botToken, {
     config,
     logger,
+    prisma,
   })
   let runner: undefined | RunnerHandle
 
@@ -27,6 +29,9 @@ async function startPolling(config: PollingConfig) {
     bot.init(),
     bot.api.deleteWebhook(),
   ])
+
+  // connect to database
+  await prisma.$connect()
 
   // start bot
   runner = run(bot, {
@@ -47,6 +52,7 @@ async function startWebhook(config: WebhookConfig) {
   const bot = createBot(config.botToken, {
     config,
     logger,
+    prisma,
   })
   const server = createServer({
     bot,
@@ -63,6 +69,9 @@ async function startWebhook(config: WebhookConfig) {
     logger.info('Shutdown')
     await serverManager.stop()
   })
+
+  // connect to database
+  await prisma.$connect()
 
   // to prevent receiving updates before the bot is ready
   await bot.init()
