@@ -4,17 +4,10 @@ import { webhookCallback } from 'grammy'
 import { getPath } from 'hono/utils/url'
 import { requestId } from './middlewares/request-id.js'
 import { logger } from './middlewares/logger.js'
+import type { Env } from './environment.js'
 import type { Bot } from '#root/bot/index.js'
 import { config } from '#root/config.js'
 import { requestLogger } from '#root/server/middlewares/request-logger.js'
-import type { Logger } from '#root/logger.js'
-
-interface Env {
-  Variables: {
-    requestId: string
-    logger: Logger
-  }
-}
 
 export function createServer(bot: Bot) {
   const server = new Hono<Env>()
