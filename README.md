@@ -135,6 +135,8 @@ git remote update
 git merge template/deploy/docker-compose -X theirs --squash --no-commit --allow-unrelated-histories
 ```
 
+3. Follow [the usage instructions](https://github.com/bot-base/telegram-bot-template/tree/deploy/docker-compose#usage) in the `deploy/docker-compose` branch.
+
 ### Vercel ([vercel.com](https://vercel.com))
 
 Branch:
@@ -155,6 +157,8 @@ git remote update
 ```sh
 git merge template/deploy/vercel -X theirs --squash --no-commit --allow-unrelated-histories
 ```
+
+3. Follow [the usage instructions](https://github.com/bot-base/telegram-bot-template/tree/deploy/vercel#usage) in the `deploy/vercel` branch.
 
 ## Examples
 
@@ -185,6 +189,8 @@ git merge template/example/plugin-conversations -X theirs --squash --no-commit -
 npm i @grammyjs/conversations
 ```
 
+4. Follow [the usage instructions](https://github.com/bot-base/telegram-bot-template/tree/example/plugin-conversations#usage) in the `example/plugin-conversations` branch.
+
 ### grammY runner ([grammy.dev/plugins/runner](https://grammy.dev/plugins/runner))
 
 Branch:
@@ -211,6 +217,8 @@ git merge template/example/plugin-runner -X theirs --squash --no-commit --allow-
 ```sh
 npm i @grammyjs/runner
 ```
+
+4. Follow [the usage instructions](https://github.com/bot-base/telegram-bot-template/tree/example/plugin-runner#usage) in the `example/plugin-runner` branch.
 
 ### Prisma ORM ([prisma.io](https://prisma.io))
 
@@ -239,6 +247,8 @@ git merge template/example/orm-prisma -X theirs --squash --no-commit --allow-unr
 npm i -D prisma
 npm i @prisma/client
 ```
+
+4. Follow [the usage instructions](https://github.com/bot-base/telegram-bot-template/tree/example/orm-prisma#usage) in the `example/orm-prisma` branch.
 
 ### Bun ([bun.sh](https://bun.sh))
 
@@ -276,6 +286,8 @@ rm package-lock.json
 # install bun typings
 bun add -d @types/bun
 ```
+
+4. Follow [the usage instructions](https://github.com/bot-base/telegram-bot-template/tree/example/runtime-bun#usage) in the `example/runtime-bun` branch.
 
 ## Environment Variables
 
