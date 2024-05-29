@@ -62,8 +62,8 @@ Follow these steps to set up and run your bot using this template:
     npm install --only=prod
     ```
 
-    Set `NODE_ENV` environment variable to `production` in your `.env` file.
-    Update `BOT_WEBHOOK` with the actual URL where your bot will receive updates.
+    Set `NODE_ENV` environment variable to `production` in your `.env` file. <br />
+    Update `BOT_WEBHOOK` with the actual URL where your bot will receive updates. <br />
     Update `BOT_WEBHOOK_SECRET` with a random secret token.
 
     ```dotenv
