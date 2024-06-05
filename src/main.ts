@@ -1,12 +1,10 @@
 #!/usr/bin/env tsx
 
 import process from 'node:process'
-import type { AddressInfo } from 'node:net'
-import { serve } from '@hono/node-server'
 import { createBot } from '#root/bot/index.js'
 import { config } from '#root/config.js'
 import { logger } from '#root/logger.js'
-import { createServer } from '#root/server/index.js'
+import { createServer, createServerManager } from '#root/server/index.js'
 
 function onShutdown(cleanUp: () => Promise<void>) {
   let isShuttingDown = false
@@ -43,37 +41,21 @@ async function startPolling() {
 async function startWebhook() {
   const bot = createBot(config.BOT_TOKEN)
   const server = createServer(bot)
-
-  let serverHandle: undefined | ReturnType<typeof serve>
-  const startServer = () =>
-    new Promise<AddressInfo>((resolve) => {
-      serverHandle = serve(
-        {
-          fetch: server.fetch,
-          hostname: config.BOT_SERVER_HOST,
-          port: config.BOT_SERVER_PORT,
-        },
-        info => resolve(info),
-      )
-    })
-  const stopServer = async () =>
-    new Promise<void>((resolve) => {
-      if (serverHandle)
-        serverHandle.close(() => resolve())
-      else
-        resolve()
-    })
+  const serverManager = createServerManager(server)
 
   // graceful shutdown
   onShutdown(async () => {
-    await stopServer()
+    await serverManager.stop()
   })
 
   // to prevent receiving updates before the bot is ready
   await bot.init()
 
   // start server
-  const info = await startServer()
+  const info = await serverManager.start(
+    config.BOT_SERVER_HOST,
+    config.BOT_SERVER_PORT,
+  )
   logger.info({
     msg: 'Server started',
     url:

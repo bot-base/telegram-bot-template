@@ -1,5 +1,7 @@
+import type { AddressInfo } from 'node:net'
 import { Hono } from 'hono'
 import { HTTPException } from 'hono/http-exception'
+import { serve } from '@hono/node-server'
 import { webhookCallback } from 'grammy'
 import { getPath } from 'hono/utils/url'
 import { requestId } from './middlewares/request-id.js'
@@ -55,3 +57,27 @@ export function createServer(bot: Bot) {
 }
 
 export type Server = Awaited<ReturnType<typeof createServer>>
+
+export function createServerManager(server: Server) {
+  let handle: undefined | ReturnType<typeof serve>
+  return {
+    start: (host: string, port: number) =>
+      new Promise<AddressInfo>((resolve) => {
+        handle = serve(
+          {
+            fetch: server.fetch,
+            hostname: host,
+            port,
+          },
+          info => resolve(info),
+        )
+      }),
+    stop: () =>
+      new Promise<void>((resolve) => {
+        if (handle)
+          handle.close(() => resolve())
+        else
+          resolve()
+      }),
+  }
+}
