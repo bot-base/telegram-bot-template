@@ -28,7 +28,7 @@
     "@grammyjs/hydrate": "1.4.1",
     "@grammyjs/i18n": "1.0.2",
     "@grammyjs/parse-mode": "1.10.0",
-    "@grammyjs/types": "3.8.1",
+    "@grammyjs/types": "3.9.0",
     "@hono/node-server": "1.11.3",
     "callback-data": "1.1.1",
     "grammy": "1.24.1",
