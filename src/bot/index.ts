@@ -3,22 +3,15 @@ import { hydrate } from '@grammyjs/hydrate'
 import { hydrateReply, parseMode } from '@grammyjs/parse-mode'
 import type { BotConfig, StorageAdapter } from 'grammy'
 import { Bot as TelegramBot, session } from 'grammy'
-import type {
-  Context,
-  SessionData,
-} from '#root/bot/context.js'
-import {
-  createContextConstructor,
-} from '#root/bot/context.js'
-import {
-  adminFeature,
-  languageFeature,
-  unhandledFeature,
-  welcomeFeature,
-} from '#root/bot/features/index.js'
-import { errorHandler } from '#root/bot/handlers/index.js'
+import { welcomeFeature } from './features/welcome.js'
+import { adminFeature } from './features/admin.js'
+import { languageFeature } from './features/language.js'
+import { unhandledFeature } from './features/unhandled.js'
+import { errorHandler } from './handlers/error.js'
+import { updateLogger } from './middlewares/update-logger.js'
+import type { Context, SessionData } from '#root/bot/context.js'
+import { createContextConstructor } from '#root/bot/context.js'
 import { i18n, isMultipleLocales } from '#root/bot/i18n.js'
-import { updateLogger } from '#root/bot/middlewares/index.js'
 import { config } from '#root/config.js'
 import { logger } from '#root/logger.js'
 
