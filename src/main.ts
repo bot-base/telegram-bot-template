@@ -2,6 +2,7 @@
 
 import process from 'node:process'
 import { ValiError, flatten } from 'valibot'
+import { type RunnerHandle, run } from '@grammyjs/runner'
 import { createLogger } from './logger.js'
 import { createBot } from '#root/bot/index.js'
 import type { PollingConfig, WebhookConfig } from '#root/config.js'
@@ -14,21 +15,28 @@ async function startPolling(config: PollingConfig) {
     config,
     logger,
   })
+  let runner: undefined | RunnerHandle
 
   // graceful shutdown
   onShutdown(async () => {
     logger.info('Shutdown')
-    await bot.stop()
+    await runner?.stop()
   })
 
+  await bot.init()
+
   // start bot
-  await bot.start({
-    allowed_updates: config.botAllowedUpdates,
-    onStart: ({ username }) =>
-      logger.info({
-        msg: 'Bot running...',
-        username,
-      }),
+  runner = run(bot, {
+    runner: {
+      fetch: {
+        allowed_updates: config.botAllowedUpdates,
+      },
+    },
+  })
+
+  logger.info({
+    msg: 'Bot running...',
+    username: bot.botInfo.username,
   })
 }
 

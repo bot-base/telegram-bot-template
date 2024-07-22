@@ -3,6 +3,7 @@ import { hydrate } from '@grammyjs/hydrate'
 import { hydrateReply, parseMode } from '@grammyjs/parse-mode'
 import type { BotConfig, StorageAdapter } from 'grammy'
 import { Bot as TelegramBot, session } from 'grammy'
+import { sequentialize } from '@grammyjs/runner'
 import { welcomeFeature } from './features/welcome.js'
 import { adminFeature } from './features/admin.js'
 import { languageFeature } from './features/language.js'
@@ -25,6 +26,10 @@ interface Options {
   botConfig?: Omit<BotConfig<Context>, 'ContextConstructor'>
 }
 
+function getSessionKey(ctx: Omit<Context, 'session'>) {
+  return ctx.chat?.id.toString()
+}
+
 export function createBot(token: string, dependencies: Dependencies, options: Options = {}) {
   const {
     config,
@@ -43,16 +48,17 @@ export function createBot(token: string, dependencies: Dependencies, options: Op
   // Middlewares
   bot.api.config.use(parseMode('HTML'))
 
-  if (config.isDebug)
-    protectedBot.use(updateLogger())
-
+  config.isPollingMode && protectedBot.use(sequentialize(getSessionKey))
+  config.isDebug && protectedBot.use(updateLogger())
   protectedBot.use(autoChatAction(bot.api))
   protectedBot.use(hydrateReply)
   protectedBot.use(hydrate())
-  protectedBot.use(
+  protectedBot.filter(
+    ctx => getSessionKey(ctx) !== 'undefined',
     session({
-      initial: () => ({}),
+      getSessionKey,
       storage: options.botSessionStorage,
+      initial: () => ({}),
     }),
   )
   protectedBot.use(i18n)
@@ -60,9 +66,7 @@ export function createBot(token: string, dependencies: Dependencies, options: Op
   // Handlers
   protectedBot.use(welcomeFeature)
   protectedBot.use(adminFeature)
-
-  if (isMultipleLocales)
-    protectedBot.use(languageFeature)
+  isMultipleLocales && protectedBot.use(languageFeature)
 
   // must be the last handler
   protectedBot.use(unhandledFeature)

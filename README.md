@@ -18,7 +18,6 @@ Bot starter template based on [grammY](https://grammy.dev/) bot framework.
 - Examples:
     - grammY plugins:
         - [Conversations](#grammy-conversations-grammydevpluginsconversations)
-        - [Runner](#grammy-runner-grammydevpluginsrunner)
     - Databases:
       - [Prisma ORM](#prisma-orm-prismaio)
     - Runtimes:
@@ -182,35 +181,6 @@ npm i @grammyjs/conversations
 ```
 
 4. Follow [the usage instructions](https://github.com/bot-base/telegram-bot-template/tree/example/plugin-conversations#usage) in the `example/plugin-conversations` branch.
-
-### grammY runner ([grammy.dev/plugins/runner](https://grammy.dev/plugins/runner))
-
-Branch:
-[example/plugin-runner](https://github.com/bot-base/telegram-bot-template/tree/example/plugin-runner)
-([open diff](https://github.com/bot-base/telegram-bot-template/compare/example/plugin-runner))
-
-Use in your project:
-
-1. Add the template repository as a remote
-
-```sh
-git remote add template git@github.com:bot-base/telegram-bot-template.git
-git remote update
-```
-
-2. Merge example
-
-```sh
-git merge template/example/plugin-runner -X theirs --squash --no-commit --allow-unrelated-histories
-```
-
-3. Install dependencies
-
-```sh
-npm i @grammyjs/runner
-```
-
-4. Follow [the usage instructions](https://github.com/bot-base/telegram-bot-template/tree/example/plugin-runner#usage) in the `example/plugin-runner` branch.
 
 ### Prisma ORM ([prisma.io](https://prisma.io))
 
