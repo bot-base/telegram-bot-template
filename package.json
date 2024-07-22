@@ -38,8 +38,7 @@
     "pino": "9.2.0",
     "pino-pretty": "11.2.1",
     "tsx": "4.16.2",
-    "znv": "0.4.0",
-    "zod": "3.23.8"
+    "valibot": "0.36.0"
   },
   "devDependencies": {
     "@antfu/eslint-config": "2.21.2",

@@ -5,19 +5,34 @@ import { serve } from '@hono/node-server'
 import { webhookCallback } from 'grammy'
 import { getPath } from 'hono/utils/url'
 import { requestId } from './middlewares/request-id.js'
-import { logger } from './middlewares/logger.js'
+import { setLogger } from './middlewares/logger.js'
 import type { Env } from './environment.js'
 import type { Bot } from '#root/bot/index.js'
-import { config } from '#root/config.js'
 import { requestLogger } from '#root/server/middlewares/request-logger.js'
+import type { Logger } from '#root/logger.js'
+import type { Config } from '#root/config.js'
 
-export function createServer(bot: Bot) {
+interface Dependencies {
+  config: Config
+  logger: Logger
+}
+
+export function createServer(bot: Bot, dependencies: Dependencies) {
+  const {
+    config,
+    logger,
+  } = dependencies
+
+  if (!config.isWebhookMode) {
+    throw new Error('Bot is not in webhook mode')
+  }
+
   const server = new Hono<Env>()
 
   server.use(requestId())
-  server.use(logger())
+  server.use(setLogger(logger))
 
-  if (config.isDev)
+  if (config.isDebug)
     server.use(requestLogger())
 
   server.onError(async (error, c) => {
@@ -49,7 +64,7 @@ export function createServer(bot: Bot) {
   server.post(
     '/webhook',
     webhookCallback(bot, 'hono', {
-      secretToken: config.BOT_WEBHOOK_SECRET,
+      secretToken: config.botWebhookSecret,
     }),
   )
 

@@ -1,7 +1,6 @@
 import type { BotCommand } from '@grammyjs/types'
 import type { CommandContext } from 'grammy'
 import { i18n, isMultipleLocales } from '#root/bot/i18n.js'
-import { config } from '#root/config.js'
 import type { Context } from '#root/bot/context.js'
 
 function getLanguageCommand(localeCode: string): BotCommand {
@@ -100,7 +99,7 @@ export async function setCommandsHandler(ctx: CommandContext<Context>) {
     {
       scope: {
         type: 'chat',
-        chat_id: Number(config.BOT_ADMINS),
+        chat_id: Number(ctx.config.botAdmins),
       },
     },
   )

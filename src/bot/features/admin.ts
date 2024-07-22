@@ -7,7 +7,7 @@ import { logHandle } from '#root/bot/helpers/logging.js'
 
 const composer = new Composer<Context>()
 
-const feature = composer.chatType('private').filter(isAdmin)
+const feature = composer.chatType('private').filter(ctx => isAdmin(ctx.config.botAdmins)(ctx))
 
 feature.command(
   'setcommands',

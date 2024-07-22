@@ -1,11 +1,11 @@
 import type { MiddlewareHandler } from 'hono'
-import { logger as _logger } from '#root/logger.js'
+import type { Logger } from '#root/logger.js'
 
-export function logger(): MiddlewareHandler {
+export function setLogger(logger: Logger): MiddlewareHandler {
   return async (c, next) => {
     c.set(
       'logger',
-      _logger.child({
+      logger.child({
         requestId: c.get('requestId'),
       }),
     )

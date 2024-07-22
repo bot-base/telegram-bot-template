@@ -1,35 +1,29 @@
 #!/usr/bin/env tsx
 
 import process from 'node:process'
+import { ValiError, flatten } from 'valibot'
+import { createLogger } from './logger.js'
 import { createBot } from '#root/bot/index.js'
-import { config } from '#root/config.js'
-import { logger } from '#root/logger.js'
+import type { PollingConfig, WebhookConfig } from '#root/config.js'
+import { createConfig } from '#root/config.js'
 import { createServer, createServerManager } from '#root/server/index.js'
 
-function onShutdown(cleanUp: () => Promise<void>) {
-  let isShuttingDown = false
-  const handleShutdown = async () => {
-    if (isShuttingDown)
-      return
-    isShuttingDown = true
-    logger.info('Shutdown')
-    await cleanUp()
-  }
-  process.on('SIGINT', handleShutdown)
-  process.on('SIGTERM', handleShutdown)
-}
-
-async function startPolling() {
-  const bot = createBot(config.BOT_TOKEN)
+async function startPolling(config: PollingConfig) {
+  const logger = createLogger(config)
+  const bot = createBot(config.botToken, {
+    config,
+    logger,
+  })
 
   // graceful shutdown
   onShutdown(async () => {
+    logger.info('Shutdown')
     await bot.stop()
   })
 
   // start bot
   await bot.start({
-    allowed_updates: config.BOT_ALLOWED_UPDATES,
+    allowed_updates: config.botAllowedUpdates,
     onStart: ({ username }) =>
       logger.info({
         msg: 'Bot running...',
@@ -38,13 +32,21 @@ async function startPolling() {
   })
 }
 
-async function startWebhook() {
-  const bot = createBot(config.BOT_TOKEN)
-  const server = createServer(bot)
+async function startWebhook(config: WebhookConfig) {
+  const logger = createLogger(config)
+  const bot = createBot(config.botToken, {
+    config,
+    logger,
+  })
+  const server = createServer(bot, {
+    config,
+    logger,
+  })
   const serverManager = createServerManager(server)
 
   // graceful shutdown
   onShutdown(async () => {
+    logger.info('Shutdown')
     await serverManager.stop()
   })
 
@@ -53,8 +55,8 @@ async function startWebhook() {
 
   // start server
   const info = await serverManager.start(
-    config.BOT_SERVER_HOST,
-    config.BOT_SERVER_PORT,
+    config.serverHost,
+    config.serverPort,
   )
   logger.info({
     msg: 'Server started',
@@ -65,23 +67,75 @@ async function startWebhook() {
   })
 
   // set webhook
-  await bot.api.setWebhook(config.BOT_WEBHOOK, {
-    allowed_updates: config.BOT_ALLOWED_UPDATES,
-    secret_token: config.BOT_WEBHOOK_SECRET,
+  await bot.api.setWebhook(config.botWebhook, {
+    allowed_updates: config.botAllowedUpdates,
+    secret_token: config.botWebhookSecret,
   })
   logger.info({
     msg: 'Webhook was set',
-    url: config.BOT_WEBHOOK,
+    url: config.botWebhook,
   })
 }
 
 try {
-  if (config.BOT_MODE === 'webhook')
-    await startWebhook()
-  else if (config.BOT_MODE === 'polling')
-    await startPolling()
+  try {
+    process.loadEnvFile()
+  }
+  catch {
+    // No .env file found
+  }
+
+  // @ts-expect-error create config from environment variables
+  const config = createConfig(convertKeysToCamelCase(process.env))
+
+  if (config.isWebhookMode)
+    await startWebhook(config)
+  else if (config.isPollingMode)
+    await startPolling(config)
 }
 catch (error) {
-  logger.error(error)
+  if (error instanceof ValiError) {
+    console.error('Config parsing error', flatten(error.issues))
+  }
+  else {
+    console.error(error)
+  }
   process.exit(1)
+}
+
+// Utils
+
+function onShutdown(cleanUp: () => Promise<void>) {
+  let isShuttingDown = false
+  const handleShutdown = async () => {
+    if (isShuttingDown)
+      return
+    isShuttingDown = true
+    await cleanUp()
+  }
+  process.on('SIGINT', handleShutdown)
+  process.on('SIGTERM', handleShutdown)
+}
+
+type CamelCase<S extends string> = S extends `${infer P1}_${infer P2}${infer P3}`
+  ? `${Lowercase<P1>}${Uppercase<P2>}${CamelCase<P3>}`
+  : Lowercase<S>
+
+type KeysToCamelCase<T> = {
+  [K in keyof T as CamelCase<string & K>]: T[K] extends object ? KeysToCamelCase<T[K]> : T[K]
+}
+
+function toCamelCase(str: string): string {
+  return str.toLowerCase().replace(/_([a-z])/g, (_match, p1) => p1.toUpperCase())
+}
+
+function convertKeysToCamelCase<T>(obj: T): KeysToCamelCase<T> {
+  const result: any = {}
+  for (const key in obj) {
+    if (Object.prototype.hasOwnProperty.call(obj, key)) {
+      const camelCaseKey = toCamelCase(key)
+      result[camelCaseKey] = obj[key]
+    }
+  }
+  return result
 }

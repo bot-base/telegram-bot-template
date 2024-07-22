@@ -12,26 +12,38 @@ import { updateLogger } from './middlewares/update-logger.js'
 import type { Context, SessionData } from '#root/bot/context.js'
 import { createContextConstructor } from '#root/bot/context.js'
 import { i18n, isMultipleLocales } from '#root/bot/i18n.js'
-import { config } from '#root/config.js'
-import { logger } from '#root/logger.js'
+import type { Logger } from '#root/logger.js'
+import type { Config } from '#root/config.js'
 
-interface Options {
-  sessionStorage?: StorageAdapter<SessionData>
-  config?: Omit<BotConfig<Context>, 'ContextConstructor'>
+interface Dependencies {
+  config: Config
+  logger: Logger
 }
 
-export function createBot(token: string, options: Options = {}) {
-  const { sessionStorage } = options
+interface Options {
+  botSessionStorage?: StorageAdapter<SessionData>
+  botConfig?: Omit<BotConfig<Context>, 'ContextConstructor'>
+}
+
+export function createBot(token: string, dependencies: Dependencies, options: Options = {}) {
+  const {
+    config,
+    logger,
+  } = dependencies
+
   const bot = new TelegramBot(token, {
-    ...options.config,
-    ContextConstructor: createContextConstructor({ logger }),
+    ...options.botConfig,
+    ContextConstructor: createContextConstructor({
+      logger,
+      config,
+    }),
   })
   const protectedBot = bot.errorBoundary(errorHandler)
 
   // Middlewares
   bot.api.config.use(parseMode('HTML'))
 
-  if (config.isDev)
+  if (config.isDebug)
     protectedBot.use(updateLogger())
 
   protectedBot.use(autoChatAction(bot.api))
@@ -40,7 +52,7 @@ export function createBot(token: string, options: Options = {}) {
   protectedBot.use(
     session({
       initial: () => ({}),
-      storage: sessionStorage,
+      storage: options.botSessionStorage,
     }),
   )
   protectedBot.use(i18n)

@@ -57,26 +57,18 @@ Follow these steps to set up and run your bot using this template:
 
    **Production Mode:**
 
-    Install only production dependencies (no development dependencies):
+    Install only production dependencies:
     ```bash
     npm install --only=prod
     ```
 
-    Set `NODE_ENV` environment variable to `production` in your `.env` file. <br />
-    Update `BOT_WEBHOOK` with the actual URL where your bot will receive updates. <br />
-    Update `BOT_WEBHOOK_SECRET` with a random secret token.
-
-    ```dotenv
-    NODE_ENV=production
-    BOT_WEBHOOK=<server_url>/webhook
-    BOT_WEBHOOK_SECRET=<random_secret_value>
-    ```
+    Set `DEBUG` environment variable to `false` in your `.env` file.
 
     Start the bot in production mode:
     ```bash
-    npm start # with type checking (requires development dependencies)
-    # or
     npm run start:force # skip type checking and start
+    # or
+    npm start # with type checking (requires development dependencies)
     ```
 
 ### List of Available Commands
@@ -301,11 +293,6 @@ bun add -d @types/bun
 </thead>
 <tbody>
   <tr>
-    <td>NODE_ENV</td>
-    <td>String</td>
-    <td>Specifies the application environment. (<code>development</code> or <code>production</code>)</td>
-  </tr>
-  <tr>
     <td>BOT_TOKEN</td>
     <td>
         String
@@ -314,7 +301,16 @@ bun add -d @types/bun
         Telegram Bot API token obtained from <a href="https://t.me/BotFather">@BotFather</a>.
     </td>
   </tr>
-    <tr>
+  <tr>
+    <td>BOT_MODE</td>
+    <td>
+        String
+    </td>
+    <td>
+        Specifies method to receive incoming updates (<code>polling</code> or <code>webhook</code>).
+    </td>
+  </tr>
+  <tr>
     <td>LOG_LEVEL</td>
     <td>
         String
@@ -322,19 +318,16 @@ bun add -d @types/bun
     <td>
         <i>Optional.</i>
         Specifies the application log level. <br/>
-        For example, use <code>info</code> for general logging. View the <a href="https://github.com/pinojs/pino/blob/master/docs/api.md#level-string">Pino documentation</a> for more log level options. <br/>
+        Use <code>info</code> for general logging. Check the <a href="https://github.com/pinojs/pino/blob/master/docs/api.md#level-string">Pino documentation</a> for more log level options. <br/>
         Defaults to <code>info</code>.
     </td>
   </tr>
   <tr>
-    <td>BOT_MODE</td>
+    <td>DEBUG</td>
+    <td>Boolean</td>
     <td>
-        String
-    </td>
-    <td>
-        <i>Optional.</i>
-        Specifies method to receive incoming updates (<code>polling</code> or <code>webhook</code>).<br/>
-        Default depends on <code>NODE_ENV</code> (<code>polling</code> for <code>development</code>, <code>webhook</code> for <code>production</code>).
+      <i>Optional.</i>
+      Enables debug mode. You may use <code>config.isDebug</code> flag to enable debugging functions.
     </td>
   </tr>
   <tr>
@@ -358,22 +351,22 @@ bun add -d @types/bun
     </td>
   </tr>
   <tr>
-    <td>BOT_SERVER_HOST</td>
+    <td>SERVER_HOST</td>
     <td>
         String
     </td>
     <td>
-        <i>Optional.</i> Specifies the server hostname. <br/>
+        <i>Optional in <code>polling</code> mode.</i> Specifies the server hostname. <br/>
         Defaults to <code>0.0.0.0</code>.
     </td>
   </tr>
   <tr>
-    <td>BOT_SERVER_PORT</td>
+    <td>SERVER_PORT</td>
     <td>
         Number
     </td>
     <td>
-        <i>Optional.</i> Specifies the server port. <br/>
+        <i>Optional in <code>polling</code> mode.</i> Specifies the server port. <br/>
         Defaults to <code>80</code>.
     </td>
   </tr>

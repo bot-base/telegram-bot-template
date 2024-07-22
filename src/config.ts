@@ -1,61 +1,51 @@
-import process from 'node:process'
-import z from 'zod'
-import { parseEnv, port } from 'znv'
+import * as v from 'valibot'
 import { API_CONSTANTS } from 'grammy'
 
-try {
-  process.loadEnvFile()
+const baseConfigSchema = v.object({
+  debug: v.optional(v.pipe(v.string(), v.transform(JSON.parse), v.boolean()), 'false'),
+  logLevel: v.optional(v.pipe(v.string(), v.picklist(['trace', 'debug', 'info', 'warn', 'error', 'fatal', 'silent'])), 'info'),
+  botToken: v.pipe(v.string(), v.regex(/^\d+:[\w-]+$/, 'Invalid token')),
+  botAllowedUpdates: v.optional(v.pipe(v.string(), v.transform(JSON.parse), v.array(v.picklist(API_CONSTANTS.ALL_UPDATE_TYPES))), '[]'),
+  botAdmins: v.optional(v.pipe(v.string(), v.transform(JSON.parse), v.array(v.number())), '[]'),
+})
+
+const configSchema = v.variant('botMode', [
+  // polling config
+  v.pipe(
+    v.object({
+      botMode: v.literal('polling'),
+      ...baseConfigSchema.entries,
+    }),
+    v.transform(input => ({
+      ...input,
+      isDebug: input.debug,
+      isWebhookMode: false as const,
+      isPollingMode: true as const,
+    })),
+  ),
+  // webhook config
+  v.pipe(
+    v.object({
+      botMode: v.literal('webhook'),
+      ...baseConfigSchema.entries,
+      botWebhook: v.pipe(v.string(), v.url()),
+      botWebhookSecret: v.pipe(v.string(), v.minLength(12)),
+      serverHost: v.optional(v.string(), '0.0.0.0'),
+      serverPort: v.optional(v.pipe(v.string(), v.transform(Number), v.number()), '80'),
+    }),
+    v.transform(input => ({
+      ...input,
+      isDebug: input.debug,
+      isWebhookMode: true as const,
+      isPollingMode: false as const,
+    })),
+  ),
+])
+
+export type Config = v.InferOutput<typeof configSchema>
+export type PollingConfig = v.InferOutput<typeof configSchema['options'][0]>
+export type WebhookConfig = v.InferOutput<typeof configSchema['options'][1]>
+
+export function createConfig(input: v.InferInput<typeof configSchema>) {
+  return v.parse(configSchema, input)
 }
-catch {
-  // No .env file found
-}
-
-function createConfigFromEnvironment(environment: NodeJS.ProcessEnv) {
-  const config = parseEnv(environment, {
-    NODE_ENV: z.enum(['development', 'production']),
-    LOG_LEVEL: z
-      .enum(['trace', 'debug', 'info', 'warn', 'error', 'fatal', 'silent'])
-      .default('info'),
-    BOT_MODE: {
-      schema: z.enum(['polling', 'webhook']),
-      defaults: {
-        production: 'webhook' as const,
-        development: 'polling' as const,
-      },
-    },
-    BOT_TOKEN: z.string(),
-    BOT_WEBHOOK: z.string().default(''),
-    BOT_WEBHOOK_SECRET: z.string().default(''),
-    BOT_SERVER_HOST: z.string().default('0.0.0.0'),
-    BOT_SERVER_PORT: port().default(80),
-    BOT_ALLOWED_UPDATES: z
-      .array(z.enum(API_CONSTANTS.ALL_UPDATE_TYPES))
-      .default([]),
-    BOT_ADMINS: z.array(z.number()).default([]),
-  })
-
-  if (config.BOT_MODE === 'webhook') {
-    // validate webhook url in webhook mode
-    z.string()
-      .url()
-      .parse(config.BOT_WEBHOOK, {
-        path: ['BOT_WEBHOOK'],
-      })
-    // validate webhook secret in webhook mode
-    z.string()
-      .min(1)
-      .parse(config.BOT_WEBHOOK_SECRET, {
-        path: ['BOT_WEBHOOK_SECRET'],
-      })
-  }
-
-  return {
-    ...config,
-    isDev: process.env.NODE_ENV === 'development',
-    isProd: process.env.NODE_ENV === 'production',
-  }
-}
-
-export type Config = ReturnType<typeof createConfigFromEnvironment>
-
-export const config = createConfigFromEnvironment(process.env)
