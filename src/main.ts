@@ -60,10 +60,7 @@ async function startWebhook(config: WebhookConfig) {
   )
   logger.info({
     msg: 'Server started',
-    url:
-      info.family === 'IPv6'
-        ? `http://[${info.address}]:${info.port}`
-        : `http://${info.address}:${info.port}`,
+    url: info.url,
   })
 
   // set webhook

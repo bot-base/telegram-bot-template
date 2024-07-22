@@ -1,4 +1,3 @@
-import type { AddressInfo } from 'node:net'
 import { Hono } from 'hono'
 import { HTTPException } from 'hono/http-exception'
 import { serve } from '@hono/node-server'
@@ -77,14 +76,18 @@ export function createServerManager(server: Server) {
   let handle: undefined | ReturnType<typeof serve>
   return {
     start: (host: string, port: number) =>
-      new Promise<AddressInfo>((resolve) => {
+      new Promise<{ url: string }>((resolve) => {
         handle = serve(
           {
             fetch: server.fetch,
             hostname: host,
             port,
           },
-          info => resolve(info),
+          info => resolve({
+            url: info.family === 'IPv6'
+              ? `http://[${info.address}]:${info.port}`
+              : `http://${info.address}:${info.port}`,
+          }),
         )
       }),
     stop: () =>
