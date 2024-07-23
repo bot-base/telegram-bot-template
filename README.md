@@ -85,19 +85,21 @@ Follow these steps to set up and run your bot using this template:
 project-root/
   ├── locales # Localization files
   └── src
-      ├── bot # Contains the code related to the bot
+      ├── bot # Code related to bot
       │   ├── callback-data # Callback data builders
-      │   ├── features      # Implementations of bot features
+      │   ├── features      # Bot features
       │   ├── filters       # Update filters
       │   ├── handlers      # Update handlers
-      │   ├── helpers       # Utility functions
+      │   ├── helpers       # Helper functions
       │   ├── keyboards     # Keyboard builders
-      │   ├── middlewares   # Middleware functions
+      │   ├── middlewares   # Bot middlewares
       │   ├── i18n.ts       # Internationalization setup
       │   ├── context.ts    # Context object definition
       │   └── index.ts      # Bot entry point
-      ├── server # Contains the code related to the web server
-      │   └── index.ts # Web server entry point
+      ├── server # Code related to web server
+      │   ├── middlewares   # Server middlewares
+      │   ├── environment   # Server environment setup
+      │   └── index.ts      # Server entry point
       ├── config.ts # Application config
       ├── logger.ts # Logging setup
       └── main.ts   # Application entry point
