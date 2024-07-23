@@ -12,27 +12,23 @@ import type { Logger } from '#root/logger.js'
 import type { Config } from '#root/config.js'
 
 interface Dependencies {
+  bot: Bot
   config: Config
   logger: Logger
 }
 
-export function createServer(bot: Bot, dependencies: Dependencies) {
+export function createServer(dependencies: Dependencies) {
   const {
+    bot,
     config,
     logger,
   } = dependencies
-
-  if (!config.isWebhookMode) {
-    throw new Error('Bot is not in webhook mode')
-  }
 
   const server = new Hono<Env>()
 
   server.use(requestId())
   server.use(setLogger(logger))
-
-  if (config.isDebug)
-    server.use(requestLogger())
+  config.isDebug && server.use(requestLogger())
 
   server.onError(async (error, c) => {
     if (error instanceof HTTPException) {
@@ -60,28 +56,30 @@ export function createServer(bot: Bot, dependencies: Dependencies) {
 
   server.get('/', c => c.json({ status: true }))
 
-  server.post(
-    '/webhook',
-    webhookCallback(bot, 'hono', {
-      secretToken: config.botWebhookSecret,
-    }),
-  )
+  if (config.isWebhookMode) {
+    server.post(
+      '/webhook',
+      webhookCallback(bot, 'hono', {
+        secretToken: config.botWebhookSecret,
+      }),
+    )
+  }
 
   return server
 }
 
 export type Server = Awaited<ReturnType<typeof createServer>>
 
-export function createServerManager(server: Server) {
+export function createServerManager(server: Server, options: { host: string, port: number }) {
   let handle: undefined | ReturnType<typeof serve>
   return {
-    start: (host: string, port: number) =>
-      new Promise<{ url: string }>((resolve) => {
+    start() {
+      return new Promise<{ url: string } >((resolve) => {
         handle = serve(
           {
             fetch: server.fetch,
-            hostname: host,
-            port,
+            hostname: options.host,
+            port: options.port,
           },
           info => resolve({
             url: info.family === 'IPv6'
@@ -89,13 +87,15 @@ export function createServerManager(server: Server) {
               : `http://${info.address}:${info.port}`,
           }),
         )
-      }),
-    stop: () =>
-      new Promise<void>((resolve) => {
+      })
+    },
+    stop() {
+      return new Promise<void>((resolve) => {
         if (handle)
           handle.close(() => resolve())
         else
           resolve()
-      }),
+      })
+    },
   }
 }

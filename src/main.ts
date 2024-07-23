@@ -46,11 +46,15 @@ async function startWebhook(config: WebhookConfig) {
     config,
     logger,
   })
-  const server = createServer(bot, {
+  const server = createServer({
+    bot,
     config,
     logger,
   })
-  const serverManager = createServerManager(server)
+  const serverManager = createServerManager(server, {
+    host: config.serverHost,
+    port: config.serverPort,
+  })
 
   // graceful shutdown
   onShutdown(async () => {
@@ -62,10 +66,7 @@ async function startWebhook(config: WebhookConfig) {
   await bot.init()
 
   // start server
-  const info = await serverManager.start(
-    config.serverHost,
-    config.serverPort,
-  )
+  const info = await serverManager.start()
   logger.info({
     msg: 'Server started',
     url: info.url,
