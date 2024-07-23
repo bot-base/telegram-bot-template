@@ -2,7 +2,7 @@ import { autoChatAction } from '@grammyjs/auto-chat-action'
 import { hydrate } from '@grammyjs/hydrate'
 import { hydrateReply, parseMode } from '@grammyjs/parse-mode'
 import type { BotConfig, StorageAdapter } from 'grammy'
-import { Bot as TelegramBot, session } from 'grammy'
+import { Bot as TelegramBot } from 'grammy'
 import { sequentialize } from '@grammyjs/runner'
 import { welcomeFeature } from './features/welcome.js'
 import { adminFeature } from './features/admin.js'
@@ -10,6 +10,7 @@ import { languageFeature } from './features/language.js'
 import { unhandledFeature } from './features/unhandled.js'
 import { errorHandler } from './handlers/error.js'
 import { updateLogger } from './middlewares/update-logger.js'
+import { session } from './middlewares/session.js'
 import type { Context, SessionData } from '#root/bot/context.js'
 import { createContextConstructor } from '#root/bot/context.js'
 import { i18n, isMultipleLocales } from '#root/bot/i18n.js'
@@ -53,14 +54,7 @@ export function createBot(token: string, dependencies: Dependencies, options: Op
   protectedBot.use(autoChatAction(bot.api))
   protectedBot.use(hydrateReply)
   protectedBot.use(hydrate())
-  protectedBot.filter(
-    ctx => getSessionKey(ctx) !== 'undefined',
-    session({
-      getSessionKey,
-      storage: options.botSessionStorage,
-      initial: () => ({}),
-    }),
-  )
+  protectedBot.use(session({ getSessionKey, storage: options.botSessionStorage }))
   protectedBot.use(i18n)
 
   // Handlers
