@@ -6,7 +6,7 @@ import type { Context } from '#root/bot/context.js'
 function getLanguageCommand(localeCode: string): BotCommand {
   return {
     command: 'language',
-    description: i18n.t(localeCode, 'language_command.description'),
+    description: i18n.t(localeCode, 'language-command-description'),
   }
 }
 
@@ -14,7 +14,7 @@ function getPrivateChatCommands(localeCode: string): BotCommand[] {
   return [
     {
       command: 'start',
-      description: i18n.t(localeCode, 'start_command.description'),
+      description: i18n.t(localeCode, 'start-command-description'),
     },
   ]
 }
@@ -23,7 +23,7 @@ function getPrivateChatAdminCommands(localeCode: string): BotCommand[] {
   return [
     {
       command: 'setcommands',
-      description: i18n.t(localeCode, 'setcommands_command.description'),
+      description: i18n.t(localeCode, 'setcommands-command-description'),
     },
   ]
 }
