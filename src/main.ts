@@ -1,16 +1,14 @@
 #!/usr/bin/env tsx
 
 import process from 'node:process'
-import { ValiError, flatten } from 'valibot'
 import { type RunnerHandle, run } from '@grammyjs/runner'
-import { createLogger } from './logger.js'
+import { logger } from './logger.js'
 import { createBot } from '#root/bot/index.js'
 import type { PollingConfig, WebhookConfig } from '#root/config.js'
-import { createConfig } from '#root/config.js'
+import { config } from '#root/config.js'
 import { createServer, createServerManager } from '#root/server/index.js'
 
 async function startPolling(config: PollingConfig) {
-  const logger = createLogger(config)
   const bot = createBot(config.botToken, {
     config,
     logger,
@@ -44,7 +42,6 @@ async function startPolling(config: PollingConfig) {
 }
 
 async function startWebhook(config: WebhookConfig) {
-  const logger = createLogger(config)
   const bot = createBot(config.botToken, {
     config,
     logger,
@@ -87,28 +84,13 @@ async function startWebhook(config: WebhookConfig) {
 }
 
 try {
-  try {
-    process.loadEnvFile()
-  }
-  catch {
-    // No .env file found
-  }
-
-  // @ts-expect-error create config from environment variables
-  const config = createConfig(convertKeysToCamelCase(process.env))
-
   if (config.isWebhookMode)
     await startWebhook(config)
   else if (config.isPollingMode)
     await startPolling(config)
 }
 catch (error) {
-  if (error instanceof ValiError) {
-    console.error('Config parsing error', flatten(error.issues))
-  }
-  else {
-    console.error(error)
-  }
+  logger.error(error)
   process.exit(1)
 }
 
@@ -124,27 +106,4 @@ function onShutdown(cleanUp: () => Promise<void>) {
   }
   process.on('SIGINT', handleShutdown)
   process.on('SIGTERM', handleShutdown)
-}
-
-type CamelCase<S extends string> = S extends `${infer P1}_${infer P2}${infer P3}`
-  ? `${Lowercase<P1>}${Uppercase<P2>}${CamelCase<P3>}`
-  : Lowercase<S>
-
-type KeysToCamelCase<T> = {
-  [K in keyof T as CamelCase<string & K>]: T[K] extends object ? KeysToCamelCase<T[K]> : T[K]
-}
-
-function toCamelCase(str: string): string {
-  return str.toLowerCase().replace(/_([a-z])/g, (_match, p1) => p1.toUpperCase())
-}
-
-function convertKeysToCamelCase<T>(obj: T): KeysToCamelCase<T> {
-  const result: any = {}
-  for (const key in obj) {
-    if (Object.prototype.hasOwnProperty.call(obj, key)) {
-      const camelCaseKey = toCamelCase(key)
-      result[camelCaseKey] = obj[key]
-    }
-  }
-  return result
 }
