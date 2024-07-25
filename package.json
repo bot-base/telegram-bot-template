@@ -10,7 +10,7 @@
   "author": "deptyped <deptyped@gmail.com>",
   "license": "MIT",
   "engines": {
-    "node": ">=18.0.0",
+    "node": ">=20.0.0",
     "npm": ">=8.0.0"
   },
   "scripts": {
@@ -42,13 +42,13 @@
     "valibot": "0.36.0"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "2.21.2",
-    "@types/node": "20.14.11",
-    "eslint": "8.57.0",
-    "husky": "9.1.1",
-    "lint-staged": "15.2.7",
-    "tsc-watch": "6.2.0",
-    "typescript": "5.5.3"
+    "@antfu/eslint-config": "2.21.3",
+    "@types/node": "^20.14.12",
+    "eslint": "^8.57.0",
+    "husky": "^9.1.1",
+    "lint-staged": "^15.2.7",
+    "tsc-watch": "^6.2.0",
+    "typescript": "^5.5.4"
   },
   "lint-staged": {
     "*.ts": "eslint"
