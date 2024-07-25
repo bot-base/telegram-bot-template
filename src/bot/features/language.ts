@@ -10,7 +10,7 @@ const composer = new Composer<Context>()
 const feature = composer.chatType('private')
 
 feature.command('language', logHandle('command-language'), async (ctx) => {
-  return ctx.reply(ctx.t('language.select'), {
+  return ctx.reply(ctx.t('language-select'), {
     reply_markup: await createChangeLanguageKeyboard(ctx),
   })
 })
@@ -26,7 +26,7 @@ feature.callbackQuery(
     if (i18n.locales.includes(languageCode)) {
       await ctx.i18n.setLocale(languageCode)
 
-      return ctx.editMessageText(ctx.t('language.changed'), {
+      return ctx.editMessageText(ctx.t('language-changed'), {
         reply_markup: await createChangeLanguageKeyboard(ctx),
       })
     }

@@ -10,14 +10,12 @@ welcome = Welcome!
 
 ## Language Feature
 
-language = 
-    .select = Please, select your language
-    .changed = Language successfully changed!
+language-select = Please, select your language
+language-changed = Language successfully changed!
 
 ## Admin Feature
 
-admin =
-    .commands-updated = Commands updated.
+admin-commands-updated = Commands updated.
 
 ## Unhandled Feature
 

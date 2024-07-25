@@ -104,5 +104,5 @@ export async function setCommandsHandler(ctx: CommandContext<Context>) {
     },
   )
 
-  return ctx.reply(ctx.t('admin.commands-updated'))
+  return ctx.reply(ctx.t('admin-commands-updated'))
 }
