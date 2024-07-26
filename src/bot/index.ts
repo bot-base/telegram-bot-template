@@ -49,8 +49,10 @@ export function createBot(token: string, dependencies: Dependencies, options: Op
   // Middlewares
   bot.api.config.use(parseMode('HTML'))
 
-  config.isPollingMode && protectedBot.use(sequentialize(getSessionKey))
-  config.isDebug && protectedBot.use(updateLogger())
+  if (config.isPollingMode)
+    protectedBot.use(sequentialize(getSessionKey))
+  if (config.isDebug)
+    protectedBot.use(updateLogger())
   protectedBot.use(autoChatAction(bot.api))
   protectedBot.use(hydrateReply)
   protectedBot.use(hydrate())
@@ -60,7 +62,8 @@ export function createBot(token: string, dependencies: Dependencies, options: Op
   // Handlers
   protectedBot.use(welcomeFeature)
   protectedBot.use(adminFeature)
-  isMultipleLocales && protectedBot.use(languageFeature)
+  if (isMultipleLocales)
+    protectedBot.use(languageFeature)
 
   // must be the last handler
   protectedBot.use(unhandledFeature)

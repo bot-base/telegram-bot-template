@@ -28,7 +28,8 @@ export function createServer(dependencies: Dependencies) {
 
   server.use(requestId())
   server.use(setLogger(logger))
-  config.isDebug && server.use(requestLogger())
+  if (config.isDebug)
+    server.use(requestLogger())
 
   server.onError(async (error, c) => {
     if (error instanceof HTTPException) {
