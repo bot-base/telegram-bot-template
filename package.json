@@ -26,7 +26,7 @@
   "dependencies": {
     "@grammyjs/auto-chat-action": "0.1.1",
     "@grammyjs/hydrate": "1.4.1",
-    "@grammyjs/i18n": "1.0.2",
+    "@grammyjs/i18n": "1.1.2",
     "@grammyjs/parse-mode": "1.10.0",
     "@grammyjs/runner": "2.0.3",
     "@grammyjs/types": "3.11.1",
