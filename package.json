@@ -42,7 +42,7 @@
     "valibot": "0.42.1"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "2.26.0",
+    "@antfu/eslint-config": "3.12.0",
     "@types/node": "^20.14.12",
     "eslint": "^9.10.0",
     "husky": "^9.1.6",
