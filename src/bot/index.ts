@@ -1,21 +1,22 @@
+import type { Context, SessionData } from '#root/bot/context.js'
+import { createContextConstructor } from '#root/bot/context.js'
+import { adminFeature } from '#root/bot/features/admin.js'
+import { languageFeature } from '#root/bot/features/language.js'
+import { PingFeature } from '#root/bot/features/ping.js'
+import { unhandledFeature } from '#root/bot/features/unhandled.js'
+import { welcomeFeature } from '#root/bot/features/welcome.js'
+import { errorHandler } from '#root/bot/handlers/error.js'
+import { i18n, isMultipleLocales } from '#root/bot/i18n.js'
+import { session } from '#root/bot/middlewares/session.js'
+import { updateLogger } from '#root/bot/middlewares/update-logger.js'
+import type { Config } from '#root/config.js'
+import type { Logger } from '#root/logger.js'
 import { autoChatAction } from '@grammyjs/auto-chat-action'
 import { hydrate } from '@grammyjs/hydrate'
 import { hydrateReply, parseMode } from '@grammyjs/parse-mode'
+import { sequentialize } from '@grammyjs/runner'
 import type { BotConfig, StorageAdapter } from 'grammy'
 import { Bot as TelegramBot } from 'grammy'
-import { sequentialize } from '@grammyjs/runner'
-import { welcomeFeature } from '#root/bot/features/welcome.js'
-import { adminFeature } from '#root/bot/features/admin.js'
-import { languageFeature } from '#root/bot/features/language.js'
-import { unhandledFeature } from '#root/bot/features/unhandled.js'
-import { errorHandler } from '#root/bot/handlers/error.js'
-import { updateLogger } from '#root/bot/middlewares/update-logger.js'
-import { session } from '#root/bot/middlewares/session.js'
-import type { Context, SessionData } from '#root/bot/context.js'
-import { createContextConstructor } from '#root/bot/context.js'
-import { i18n, isMultipleLocales } from '#root/bot/i18n.js'
-import type { Logger } from '#root/logger.js'
-import type { Config } from '#root/config.js'
 
 interface Dependencies {
   config: Config
@@ -61,6 +62,7 @@ export function createBot(token: string, dependencies: Dependencies, options: Op
 
   // Handlers
   protectedBot.use(welcomeFeature)
+  protectedBot.use(PingFeature)
   protectedBot.use(adminFeature)
   if (isMultipleLocales)
     protectedBot.use(languageFeature)
