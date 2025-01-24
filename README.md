@@ -65,6 +65,7 @@ Follow these steps to set up and run your bot using this template:
     ```bash
     vercel link
     ```
+    ### ---------- !! Do not use sensitive flag for variables !! ----------
 
     Set `NODEJS_HELPERS` environment variable to `0`:
     ```bash
@@ -78,21 +79,21 @@ Follow these steps to set up and run your bot using this template:
 
     Set `BOT_TOKEN` environment variable:
     ```bash
-    vercel env add BOT_TOKEN --sensitive
+    vercel env add BOT_TOKEN
     ```
 
     Set `BOT_WEBHOOK_SECRET` environment variable to a random secret token:
     ```bash
     # Generate and set secret token using Node
-    node -e "console.log(crypto.randomBytes(256*0.75).toString('base64url'))" | vercel env add BOT_WEBHOOK_SECRET --sensitive production
+    node -e "console.log(crypto.randomBytes(256*0.75).toString('base64url'))" | vercel env add BOT_WEBHOOK_SECRET
     ```
     ```bash
     # OR using Python
-    python3 -c "import secrets; print(secrets.token_urlsafe(256))" | vercel env add BOT_WEBHOOK_SECRET --sensitive production
+    python3 -c "import secrets; print(secrets.token_urlsafe(256))" | vercel env add BOT_WEBHOOK_SECRET
     ```
     ```bash
     # OR set manually:
-    vercel env add BOT_WEBHOOK_SECRET --sensitive
+    vercel env add BOT_WEBHOOK_SECRET
     ```
 
     Deploy your bot:
