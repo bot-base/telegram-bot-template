@@ -1,3 +1,5 @@
-import { isUserHasId } from 'grammy-guard'
+import type { Context } from '#root/bot/context.js'
 
-export const isAdmin = (ids: number[]) => isUserHasId(...ids)
+export function isAdmin(ctx: Context) {
+  return !!ctx.from && ctx.config.botAdmins.includes(ctx.from.id)
+}

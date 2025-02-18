@@ -7,7 +7,9 @@ import { Composer } from 'grammy'
 
 const composer = new Composer<Context>()
 
-const feature = composer.chatType('private').filter(ctx => isAdmin(ctx.config.botAdmins)(ctx))
+const feature = composer
+  .chatType('private')
+  .filter(isAdmin)
 
 feature.command(
   'setcommands',
