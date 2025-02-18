@@ -1,5 +1,5 @@
-import { randomUUID } from 'node:crypto'
 import type { MiddlewareHandler } from 'hono'
+import { randomUUID } from 'node:crypto'
 
 export function requestId(): MiddlewareHandler {
   return async (c, next) => {

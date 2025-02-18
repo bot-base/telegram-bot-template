@@ -1,6 +1,6 @@
 import process from 'node:process'
-import * as v from 'valibot'
 import { API_CONSTANTS } from 'grammy'
+import * as v from 'valibot'
 
 const baseConfigSchema = v.object({
   debug: v.optional(v.pipe(v.string(), v.transform(JSON.parse), v.boolean()), 'false'),
