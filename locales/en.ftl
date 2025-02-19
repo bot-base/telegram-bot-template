@@ -1,8 +1,11 @@
 ## Commands
 
-start-command-description = Start the bot
-language-command-description = Change language
-setcommands-command-description = Set bot commands
+start =
+    .description = Start the bot
+language =
+    .description = Change language
+setcommands =
+    .description = Set bot commands
 
 ## Welcome Feature
 

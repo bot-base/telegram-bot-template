@@ -1,108 +1,49 @@
 import type { Context } from '#root/bot/context.js'
-import type { BotCommand, LanguageCode } from '@grammyjs/types'
+import type { LanguageCode } from '@grammyjs/types'
 import type { CommandContext } from 'grammy'
-import { i18n, isMultipleLocales } from '#root/bot/i18n.js'
+import { i18n } from '#root/bot/i18n.js'
+import { Command, CommandGroup } from '@grammyjs/commands'
 
-function getLanguageCommand(localeCode: string): BotCommand {
-  return {
-    command: 'language',
-    description: i18n.t(localeCode, 'language-command-description'),
+function addCommandLocalizations(command: Command) {
+  i18n.locales.forEach((locale) => {
+    command.localize(
+      locale as LanguageCode,
+      command.name,
+      i18n.t(locale, `${command.name}.description`),
+    )
+  })
+  return command
+}
+
+function addCommandToChats(command: Command, chats: number[]) {
+  for (const chatId of chats) {
+    command.addToScope({
+      type: 'chat',
+      chat_id: chatId,
+    })
   }
-}
-
-function getPrivateChatCommands(localeCode: string): BotCommand[] {
-  return [
-    {
-      command: 'start',
-      description: i18n.t(localeCode, 'start-command-description'),
-    },
-  ]
-}
-
-function getPrivateChatAdminCommands(localeCode: string): BotCommand[] {
-  return [
-    {
-      command: 'setcommands',
-      description: i18n.t(localeCode, 'setcommands-command-description'),
-    },
-  ]
-}
-
-function getGroupChatCommands(_localeCode: string): BotCommand[] {
-  return []
 }
 
 export async function setCommandsHandler(ctx: CommandContext<Context>) {
-  const DEFAULT_LANGUAGE_CODE = 'en'
+  const start = new Command('start', i18n.t('en', 'start.description'))
+    .addToScope({ type: 'all_private_chats' })
+  addCommandLocalizations(start)
+  addCommandToChats(start, ctx.config.botAdmins)
 
-  // set private chat commands
-  await ctx.api.setMyCommands(
-    [
-      ...getPrivateChatCommands(DEFAULT_LANGUAGE_CODE),
-      ...(isMultipleLocales ? [getLanguageCommand(DEFAULT_LANGUAGE_CODE)] : []),
-    ],
-    {
-      scope: {
-        type: 'all_private_chats',
-      },
-    },
-  )
+  const language = new Command('language', i18n.t('en', 'language.description'))
+    .addToScope({ type: 'all_private_chats' })
+  addCommandLocalizations(language)
+  addCommandToChats(language, ctx.config.botAdmins)
 
-  if (isMultipleLocales) {
-    const requests = i18n.locales.map(code =>
-      ctx.api.setMyCommands(
-        [
-          ...getPrivateChatCommands(code),
-          ...(isMultipleLocales
-            ? [getLanguageCommand(DEFAULT_LANGUAGE_CODE)]
-            : []),
-        ],
-        {
-          language_code: code as LanguageCode,
-          scope: {
-            type: 'all_private_chats',
-          },
-        },
-      ),
-    )
+  const setcommands = new Command('setcommands', i18n.t('en', 'setcommands.description'))
+  addCommandToChats(setcommands, ctx.config.botAdmins)
 
-    await Promise.all(requests)
-  }
+  const commands = new CommandGroup()
+    .add(start)
+    .add(language)
+    .add(setcommands)
 
-  // set group chat commands
-  await ctx.api.setMyCommands(getGroupChatCommands(DEFAULT_LANGUAGE_CODE), {
-    scope: {
-      type: 'all_group_chats',
-    },
-  })
-
-  if (isMultipleLocales) {
-    const requests = i18n.locales.map(code =>
-      ctx.api.setMyCommands(getGroupChatCommands(code), {
-        language_code: code as LanguageCode,
-        scope: {
-          type: 'all_group_chats',
-        },
-      }),
-    )
-
-    await Promise.all(requests)
-  }
-
-  // set private chat commands for owner
-  await ctx.api.setMyCommands(
-    [
-      ...getPrivateChatCommands(DEFAULT_LANGUAGE_CODE),
-      ...getPrivateChatAdminCommands(DEFAULT_LANGUAGE_CODE),
-      ...(isMultipleLocales ? [getLanguageCommand(DEFAULT_LANGUAGE_CODE)] : []),
-    ],
-    {
-      scope: {
-        type: 'chat',
-        chat_id: Number(ctx.config.botAdmins),
-      },
-    },
-  )
+  await commands.setCommands(ctx)
 
   return ctx.reply(ctx.t('admin-commands-updated'))
 }
