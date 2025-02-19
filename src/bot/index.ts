@@ -1,8 +1,7 @@
-import type { Context, SessionData } from '#root/bot/context.js'
+import type { Context } from '#root/bot/context.js'
 import type { Config } from '#root/config.js'
 import type { Logger } from '#root/logger.js'
-import type { BotConfig, StorageAdapter } from 'grammy'
-import { createContextConstructor } from '#root/bot/context.js'
+import type { BotConfig } from 'grammy'
 import { adminFeature } from '#root/bot/features/admin.js'
 import { languageFeature } from '#root/bot/features/language.js'
 import { unhandledFeature } from '#root/bot/features/unhandled.js'
@@ -15,35 +14,34 @@ import { autoChatAction } from '@grammyjs/auto-chat-action'
 import { hydrate } from '@grammyjs/hydrate'
 import { hydrateReply, parseMode } from '@grammyjs/parse-mode'
 import { sequentialize } from '@grammyjs/runner'
-import { Bot as TelegramBot } from 'grammy'
+import { MemorySessionStorage, Bot as TelegramBot } from 'grammy'
 
 interface Dependencies {
   config: Config
   logger: Logger
 }
 
-interface Options {
-  botSessionStorage?: StorageAdapter<SessionData>
-  botConfig?: Omit<BotConfig<Context>, 'ContextConstructor'>
-}
-
 function getSessionKey(ctx: Omit<Context, 'session'>) {
   return ctx.chat?.id.toString()
 }
 
-export function createBot(token: string, dependencies: Dependencies, options: Options = {}) {
+export function createBot(token: string, dependencies: Dependencies, botConfig?: BotConfig<Context>) {
   const {
     config,
     logger,
   } = dependencies
 
-  const bot = new TelegramBot(token, {
-    ...options.botConfig,
-    ContextConstructor: createContextConstructor({
-      logger,
-      config,
-    }),
+  const bot = new TelegramBot<Context>(token, botConfig)
+
+  bot.use(async (ctx, next) => {
+    ctx.config = config
+    ctx.logger = logger.child({
+      update_id: ctx.update.update_id,
+    })
+
+    await next()
   })
+
   const protectedBot = bot.errorBoundary(errorHandler)
 
   // Middlewares
@@ -56,7 +54,10 @@ export function createBot(token: string, dependencies: Dependencies, options: Op
   protectedBot.use(autoChatAction(bot.api))
   protectedBot.use(hydrateReply)
   protectedBot.use(hydrate())
-  protectedBot.use(session({ getSessionKey, storage: options.botSessionStorage }))
+  protectedBot.use(session({
+    getSessionKey,
+    storage: new MemorySessionStorage(),
+  }))
   protectedBot.use(i18n)
 
   // Handlers
