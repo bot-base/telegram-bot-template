@@ -47,7 +47,7 @@
     "eslint": "^9.26.0",
     "husky": "^9.1.7",
     "lint-staged": "^15.5.1",
-    "tsc-watch": "^6.2.1",
+    "tsc-watch": "^6.3.1",
     "typescript": "^5.8.3"
   },
   "lint-staged": {
