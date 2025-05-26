@@ -31,7 +31,7 @@
     "@grammyjs/parse-mode": "1.11.1",
     "@grammyjs/runner": "2.0.3",
     "@grammyjs/types": "3.20.0",
-    "@hono/node-server": "1.14.1",
+    "@hono/node-server": "1.14.2",
     "callback-data": "1.1.1",
     "grammy": "1.36.1",
     "hono": "4.7.9",
